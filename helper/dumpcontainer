@@ -8,4 +8,4 @@ if [[ -z "${1}" ]]; then
     exit 1
 fi
 
-docker export ${1} -o "${1}.tgz"
+docker export ${1} -o "${1}.tar"
