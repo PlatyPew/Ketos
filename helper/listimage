@@ -6,17 +6,17 @@
 images=$(docker image ls --all --quiet)
 
 if [[ -z "$images" ]]; then
-    echo -n "[]"
+    echo "[]"
     exit 0
 fi
 
 if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type image $images)"
-    echo -n $info
+    echo $info | jq -c --monochrome-output
 elif [[ ! -z ${1} ]]; then
     info="$(docker inspect --type image ${@})"
-    echo -n $info
+    echo $info | jq -c --monochrome-output
 else
     id="$(printf '"%s",' $images)"
-    echo -n "[${id::${#id}-1}]"
+    echo "[${id::${#id}-1}]" | jq -c --monochrome-output
 fi

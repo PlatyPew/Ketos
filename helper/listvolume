@@ -6,17 +6,17 @@
 volume=$(docker volume ls --quiet)
 
 if [[ -z "$volume" ]]; then
-    echo -n "[]"
+    echo "[]"
     exit 0
 fi
 
 if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type volume $volume)"
-    echo -n $info
+    echo $info | jq -c --monochrome-output
 elif [[ ! -z ${1} ]]; then
     info="$(docker inspect --type volume ${@})"
-    echo -n $info
+    echo $info | jq -c --monochrome-output
 else
     id="$(printf '"%s",' $volume)"
-    echo -n "[${id::${#id}-1}]"
+    echo "[${id::${#id}-1}]" | jq -c --monochrome-output
 fi

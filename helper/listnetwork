@@ -6,17 +6,17 @@
 network=$(docker network ls --quiet)
 
 if [[ -z "$network" ]]; then
-    echo -n "[]"
+    echo "[]"
     exit 0
 fi
 
 if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type network $network)"
-    echo -n $info
+    echo $inf | jq -c --monochrome-outputo
 elif [[ ! -z ${1} ]]; then
     info="$(docker inspect --type network ${@})"
-    echo -n $info
+    echo $info | jq -c --monochrome-output
 else
     id="$(printf '"%s",' $network)"
-    echo -n "[${id::${#id}-1}]"
+    echo "[${id::${#id}-1}]" | jq -c --monochrome-output
 fi
