@@ -1,17 +1,19 @@
 #!/bin/bash
 # Get layer information and dump into JSON
 
-# getlayers <image-id>
+# getlayers <image-tarfile>
 
 if [[ -z "${1}" ]]; then
-    >&2 echo "Please input image name/id"
+    >&2 echo "Please input image tarfile path"
     exit 1
 fi
 
 if [[ "$(uname -m)" == "aarch64" ]]; then
-    $(dirname $0)/../dive/dive_arm64 ${1} -j "/tmp/${1}.json" > /dev/null
+    $(dirname $0)/../dive/dive_arm64 ${1} --source docker-archive \
+        --json "/tmp/$(basename ${1}).json" > /dev/null
 else
-    $(dirname $0)/../dive/dive_amd64 ${1} -j "/tmp/${1}.json" > /dev/null
+    $(dirname $0)/../dive/dive_amd64 ${1} --source docker-archive \
+        -j "/tmp/$(basename ${1}).json" > /dev/null
 fi
 
-jq -c --monochrome-output . /tmp/${1}.json && rm /tmp/${1}.json
+jq -c --monochrome-output . /tmp/$(basename ${1}).json && rm /tmp/$(basename ${1}).json
