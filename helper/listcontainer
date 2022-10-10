@@ -12,6 +12,9 @@ fi
 if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type container $container)"
     echo -n $info
+elif [[ ! -z ${1} ]]; then
+    info="$(docker inspect --type container ${1})"
+    echo -n $info
 else
     id="$(printf '"%s",' $container)"
     echo -n "[${id::${#id}-1}]"

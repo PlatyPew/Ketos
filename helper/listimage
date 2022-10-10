@@ -12,6 +12,9 @@ fi
 if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type image $images)"
     echo -n $info
+elif [[ ! -z ${1} ]]; then
+    info="$(docker inspect --type image ${1})"
+    echo -n $info
 else
     id="$(printf '"%s",' $images)"
     echo -n "[${id::${#id}-1}]"
