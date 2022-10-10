@@ -1,0 +1,22 @@
+#!/bin/bash
+# Prints network information in JSON
+
+# listnetwork [ -a / network-id ]
+
+network=$(docker network ls --quiet)
+
+if [[ -z "$network" ]]; then
+    echo -n "[]"
+    exit 0
+fi
+
+if [[ ${1} == "-a" ]]; then
+    info="$(docker inspect --type network $network)"
+    echo -n $info
+elif [[ ! -z ${1} ]]; then
+    info="$(docker inspect --type network ${1})"
+    echo -n $info
+else
+    id="$(printf '"%s",' $network)"
+    echo -n "[${id::${#id}-1}]"
+fi
