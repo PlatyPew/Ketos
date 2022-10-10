@@ -9,9 +9,9 @@ if [[ -z "${1}" ]]; then
 fi
 
 if [[ "$(uname -m)" == "aarch64" ]]; then
-    $(dirname $0)/../dive/dive_arm64 ${1} -j "/tmp/${1}.json"
+    $(dirname $0)/../dive/dive_arm64 ${1} -j "/tmp/${1}.json" > /dev/null
 else
-    $(dirname $0)/../dive/dive_amd64 ${1} -j "/tmp/${1}.json"
+    $(dirname $0)/../dive/dive_amd64 ${1} -j "/tmp/${1}.json" > /dev/null
 fi
 
 jq -c --monochrome-output . /tmp/${1}.json && rm /tmp/${1}.json
