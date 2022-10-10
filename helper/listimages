@@ -1,4 +1,4 @@
 #!/bin/bash
 # Prints image information in JSON
-images="$(printf '%s,' $(docker image ls --all --format '{{json .}}'))"
+images="$(printf '%s,' $(docker image ls --all --no-trunc --format '{{json .}}'))"
 printf "[%s]" ${images::${#images}-1} # For backwards compatibility
