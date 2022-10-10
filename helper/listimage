@@ -1,3 +1,13 @@
 #!/bin/bash
 # Prints image information in JSON
-docker inspect --type image $(docker image ls --format '{{.ID}}')
+# -a    inspects image
+
+images=$(docker image ls --all --format '{{.ID}}')
+
+if [[ ${1} == "-a" ]]; then
+    info="$(docker inspect --type image $images)"
+    echo -n $info
+else
+    id="$(printf '"%s",' $images)"
+    echo -n "[${id::${#id}-1}]"
+fi
