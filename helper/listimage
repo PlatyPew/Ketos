@@ -1,6 +1,7 @@
 #!/bin/bash
 # Prints image information in JSON
-# -a    inspects image
+
+# listimage [ -a / image-id ]
 
 images=$(docker image ls --all --quiet)
 

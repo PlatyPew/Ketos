@@ -1,6 +1,7 @@
 #!/bin/bash
 # Prints container information in JSON
-# -a    inspects image
+
+# listcontainer [ -a / container-id ]
 
 container=$(docker ps --all --quiet)
 
