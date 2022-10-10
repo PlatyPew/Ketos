@@ -8,4 +8,4 @@ if [[ -z "${1}" ]]; then
     exit 1
 fi
 
-docker image save ${1} | gzip --best > "${1}.tgz"
+docker image save ${1} -o "${1}.tgz"
