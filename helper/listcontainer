@@ -2,7 +2,7 @@
 # Prints container information in JSON
 # -a    inspects image
 
-container=$(docker ps --all --format '{{.ID}}')
+container=$(docker ps --all --quiet)
 
 if [[ -z "$container" ]]; then
     echo -n "[]"

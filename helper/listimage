@@ -2,7 +2,7 @@
 # Prints image information in JSON
 # -a    inspects image
 
-images=$(docker image ls --all --format '{{.ID}}')
+images=$(docker image ls --all --quiet)
 
 if [[ -z "$images" ]]; then
     echo -n "[]"
