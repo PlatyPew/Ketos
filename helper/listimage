@@ -4,6 +4,11 @@
 
 images=$(docker image ls --all --format '{{.ID}}')
 
+if [[ -z "$images" ]]; then
+    echo -n "[]"
+    exit 0
+fi
+
 if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type image $images)"
     echo -n $info
