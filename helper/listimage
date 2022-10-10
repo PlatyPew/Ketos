@@ -1,0 +1,3 @@
+#!/bin/bash
+# Prints image information in JSON
+docker inspect --type image $(docker image ls --format '{{.ID}}')
