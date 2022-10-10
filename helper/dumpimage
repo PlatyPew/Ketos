@@ -1,0 +1,11 @@
+#!/bin/bash
+# Dumps image into file
+
+# dumpimage <image-id/image-name>
+
+if [[ -z "${1}" ]]; then
+    >&2 echo "Please input image name/id"
+    exit 1
+fi
+
+docker image save ${1} | gzip --best > "${1}.tgz"

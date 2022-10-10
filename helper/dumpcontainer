@@ -1,0 +1,11 @@
+#!/bin/bash
+# Dumps container into file
+
+# dumpimage <container-id/container-name>
+
+if [[ -z "${1}" ]]; then
+    >&2 echo "Please input container name/id"
+    exit 1
+fi
+
+docker export ${1} | gzip --best > "${1}.tgz"
