@@ -1,7 +1,7 @@
 #!/bin/bash
 # Prints image information in JSON
 
-# listimage [ -a / image-id ]
+# listimage [ -a / image-id ] [...image-id]
 
 images=$(docker image ls --all --quiet)
 
@@ -14,7 +14,7 @@ if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type image $images)"
     echo -n $info
 elif [[ ! -z ${1} ]]; then
-    info="$(docker inspect --type image ${1})"
+    info="$(docker inspect --type image ${@})"
     echo -n $info
 else
     id="$(printf '"%s",' $images)"

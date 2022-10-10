@@ -1,7 +1,7 @@
 #!/bin/bash
 # Prints network information in JSON
 
-# listnetwork [ -a / network-id ]
+# listnetwork [ -a / network-id ] [...network-id]
 
 network=$(docker network ls --quiet)
 
@@ -14,7 +14,7 @@ if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type network $network)"
     echo -n $info
 elif [[ ! -z ${1} ]]; then
-    info="$(docker inspect --type network ${1})"
+    info="$(docker inspect --type network ${@})"
     echo -n $info
 else
     id="$(printf '"%s",' $network)"

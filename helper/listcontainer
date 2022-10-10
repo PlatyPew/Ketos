@@ -1,7 +1,7 @@
 #!/bin/bash
 # Prints container information in JSON
 
-# listcontainer [ -a / container-id ]
+# listcontainer [ -a / container-id ] [...container-id]
 
 container=$(docker ps --all --quiet)
 
@@ -14,7 +14,7 @@ if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type container $container)"
     echo -n $info
 elif [[ ! -z ${1} ]]; then
-    info="$(docker inspect --type container ${1})"
+    info="$(docker inspect --type container ${@})"
     echo -n $info
 else
     id="$(printf '"%s",' $container)"
