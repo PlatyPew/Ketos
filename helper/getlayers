@@ -1,0 +1,17 @@
+#!/bin/bash
+# Get layer information and dump into JSON
+
+# getlayers <image-id>
+
+if [[ -z "${1}" ]]; then
+    >&2 echo "Please input image name/id"
+    exit 1
+fi
+
+if [[ "$(uname -m)" == "aarch64" ]]; then
+    $(dirname $0)/../dive/dive_arm64 ${1} -j "/tmp/${1}.json"
+else
+    $(dirname $0)/../dive/dive_amd64 ${1} -j "/tmp/${1}.json"
+fi
+
+jq -c --monochrome-output . /tmp/${1}.json && rm /tmp/${1}.json
