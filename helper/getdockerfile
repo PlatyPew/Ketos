@@ -1,0 +1,31 @@
+#!/usr/bin/python3
+# Parse layers into Dockerfile
+
+# cat layers.json | getdockerfile
+# getdockerfile layers.json
+
+import json
+import sys
+
+def main():
+    if len(sys.argv) != 2:
+        inf = sys.stdin
+    else:
+        inf = open(sys.argv[1])
+
+    info = json.loads(inf.read())
+
+    inf.close()
+
+    for layer in info['layer']:
+        cmd = layer['command']
+        cmd = cmd.replace('set -eux;', 'RUN')
+        cmd = cmd.replace('\t', '')
+        print(cmd)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print()
+        sys.exit(130)

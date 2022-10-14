@@ -1,0 +1,22 @@
+#!/bin/bash
+# Prints container information in JSON
+
+# listcontainer [ -a / container-id ] [...container-id]
+
+container=$(docker container ls --all --quiet)
+
+if [[ -z "$container" ]]; then
+    echo "[]"
+    exit 0
+fi
+
+if [[ ${1} == "-a" ]]; then
+    info="$(docker inspect --type container $container)"
+    echo $info | jq -c --monochrome-output
+elif [[ ! -z ${1} ]]; then
+    info="$(docker inspect --type container ${@})"
+    echo $info | jq -c --monochrome-output
+else
+    id="$(printf '"%s",' $container)"
+    echo "[${id::${#id}-1}]" | jq -c --monochrome-output
+fi
