@@ -3,7 +3,7 @@
 
 # listcontainer [ -a / container-id ] [...container-id]
 
-container=$(docker ps --all --quiet)
+container=$(docker container ls --all --quiet)
 
 if [[ -z "$container" ]]; then
     echo "[]"
