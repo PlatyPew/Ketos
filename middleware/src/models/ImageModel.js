@@ -69,7 +69,7 @@ const ImageInfoSchema = new mongoose.Schema(
         RootFS: { Type: { type: "String" }, Layers: { type: ["String"] } },
         Metadata: { LastTagTime: { type: "Date" } },
     },
-    { collection: "image_info", versionKey: false }
+    { _id: false, collection: "image_info", versionKey: false }
 );
 
 module.exports = {
