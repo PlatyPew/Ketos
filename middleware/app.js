@@ -19,6 +19,18 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+const image = require("./src/routes/image");
+app.use("/api/image", image);
+
+const container = require("./src/routes/container");
+app.use("/api/container", container);
+
+const network = require("./src/routes/network");
+app.use("/api/network", network);
+
+const volume = require("./src/routes/volume");
+app.use("/api/volume", volume);
+
 // Start Server
 console.log(`Waiting to connect to ${MONGO}`);
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
