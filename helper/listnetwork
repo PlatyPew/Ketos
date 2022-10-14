@@ -12,7 +12,7 @@ fi
 
 if [[ ${1} == "-a" ]]; then
     info="$(docker inspect --type network $network)"
-    echo $inf | jq -c --monochrome-outputo
+    echo $inf | jq -c --monochrome-output
 elif [[ ! -z ${1} ]]; then
     info="$(docker inspect --type network ${@})"
     echo $info | jq -c --monochrome-output
