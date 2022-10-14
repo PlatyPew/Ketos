@@ -8,12 +8,16 @@ if [[ -z "${1}" ]]; then
     exit 1
 fi
 
-if [[ "$(uname -m)" == "aarch64" ]]; then
-    $(dirname $0)/../bin/dive/dive_arm64 ${1} --source docker-archive \
-        --json "/tmp/$(basename ${1}).json" > /dev/null
+binary="$(dirname $0)/../bin/dive"
+
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    binary="${binary}/dive-macos_universal"
+elif [[ "$(uname -m)" == "aarch64"  ]]; then
+    binary="${binary}/dive-linux_arm64"
 else
-    $(dirname $0)/../bin/dive/dive_amd64 ${1} --source docker-archive \
-        -j "/tmp/$(basename ${1}).json" > /dev/null
+    binary="${binary}/dive-linux_amd64"
 fi
+
+$binary ${1} --source docker-archive -j "/tmp/$(basename ${1}).json" > /dev/null
 
 jq -c --monochrome-output . /tmp/$(basename ${1}).json && rm /tmp/$(basename ${1}).json
