@@ -1,6 +1,7 @@
 const { ImageInfoModel } = require("../models/ImageModel");
 const { ContainerInfoModel } = require("../models/ContainerModel");
 const { VolumeInfoModel } = require("../models/VolumeModel");
+const { NetworkInfoModel } = require("../models/NetworkModel");
 
 const insertImage = async (imageInfo) => {
     imageInfo.forEach((element) => {
@@ -26,8 +27,17 @@ const insertVolume = async (volumeInfo) => {
     return await VolumeInfoModel.insertMany(volumeInfo);
 };
 
+const insertNetwork = async (networkInfo) => {
+    networkInfo.forEach((element) => {
+        element._id = element.Id;
+    });
+
+    return await NetworkInfoModel.insertMany(networkInfo);
+};
+
 module.exports = {
     insertImage: insertImage,
     insertContainer: insertContainer,
     insertVolume: insertVolume,
+    insertNetwork: insertNetwork,
 };
