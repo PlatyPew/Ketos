@@ -4,7 +4,7 @@ const router = express.Router();
 
 const info = require("../utils/insertinfo");
 
-// Insert image inspected info
+// Insert container inspected info
 router.post("/insert", async (req, res) => {
     const data = req.body;
 
