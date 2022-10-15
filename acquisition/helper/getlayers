@@ -4,7 +4,7 @@
 # getlayers <image-tarfile>
 
 if [[ -z "${1}" ]]; then
-    >&2 echo "Please input image tarfile path"
+    >&2 echo "Please input image tar.gz path"
     exit 1
 fi
 
@@ -18,6 +18,6 @@ else
     binary="${binary}/dive-linux_amd64"
 fi
 
-$binary ${1} --source docker-archive -j "/tmp/$(basename ${1}).json" > /dev/null
+$binary <(gzip -d ${1} -c) --source docker-archive -j "/tmp/$(basename ${1}).json" > /dev/null
 
 jq -c --monochrome-output . /tmp/$(basename ${1}).json && rm /tmp/$(basename ${1}).json
