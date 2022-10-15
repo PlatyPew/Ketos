@@ -20,4 +20,5 @@ fi
 
 $binary <(gzip -d ${1} -c) --source docker-archive -j "/tmp/$(basename ${1}).json" > /dev/null
 
-jq -c --monochrome-output . /tmp/$(basename ${1}).json && rm /tmp/$(basename ${1}).json
+jq -c --monochrome-output --arg id $(echo ${1} | cut -d '.' -f 1) '{Id: $id} + .' /tmp/$(basename ${1}).json && \
+    rm /tmp/$(basename ${1}).json
