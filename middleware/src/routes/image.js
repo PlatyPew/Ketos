@@ -1,8 +1,18 @@
 // Create express router
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const fs = require("fs");
 
 const info = require("../utils/insertinfo");
+
+const storage = multer.diskStorage({
+    destination: "./dockerdata/image",
+    filename: (_, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+const upload = multer({ storage: storage });
 
 // Insert image inspected info
 router.post("/insert", async (req, res) => {
@@ -15,6 +25,14 @@ router.post("/insert", async (req, res) => {
     } catch (err) {
         res.status(500).json({ response: err });
     }
+});
+
+// Allow image upload
+router.post("/upload", upload.single("file"), (req, res) => {
+    const file = req.file;
+
+    res.setHeader("Content-Type", "application/json");
+    res.json({ response: file });
 });
 
 module.exports = router;

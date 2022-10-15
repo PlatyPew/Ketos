@@ -10,7 +10,7 @@ services:
     networks:
       - api
     volumes:
-      - "./dbdata:/data/db:rw"
+      - "./middleware/dbdata:/data/db:rw"
 
 networks:
   api:
