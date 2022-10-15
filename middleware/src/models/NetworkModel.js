@@ -12,7 +12,7 @@ const NetworkInfoSchema = new mongoose.Schema(
         IPAM: {
             Driver: { type: "String" },
             Options: { type: "Mixed" },
-            Config: { type: "Array" },
+            Config: { type: ["Mixed"] },
         },
         Internal: { type: "Boolean" },
         Attachable: { type: "Boolean" },

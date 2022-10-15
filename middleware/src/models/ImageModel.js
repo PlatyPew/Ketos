@@ -76,7 +76,7 @@ const DockerfileInfoSchema = new mongoose.Schema(
     {
         _id: { type: "String" },
         Id: { type: "String" },
-        layers: { type: "Array" },
+        layers: { type: ["String"] },
     },
     { _id: false, collection: "dockerfile_info", versionKey: false }
 );
