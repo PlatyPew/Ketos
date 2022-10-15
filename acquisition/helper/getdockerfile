@@ -42,7 +42,11 @@ def main():
 
     layers = layers[::-1]
 
-    print('\n'.join(layers))
+    final = {
+        "Id": image_id,
+        "layers": layers
+    }
+    print(json.dumps(final))
 
 
 if __name__ == '__main__':
