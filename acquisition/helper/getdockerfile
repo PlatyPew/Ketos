@@ -1,31 +1,49 @@
 #!/usr/bin/python3
 # Parse layers into Dockerfile
 
-# cat layers.json | getdockerfile
-# getdockerfile layers.json
+# getdockerfile <image-id>
 
 import json
+import subprocess
 import sys
+import os
+
 
 def main():
     if len(sys.argv) != 2:
-        inf = sys.stdin
-    else:
-        inf = open(sys.argv[1])
+        print("Please input Image ID", file=sys.stderr)
+        sys.exit(1)
 
-    info = json.loads(inf.read())
+    image_id = sys.argv[1]
 
-    inf.close()
+    out, err = subprocess.Popen(
+        ["docker image history --no-trunc --format '{{json .}}' " + image_id],
+        env=os.environ.copy(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        shell=True).communicate()
 
-    for layer in info['layer']:
-        cmd = layer['command']
-        cmd = cmd.replace('set -eux;', 'RUN')
-        cmd = cmd.replace('\t', '')
-        print(cmd)
+    if err:
+        print(err.decode(), file=sys.stderr)
+        sys.exit(1)
+
+    out = out.decode().strip()
+    out = out.split("\n")
+
+    layers = []
+    for layer in out:
+        layer = json.loads(layer)["CreatedBy"]
+
+        layer = layer.replace("/bin/sh -c #(nop) ", "").strip()
+        layer = layer.replace("/bin/sh -c set -ex;", "RUN").strip()
+        layer = layer.replace("/bin/sh -c set -eux;", "RUN").strip()
+
+        layers.append(layer)
+
+    layers = layers[::-1]
+
+    print('\n'.join(layers))
+
 
 if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        print()
-        sys.exit(130)
+    main()
