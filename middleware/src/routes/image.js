@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Insert image inspected info
-router.post("/insert", async (req, res) => {
+router.post("/info/insert", async (req, res) => {
     const data = req.body;
 
     res.setHeader("Content-Type", "application/json");
