@@ -3,7 +3,7 @@
 
 # listnetwork [ -a / network-id ] [...network-id]
 
-network=$(docker network ls --quiet)
+network=$(docker network ls --quiet --no-trunc)
 
 if [[ -z "$network" ]]; then
     echo "[]"
