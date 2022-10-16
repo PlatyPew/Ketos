@@ -14,4 +14,4 @@ if [[ ! -z "${2}" ]]; then
     out="${2}"
 fi
 
-docker container export ${1} | gzip --best > $out
+docker container export ${1} | gzip --fast > $out
