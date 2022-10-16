@@ -17,11 +17,11 @@ def main():
     image_id = sys.argv[1]
 
     out, err = subprocess.Popen(
-        ["docker image history --no-trunc --format '{{json .}}' " + image_id],
+        ["docker", "image", "history", "--no-trunc", "--format", "{{json .}}", image_id],
         env=os.environ.copy(),
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        shell=True).communicate()
+    ).communicate()
 
     if err:
         print(err.decode(), file=sys.stderr)
@@ -42,10 +42,7 @@ def main():
 
     layers = layers[::-1]
 
-    final = {
-        "Id": image_id,
-        "layers": layers
-    }
+    final = {"Id": image_id, "layers": layers}
     print(json.dumps(final))
 
 
