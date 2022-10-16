@@ -33,24 +33,24 @@ def get_info(cmd):
     return json.loads(out)
 
 
-def send_info(path, data):
-    r = requests.post(f"{API_URL}{path}", json=data)
+def send_info(url_path, data):
+    r = requests.post(f"{API_URL}{url_path}", json=data)
     if r.status_code != 200:
         error_msg()
 
 
-def get_image(image_hash):
-    for iden in image_hash:
+def get_image(image_hashes):
+    for iden in image_hashes:
         run_cmd(["./helper/dumpimage", iden])
 
 
-def get_container(container_hash):
-    for iden in container_hash:
+def get_container(container_hashes):
+    for iden in container_hashes:
         run_cmd(["./helper/dumpcontainer", iden])
 
 
-def send_file(path, image_path):
-    r = requests.post(f"{API_URL}{path}", files={"file": open(image_path, 'rb')})
+def send_file(url_path, image_path):
+    r = requests.post(f"{API_URL}{url_path}", files={"file": open(image_path, 'rb')})
     if r.status_code != 200:
         error_msg()
 
