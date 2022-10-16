@@ -44,6 +44,11 @@ def get_image(image_hash):
         run_cmd(["./helper/dumpimage", iden])
 
 
+def get_container(container_hash):
+    for iden in container_hash:
+        run_cmd(["./helper/dumpcontainer", iden])
+
+
 def send_file(path, image_path):
     r = requests.post(f"{API_URL}{path}", files={"file": open(image_path, 'rb')})
     if r.status_code != 200:
@@ -69,6 +74,12 @@ def main():
     get_image(info)
     for iden in info:
         send_file("/image/upload", f"{iden}.tar.gz")
+
+    # Sending container dumps
+    info = get_info(["./helper/listcontainer"])
+    get_container(info)
+    for iden in info:
+        send_file("/container/upload", f"{iden}.tar.gz")
 
 
 if __name__ == '__main__':
