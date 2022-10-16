@@ -5,7 +5,7 @@ const router = express.Router();
 const info = require("../utils/insertinfo");
 
 // Insert volume inspected info
-router.post("/insert", async (req, res) => {
+router.post("/info/insert", async (req, res) => {
     const data = req.body;
 
     res.setHeader("Content-Type", "application/json");

@@ -2,7 +2,6 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const fs = require("fs");
 
 const info = require("../utils/insertinfo");
 
@@ -15,12 +14,25 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Insert image inspected info
-router.post("/insert", async (req, res) => {
+router.post("/info/insert", async (req, res) => {
     const data = req.body;
 
     res.setHeader("Content-Type", "application/json");
     try {
         const out = await info.insertImage(data);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
+// Insert image dockerfile
+router.post("/dockerfile/insert", async (req, res) => {
+    const data = req.body;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await info.insertDockerfile(data);
         res.json({ response: out });
     } catch (err) {
         res.status(500).json({ response: err });
