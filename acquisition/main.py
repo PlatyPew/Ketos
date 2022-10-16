@@ -39,6 +39,17 @@ def send_info(path, data):
         error_msg()
 
 
+def get_image(image_hash):
+    for iden in image_hash:
+        run_cmd(["./helper/dumpimage", iden])
+
+
+def send_file(path, image_path):
+    r = requests.post(f"{API_URL}{path}", files={"file": open(image_path, 'rb')})
+    if r.status_code != 200:
+        error_msg()
+
+
 def main():
     # Sending info
     info = get_info(["./helper/listimage", "-a"])
@@ -52,6 +63,12 @@ def main():
 
     info = get_info(["./helper/listnetwork", "-a"])
     send_info("/network/info/insert", info)
+
+    # Sending image dumps
+    info = get_info(["./helper/listimage"])
+    get_image(info)
+    for iden in info:
+        send_file("/image/upload", f"{iden}.tar.gz")
 
 
 if __name__ == '__main__':
