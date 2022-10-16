@@ -39,6 +39,21 @@ def send_info(url_path, data):
         error_msg()
 
 
+def get_dockerfile(image_hashes):
+    final = []
+    for iden in image_hashes:
+        dockerfile = run_cmd(["./helper/getdockerfile", iden])
+        final.append(json.loads(dockerfile))
+
+    return final
+
+
+def send_dockerfile(url_path, data):
+    r = requests.post(f"{API_URL}{url_path}", json=data)
+    if r.status_code != 200:
+        error_msg()
+
+
 def get_image(image_hashes):
     for iden in image_hashes:
         run_cmd(["./helper/dumpimage", iden])
@@ -68,6 +83,11 @@ def main():
 
     info = get_info(["./helper/listnetwork", "-a"])
     send_info("/network/info/insert", info)
+
+    # Send dockerfiles
+    info = get_info(["./helper/listimage"])
+    dockerfiles = get_dockerfile(info)
+    send_dockerfile("/image/dockerfile/insert", dockerfiles)
 
     # Sending image dumps
     info = get_info(["./helper/listimage"])
