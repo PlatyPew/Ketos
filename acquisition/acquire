@@ -94,12 +94,14 @@ def main():
     get_image(info)
     for iden in info:
         send_file("/image/upload", f"{iden}.tar.gz")
+        os.unlink(f"{iden}.tar.gz")
 
     # Sending container dumps
     info = get_info(["./helper/listcontainer"])
     get_container(info)
     for iden in info:
         send_file("/container/upload", f"{iden}.tar.gz")
+        os.unlink(f"{iden}.tar.gz")
 
 
 if __name__ == '__main__':
