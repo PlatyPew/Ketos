@@ -11,8 +11,7 @@ const mongoose = require("mongoose");
 const PORT = 3000;
 
 // URI for Mongodb
-/* const MONGO = "mongodb://api_local/ketos"; */
-const MONGO = "mongodb://localhost/ketos";
+const MONGO = "mongodb://database/ketos";
 
 app.use(cors());
 
