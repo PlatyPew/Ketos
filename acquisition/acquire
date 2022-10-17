@@ -1,0 +1,119 @@
+#!/usr/local/bin/python3
+
+from flask import Flask, jsonify
+
+import subprocess
+import os
+import json
+import requests
+
+API_URL = "http://restapi:3000/api"
+
+app = Flask(__name__)
+
+
+def error_msg():
+    raise Exception("Something went wrong")
+
+
+def run_cmd(cmd):
+    out, err = subprocess.Popen(cmd,
+                                env=os.environ.copy(),
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE).communicate()
+
+    if err:
+        return False
+
+    return out.decode().strip()
+
+
+def get_info(cmd):
+    if not (out := run_cmd(cmd)):
+        error_msg()
+
+    return json.loads(out)
+
+
+def send_info(url_path, data):
+    r = requests.post(f"{API_URL}{url_path}", json=data)
+    if r.status_code != 200:
+        error_msg()
+
+
+def get_dockerfile(image_hashes):
+    final = []
+    for iden in image_hashes:
+        dockerfile = run_cmd(["./helper/getdockerfile", iden])
+        final.append(json.loads(dockerfile))
+
+    return final
+
+
+def send_dockerfile(url_path, data):
+    r = requests.post(f"{API_URL}{url_path}", json=data)
+    if r.status_code != 200:
+        error_msg()
+
+
+def get_image(image_hashes):
+    for iden in image_hashes:
+        run_cmd(["./helper/dumpimage", iden])
+
+
+def get_container(container_hashes):
+    for iden in container_hashes:
+        run_cmd(["./helper/dumpcontainer", iden])
+
+
+def send_file(url_path, image_path):
+    r = requests.post(f"{API_URL}{url_path}", files={"file": open(image_path, 'rb')})
+    if r.status_code != 200:
+        error_msg()
+
+
+def acquire_info():
+    # Sending info
+    info = get_info(["./helper/listimage", "-a"])
+    send_info("/image/info/insert", info)
+
+    info = get_info(["./helper/listcontainer", "-a"])
+    send_info("/container/info/insert", info)
+
+    info = get_info(["./helper/listvolume", "-a"])
+    send_info("/volume/info/insert", info)
+
+    info = get_info(["./helper/listnetwork", "-a"])
+    send_info("/network/info/insert", info)
+
+    # Send dockerfiles
+    info = get_info(["./helper/listimage"])
+    dockerfiles = get_dockerfile(info)
+    send_dockerfile("/image/dockerfile/insert", dockerfiles)
+
+    # Sending image dumps
+    info = get_info(["./helper/listimage"])
+    get_image(info)
+    for iden in info:
+        send_file("/image/upload", f"{iden}.tar.gz")
+        os.unlink(f"{iden}.tar.gz")
+
+    # Sending container dumps
+    info = get_info(["./helper/listcontainer"])
+    get_container(info)
+    for iden in info:
+        send_file("/container/upload", f"{iden}.tar.gz")
+        os.unlink(f"{iden}.tar.gz")
+
+
+@app.route('/acquire', methods=['GET'])
+def start():
+    try:
+        acquire_info()
+        return jsonify({"response": True})
+    except:
+        return jsonify({"response": False})
+
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0")

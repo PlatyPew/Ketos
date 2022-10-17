@@ -3,7 +3,7 @@
 
 # listimage [ -a / image-id ] [...image-id]
 
-images=$(docker image ls --all --quiet --no-trunc | cut -d ':' -f2)
+images=$(docker image ls --quiet --no-trunc | cut -d ':' -f2)
 
 if [[ -z "$images" ]]; then
     echo "[]"
