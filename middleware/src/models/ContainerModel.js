@@ -155,6 +155,25 @@ const ContainerInfoSchema = new mongoose.Schema(
     { _id: false, collection: "container_info", versionKey: false }
 );
 
+const DiffInfoSchema = new mongoose.Schema(
+    {
+        _id: { type: "String" },
+        diff: {
+            Add: {
+                type: ["String"],
+            },
+            Edit: {
+                type: ["String"],
+            },
+            Delete: {
+                type: "Array",
+            },
+        },
+    },
+    { _id: false, collection: "diff_info", versionKey: false }
+);
+
 module.exports = {
     ContainerInfoModel: mongoose.model("ContainerInfoModel", ContainerInfoSchema),
+    DiffInfoModel: mongoose.model("DiffInfoModel", DiffInfoSchema),
 };

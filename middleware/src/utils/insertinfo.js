@@ -1,5 +1,5 @@
 const { ImageInfoModel, DockerfileInfoModel, LayerInfoModel } = require("../models/ImageModel");
-const { ContainerInfoModel } = require("../models/ContainerModel");
+const { ContainerInfoModel, DiffInfoModel } = require("../models/ContainerModel");
 const { VolumeInfoModel } = require("../models/VolumeModel");
 const { NetworkInfoModel } = require("../models/NetworkModel");
 
@@ -37,6 +37,15 @@ const insertLayer = async (id, layer) => {
     return await LayerInfoModel.insertMany([layers]);
 };
 
+const insertDiff = async (id, diff) => {
+    const diffs = {
+        _id: id,
+        diff: diff,
+    };
+
+    return await DiffInfoModel.insertMany([diffs]);
+};
+
 module.exports = {
     insertImage: insertImage,
     insertContainer: insertContainer,
@@ -44,4 +53,5 @@ module.exports = {
     insertNetwork: insertNetwork,
     insertDockerfile: insertDockerfile,
     insertLayer: insertLayer,
+    insertDiff: insertDiff,
 };
