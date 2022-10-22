@@ -69,6 +69,21 @@ def get_logs(container_hashes):
         run_cmd(["./helper/getlogs", iden])
 
 
+def get_diffs(container_hashes):
+    diffs = []
+    for iden in container_hashes:
+        diff = run_cmd(["./helper/getdiff", iden])
+        diffs.append(json.loads(diff))
+
+    return diffs
+
+
+def send_diffs(url_path, container_hash, diff):
+    r = requests.post(f"{API_URL}{url_path}/{container_hash}", json=diff)
+    if r.status_code != 200:
+        error_msg()
+
+
 def send_logs(url_path, log_path):
     r = requests.post(f"{API_URL}{url_path}", files={"file": open(log_path, 'r')})
     if r.status_code != 200:
@@ -136,6 +151,12 @@ def acquire_info():
     for hashh in container_hashes:
         send_logs("/container/logs/upload", f"{hashh}.json")
     print("Container logs sent")
+
+    # Sending diffs
+    diffs = get_diffs(container_hashes)
+    for hashh, diff in zip(container_hashes, diffs):
+        send_diffs("/container/diff/insert", hashh, diff)
+    print("Container diffs sent")
 
     # Sending image dumps
     get_image(image_hashes)
