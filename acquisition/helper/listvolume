@@ -1,0 +1,22 @@
+#!/bin/bash
+# Prints volume information in JSON
+
+# listvolume [ -a / volume-id ] [...volume-id]
+
+volume=$(docker volume ls --quiet)
+
+if [[ -z "$volume" ]]; then
+    echo "[]"
+    exit 0
+fi
+
+if [[ ${1} == "-a" ]]; then
+    info="$(docker inspect --type volume $volume)"
+    echo $info | jq -c --monochrome-output
+elif [[ ! -z ${1} ]]; then
+    info="$(docker inspect --type volume ${@})"
+    echo $info | jq -c --monochrome-output
+else
+    id="$(printf '"%s",' $volume)"
+    echo "[${id::${#id}-1}]" | jq -c --monochrome-output
+fi

@@ -1,12 +1,31 @@
 version: "3.9"
 
 services:
+  acquisition:
+    build: ./acquisition
+    container_name: acquisition
+    environment:
+      - DOCKER_HOST=${VM_SOCKET}
+    restart: always
+    networks:
+      - acquire
+
+  restapi:
+    build: ./middleware
+    container_name: restapi
+    restart: always
+    networks:
+      - acquire
+      - api
+    volumes:
+      - "./middleware/dockerdata:/opt/restapi/dockerdata:rw"
+    ports:
+      - "3000:3000"
+
   database:
     image: mongo
     container_name: database
     restart: always
-    ports:
-      - "27017:27017"
     networks:
       - api
     volumes:
@@ -15,3 +34,5 @@ services:
 networks:
   api:
     name: api_local
+  acquire:
+    name: acquire_local

@@ -1,46 +1,49 @@
-const { ImageInfoModel, DockerfileInfoModel } = require("../models/ImageModel");
-const { ContainerInfoModel } = require("../models/ContainerModel");
+const { ImageInfoModel, DockerfileInfoModel, LayerInfoModel } = require("../models/ImageModel");
+const { ContainerInfoModel, DiffInfoModel } = require("../models/ContainerModel");
 const { VolumeInfoModel } = require("../models/VolumeModel");
 const { NetworkInfoModel } = require("../models/NetworkModel");
 
-const insertImage = async (imageInfo) => {
-    imageInfo.forEach((element) => {
-        element._id = element.Id.split(":")[1];
-    });
-
-    return await ImageInfoModel.insertMany(imageInfo);
+const insertImage = async (id, imageInfo) => {
+    imageInfo._id = id;
+    return await ImageInfoModel.insertMany([imageInfo]);
 };
 
-const insertContainer = async (containerInfo) => {
-    containerInfo.forEach((element) => {
-        element._id = element.Id;
-    });
-
-    return await ContainerInfoModel.insertMany(containerInfo);
+const insertContainer = async (id, containerInfo) => {
+    containerInfo._id = id;
+    return await ContainerInfoModel.insertMany([containerInfo]);
 };
 
-const insertVolume = async (volumeInfo) => {
-    volumeInfo.forEach((element) => {
-        element._id = element.Name;
-    });
-
-    return await VolumeInfoModel.insertMany(volumeInfo);
+const insertVolume = async (id, volumeInfo) => {
+    volumeInfo._id = id;
+    return await VolumeInfoModel.insertMany([volumeInfo]);
 };
 
-const insertNetwork = async (networkInfo) => {
-    networkInfo.forEach((element) => {
-        element._id = element.Id;
-    });
-
-    return await NetworkInfoModel.insertMany(networkInfo);
+const insertNetwork = async (id, networkInfo) => {
+    networkInfo._id = id;
+    return await NetworkInfoModel.insertMany([networkInfo]);
 };
 
-const insertDockerfile = async (dockerfile) => {
-    dockerfile.forEach((element) => {
-        element._id = element.Id;
-    });
+const insertDockerfile = async (id, dockerfile) => {
+    dockerfile._id = id;
+    return await DockerfileInfoModel.insertMany([dockerfile]);
+};
 
-    return await DockerfileInfoModel.insertMany(dockerfile);
+const insertLayer = async (id, layer) => {
+    const layers = {
+        _id: id,
+        layers: layer,
+    };
+
+    return await LayerInfoModel.insertMany([layers]);
+};
+
+const insertDiff = async (id, diff) => {
+    const diffs = {
+        _id: id,
+        diff: diff,
+    };
+
+    return await DiffInfoModel.insertMany([diffs]);
 };
 
 module.exports = {
@@ -49,4 +52,6 @@ module.exports = {
     insertVolume: insertVolume,
     insertNetwork: insertNetwork,
     insertDockerfile: insertDockerfile,
+    insertLayer: insertLayer,
+    insertDiff: insertDiff,
 };

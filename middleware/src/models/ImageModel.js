@@ -81,7 +81,16 @@ const DockerfileInfoSchema = new mongoose.Schema(
     { _id: false, collection: "dockerfile_info", versionKey: false }
 );
 
+const LayerInfoSchema = new mongoose.Schema(
+    {
+        _id: { type: "String" },
+        layers: { type: "Object" },
+    },
+    { _id: false, collection: "layer_info", versionKey: false }
+);
+
 module.exports = {
     ImageInfoModel: mongoose.model("ImageInfoModel", ImageInfoSchema),
     DockerfileInfoModel: mongoose.model("DockerfileInfoModel", DockerfileInfoSchema),
+    LayerInfoModel: mongoose.model("LayerInfoSchema", LayerInfoSchema),
 };

@@ -1,0 +1,22 @@
+#!/bin/bash
+# Prints image information in JSON
+
+# listimage [ -a / image-id ] [...image-id]
+
+images=$(docker image ls --quiet --no-trunc | cut -d ':' -f2)
+
+if [[ -z "$images" ]]; then
+    echo "[]"
+    exit 0
+fi
+
+if [[ ${1} == "-a" ]]; then
+    info="$(docker inspect --type image $images)"
+    echo $info | jq -c --monochrome-output
+elif [[ ! -z ${1} ]]; then
+    info="$(docker inspect --type image ${@})"
+    echo $info | jq -c --monochrome-output
+else
+    id="$(printf '"%s",' $images)"
+    echo "[${id::${#id}-1}]" | jq -c --monochrome-output
+fi

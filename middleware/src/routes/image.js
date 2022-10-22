@@ -14,33 +14,49 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Insert image inspected info
-router.post("/info/insert", async (req, res) => {
+router.post("/info/insert/:id", async (req, res) => {
     const data = req.body;
+    const id = req.params.id;
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertImage(data);
-        res.json({ response: out });
+        const out = await info.insertImage(id, data);
+        res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });
     }
 });
 
 // Insert image dockerfile
-router.post("/dockerfile/insert", async (req, res) => {
+router.post("/dockerfile/insert/:id", async (req, res) => {
     const data = req.body;
+    const id = req.params.id;
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertDockerfile(data);
-        res.json({ response: out });
+        const out = await info.insertDockerfile(id, data);
+        res.json({ response: out[0] });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
+// Insert image layers
+router.post("/layer/insert/:id", async (req, res) => {
+    const data = req.body;
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await info.insertLayer(id, data);
+        res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });
     }
 });
 
 // Allow image upload
-router.post("/upload", upload.single("file"), (req, res) => {
+router.post("/fs/upload", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");

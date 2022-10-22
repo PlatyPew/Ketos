@@ -1,0 +1,79 @@
+#!/usr/bin/python3
+
+import json
+import os
+import sys
+import tarfile
+import subprocess
+
+if len(sys.argv) != 2:
+    print("Specify a tar.gz file", file=sys.stderr)
+    sys.exit(1)
+
+FINAL = dict()
+
+IN_FILE = sys.argv[1]
+OUT_FOLDER = IN_FILE.split('.')[0]
+
+with tarfile.open(IN_FILE, 'r:gz') as image_tar:
+
+    if not os.path.exists(OUT_FOLDER):
+        image_tar.extractall(OUT_FOLDER)
+
+with open(f"{OUT_FOLDER}/manifest.json", "r") as f:
+    manifest = json.loads(f.read())
+    LAYERS = manifest[0]["Layers"]
+
+
+def check_diff(curr, prev):
+    curr = set(curr)
+    prev = set(prev)
+
+    added = list(curr - prev)
+    modified = list(curr.intersection(prev))
+
+    deleted = list()
+    for content in added.copy():
+        if "/.wh." in content:
+            added.remove(content)
+            deleted.append(content.replace(".wh.", ""))
+
+    return added, modified, deleted
+
+
+def separate_files_dir(diff):
+    files = list()
+    dirs = list()
+
+    for content in diff:
+        if content[-1:] == "/":
+            dirs.append(content)
+        else:
+            files.append(content)
+
+    return {"File": files, "Directory": dirs}
+
+
+prev = list()
+
+for layer in LAYERS:
+    out, err = subprocess.Popen(
+        ["tar", "-tf", f"{OUT_FOLDER}/{layer}"],
+        env=os.environ.copy(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    ).communicate()
+
+    files = out.decode().strip().split('\n')
+    added, modified, deleted = check_diff(files, prev)
+
+    layer = layer.split("/")[0]
+    FINAL[layer] = dict()
+
+    FINAL[layer]["Add"] = separate_files_dir(added)
+    FINAL[layer]["Edit"] = separate_files_dir(modified)
+    FINAL[layer]["Delete"] = separate_files_dir(deleted)
+
+    prev = files
+
+print(json.dumps(FINAL, separators=(",", ":")))

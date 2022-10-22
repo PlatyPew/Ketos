@@ -15,20 +15,43 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Insert container inspected info
-router.post("/info/insert", async (req, res) => {
+router.post("/info/insert/:id", async (req, res) => {
     const data = req.body;
+    const id = req.params.id;
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertContainer(data);
-        res.json({ response: out });
+        const out = await info.insertContainer(id, data);
+        res.json({ response: out[0] });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
+// Insert container diff
+router.post("/diff/insert/:id", async (req, res) => {
+    const data = req.body;
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await info.insertDiff(id, data);
+        res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });
     }
 });
 
 // Allow container upload
-router.post("/upload", upload.single("file"), (req, res) => {
+router.post("/fs/upload", upload.single("file"), (req, res) => {
+    const file = req.file;
+
+    res.setHeader("Content-Type", "application/json");
+    res.json({ response: file });
+});
+
+// Allow container logs upload
+router.post("/logs/upload", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
