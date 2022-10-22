@@ -30,6 +30,7 @@ router.post("/info/insert/:id", async (req, res) => {
 // Insert image dockerfile
 router.post("/dockerfile/insert/:id", async (req, res) => {
     const data = req.body;
+    const id = req.params.id;
 
     res.setHeader("Content-Type", "application/json");
     try {

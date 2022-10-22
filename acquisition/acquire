@@ -56,10 +56,11 @@ def get_dockerfile(image_hashes):
     return final
 
 
-def send_dockerfile(url_path, data):
-    r = requests.post(f"{API_URL}{url_path}", json=data)
-    if r.status_code != 200:
-        error_msg()
+def send_dockerfile(url_path, image_hashes, data):
+    for hashh, entry in zip(image_hashes, data):
+        r = requests.post(f"{API_URL}{url_path}/{hashh}", json=entry)
+        if r.status_code != 200:
+            error_msg()
 
 
 def get_image(image_hashes):
@@ -95,7 +96,7 @@ def acquire_info():
     # Send dockerfiles
     info = get_info(["./helper/listimage"])
     dockerfiles = get_dockerfile(info)
-    send_dockerfile("/image/dockerfile/insert", dockerfiles)
+    send_dockerfile("/image/dockerfile/insert", info, dockerfiles)
 
     # Sending image dumps
     info = get_info(["./helper/listimage"])
