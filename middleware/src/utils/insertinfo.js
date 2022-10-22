@@ -23,12 +23,9 @@ const insertNetwork = async (id, networkInfo) => {
     return await NetworkInfoModel.insertMany([networkInfo]);
 };
 
-const insertDockerfile = async (dockerfile) => {
-    dockerfile.forEach((element) => {
-        element._id = element.Id;
-    });
-
-    return await DockerfileInfoModel.insertMany(dockerfile);
+const insertDockerfile = async (id, dockerfile) => {
+    dockerfile._id = id;
+    return await DockerfileInfoModel.insertMany([dockerfile]);
 };
 
 module.exports = {

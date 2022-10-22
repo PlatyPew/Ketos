@@ -28,13 +28,13 @@ router.post("/info/insert/:id", async (req, res) => {
 });
 
 // Insert image dockerfile
-router.post("/dockerfile/insert", async (req, res) => {
+router.post("/dockerfile/insert/:id", async (req, res) => {
     const data = req.body;
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertDockerfile(data);
-        res.json({ response: out });
+        const out = await info.insertDockerfile(id, data);
+        res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });
     }
