@@ -56,7 +56,7 @@ router.post("/layer/insert/:id", async (req, res) => {
 });
 
 // Allow image upload
-router.post("/upload", upload.single("file"), (req, res) => {
+router.post("/fs/upload", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");

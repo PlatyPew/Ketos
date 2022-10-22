@@ -118,13 +118,13 @@ def acquire_info():
     image_hashes = get_info(["./helper/listimage"])
     get_image(image_hashes)
     for hashh in image_hashes:
-        send_file("/image/upload", f"{hashh}.tar.gz")
+        send_file("/image/fs/upload", f"{hashh}.tar.gz")
 
     # Sending container dumps
     container_hashes = get_info(["./helper/listcontainer"])
     get_container(container_hashes)
     for hashh in container_hashes:
-        send_file("/container/upload", f"{hashh}.tar.gz")
+        send_file("/container/fs/upload", f"{hashh}.tar.gz")
 
     # Sending image layers
     layers = get_layers(image_hashes)
