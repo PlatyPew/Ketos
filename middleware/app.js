@@ -18,6 +18,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({ limit: "16mb" }));
 
+const acquire = require("./src/routes/acquire");
+app.use("/api/acquire", acquire);
+
 const image = require("./src/routes/image");
 app.use("/api/image", image);
 
