@@ -6,6 +6,7 @@ import subprocess
 import os
 import json
 import requests
+import shutil
 
 API_URL = "http://restapi:3000/api"
 
@@ -79,6 +80,21 @@ def send_file(url_path, image_path):
         error_msg()
 
 
+def get_layers(image_hashes):
+    layers = []
+    for hashh in image_hashes:
+        layer = run_cmd(["./helper/getlayers", f"{hashh}.tar.gz"])
+        layers.append(json.loads(layer))
+
+    return layers
+
+
+def send_layers(url_path, image_hash, layers):
+    r = requests.post(f"{API_URL}{url_path}/{image_hash}", json=layers)
+    if r.status_code != 200:
+        error_msg()
+
+
 def acquire_info():
     # Sending info
     image_info = get_info(["./helper/listimage", "-a"])
@@ -103,14 +119,25 @@ def acquire_info():
     get_image(image_hashes)
     for hashh in image_hashes:
         send_file("/image/upload", f"{hashh}.tar.gz")
-        os.unlink(f"{hashh}.tar.gz")
 
     # Sending container dumps
-    container_hash = get_info(["./helper/listcontainer"])
-    get_container(container_hash)
-    for hashh in container_hash:
+    container_hashes = get_info(["./helper/listcontainer"])
+    get_container(container_hashes)
+    for hashh in container_hashes:
         send_file("/container/upload", f"{hashh}.tar.gz")
-        os.unlink(f"{hashh}.tar.gz")
+
+    # Sending image layers
+    layers = get_layers(image_hashes)
+    for hashh, layer in zip(image_hashes, layers):
+        send_layers("/image/layer/insert", hashh, layer)
+
+    # Clean files
+    for hashh in image_hashes:
+        os.remove(f"{hashh}.tar.gz")
+        shutil.rmtree(hashh)
+
+    for hashh in container_hashes:
+        os.remove(f"{hashh}.tar.gz")
 
 
 @app.route('/acquire', methods=['GET'])
