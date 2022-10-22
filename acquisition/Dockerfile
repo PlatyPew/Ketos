@@ -13,7 +13,6 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/$(uname -m)/dock
 COPY ./requirements.txt .
 COPY ./acquire .
 COPY ./helper/ ./helper/
-COPY ./bin/ ./bin/
 
 RUN pip install -r requirements.txt && \
     ln -sf /usr/local/bin/python3 /usr/bin/python3
