@@ -19,6 +19,8 @@ services:
       - api
     volumes:
       - "./middleware/dockerdata:/opt/restapi/dockerdata:rw"
+    ports:
+      - "3000:3000"
 
   database:
     image: mongo
