@@ -36,4 +36,12 @@ router.post("/upload", upload.single("file"), (req, res) => {
     res.json({ response: file });
 });
 
+// Allow container logs upload
+router.post("/logs/upload", upload.single("file"), (req, res) => {
+    const file = req.file;
+
+    res.setHeader("Content-Type", "application/json");
+    res.json({ response: file });
+});
+
 module.exports = router;
