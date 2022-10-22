@@ -81,36 +81,36 @@ def send_file(url_path, image_path):
 
 def acquire_info():
     # Sending info
-    info = get_info(["./helper/listimage", "-a"])
-    send_info("/image/info/insert", info)
+    image_info = get_info(["./helper/listimage", "-a"])
+    send_info("/image/info/insert", image_info)
 
-    info = get_info(["./helper/listcontainer", "-a"])
-    send_info("/container/info/insert", info)
+    container_info = get_info(["./helper/listcontainer", "-a"])
+    send_info("/container/info/insert", container_info)
 
-    info = get_info(["./helper/listvolume", "-a"])
-    send_info("/volume/info/insert", info, False)
+    volume_info = get_info(["./helper/listvolume", "-a"])
+    send_info("/volume/info/insert", volume_info, False)
 
-    info = get_info(["./helper/listnetwork", "-a"])
-    send_info("/network/info/insert", info)
+    network_info = get_info(["./helper/listnetwork", "-a"])
+    send_info("/network/info/insert", network_info)
 
     # Send dockerfiles
-    info = get_info(["./helper/listimage"])
-    dockerfiles = get_dockerfile(info)
-    send_dockerfile("/image/dockerfile/insert", info, dockerfiles)
+    image_hashes = get_info(["./helper/listimage"])
+    dockerfiles = get_dockerfile(image_hashes)
+    send_dockerfile("/image/dockerfile/insert", image_hashes, dockerfiles)
 
     # Sending image dumps
-    info = get_info(["./helper/listimage"])
-    get_image(info)
-    for iden in info:
-        send_file("/image/upload", f"{iden}.tar.gz")
-        os.unlink(f"{iden}.tar.gz")
+    image_hashes = get_info(["./helper/listimage"])
+    get_image(image_hashes)
+    for hashh in image_hashes:
+        send_file("/image/upload", f"{hashh}.tar.gz")
+        os.unlink(f"{hashh}.tar.gz")
 
     # Sending container dumps
-    info = get_info(["./helper/listcontainer"])
-    get_container(info)
-    for iden in info:
-        send_file("/container/upload", f"{iden}.tar.gz")
-        os.unlink(f"{iden}.tar.gz")
+    container_hash = get_info(["./helper/listcontainer"])
+    get_container(container_hash)
+    for hashh in container_hash:
+        send_file("/container/upload", f"{hashh}.tar.gz")
+        os.unlink(f"{hashh}.tar.gz")
 
 
 @app.route('/acquire', methods=['GET'])
