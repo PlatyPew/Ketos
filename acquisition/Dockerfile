@@ -15,7 +15,8 @@ COPY ./acquire .
 COPY ./helper/ ./helper/
 COPY ./bin/ ./bin/
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && \
+    ln -sf /usr/local/bin/python3 /usr/bin/python3
 
 EXPOSE 5000
 
