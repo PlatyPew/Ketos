@@ -64,6 +64,17 @@ def send_dockerfile(url_path, image_hashes, data):
             error_msg()
 
 
+def get_logs(container_hashes):
+    for iden in container_hashes:
+        run_cmd(["./helper/getlogs", iden])
+
+
+def send_logs(url_path, log_path):
+    r = requests.post(f"{API_URL}{url_path}", files={"file": open(log_path, 'r')})
+    if r.status_code != 200:
+        error_msg()
+
+
 def get_image(image_hashes):
     for iden in image_hashes:
         run_cmd(["./helper/dumpimage", iden])
@@ -114,14 +125,17 @@ def acquire_info():
     dockerfiles = get_dockerfile(image_hashes)
     send_dockerfile("/image/dockerfile/insert", image_hashes, dockerfiles)
 
+    # Sending logs
+    container_hashes = get_info(["./helper/listcontainer"])
+    for hashh in container_hashes:
+        send_file("/container/logs/upload", f"{hashh}.json")
+
     # Sending image dumps
-    image_hashes = get_info(["./helper/listimage"])
     get_image(image_hashes)
     for hashh in image_hashes:
         send_file("/image/fs/upload", f"{hashh}.tar.gz")
 
     # Sending container dumps
-    container_hashes = get_info(["./helper/listcontainer"])
     get_container(container_hashes)
     for hashh in container_hashes:
         send_file("/container/fs/upload", f"{hashh}.tar.gz")
