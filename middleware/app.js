@@ -16,7 +16,7 @@ const MONGO = "mongodb://database/ketos";
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "16mb" }));
 
 const image = require("./src/routes/image");
 app.use("/api/image", image);

@@ -41,6 +41,20 @@ router.post("/dockerfile/insert/:id", async (req, res) => {
     }
 });
 
+// Insert image layers
+router.post("/layer/insert/:id", async (req, res) => {
+    const data = req.body;
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await info.insertLayer(id, data);
+        res.json({ response: out[0] });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 // Allow image upload
 router.post("/upload", upload.single("file"), (req, res) => {
     const file = req.file;
