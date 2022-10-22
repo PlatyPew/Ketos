@@ -35,10 +35,16 @@ def get_info(cmd):
     return json.loads(out)
 
 
-def send_info(url_path, data):
-    r = requests.post(f"{API_URL}{url_path}", json=data)
-    if r.status_code != 200:
-        error_msg()
+def send_info(url_path, data, identifier=True):
+    for entry in data:
+        if identifier:
+            iden = entry["Id"]
+        else:
+            iden = entry["Name"]
+
+        r = requests.post(f"{API_URL}{url_path}/{iden}", json=entry)
+        if r.status_code != 200:
+            error_msg()
 
 
 def get_dockerfile(image_hashes):
@@ -81,7 +87,7 @@ def acquire_info():
     send_info("/container/info/insert", info)
 
     info = get_info(["./helper/listvolume", "-a"])
-    send_info("/volume/info/insert", info)
+    send_info("/volume/info/insert", info, False)
 
     info = get_info(["./helper/listnetwork", "-a"])
     send_info("/network/info/insert", info)
