@@ -11,7 +11,7 @@ RUN curl -fsSLO https://download.docker.com/linux/static/stable/$(uname -m)/dock
     rm docker-${DOCKER_VERSION}.tgz
 
 COPY ./requirements.txt .
-COPY ./acquire .
+COPY ./acquire.py .
 COPY ./helper/ ./helper/
 
 RUN pip install -r requirements.txt && \
@@ -19,4 +19,4 @@ RUN pip install -r requirements.txt && \
 
 EXPOSE 5000
 
-CMD ["python3", "acquire"]
+CMD ["python3", "acquire.py"]
