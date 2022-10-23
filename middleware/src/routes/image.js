@@ -88,7 +88,7 @@ router.get("/download/:id", async (req, res) => {
     const path = `./dockerdata/image/${id}.tar.gz`;
 
     if (fs.existsSync(path)) res.download(path);
-    else res.json({ response: "File not found" });
+    else res.status(500).json({ response: "File not found" });
 });
 
 /**
