@@ -57,6 +57,23 @@ router.get("/info/:id", async (req, res) => {
     }
 });
 
+// Get container logs by ID
+router.get("/logs/:id", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const logs = fs.readFileSync(`./dockerdata/container/${id}.log`, {
+            encoding: "utf8",
+            flag: "r",
+        });
+
+        res.json({ response: logs });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 /**
  * Insertion of data from acquisition
  */
