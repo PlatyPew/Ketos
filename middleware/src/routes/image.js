@@ -81,6 +81,13 @@ router.get("/layer/:id", async (req, res) => {
     }
 });
 
+// Allow image download
+router.get("/download/:id", async (req, res) => {
+    const id = req.params.id;
+
+    res.download(`./dockerdata/image/${id}.tar.gz`);
+});
+
 /**
  * Insertion of data from acquisition
  */
