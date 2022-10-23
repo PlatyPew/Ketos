@@ -42,7 +42,7 @@ def main():
 
     layers = layers[::-1]
 
-    final = {"Id": image_id, "layers": layers}
+    final = {"Id": image_id, "dockerfile": "\n".join(layers)}
     print(json.dumps(final))
 
 
