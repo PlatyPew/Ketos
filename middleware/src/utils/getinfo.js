@@ -36,8 +36,14 @@ const getImageInfoAll = async (id) => {
     return info;
 };
 
+const getDockerfile = async (id) => {
+    const info = await DockerfileInfoModel.findById(id, { _id: 0 });
+    return info;
+};
+
 module.exports = {
     getImageIDs: getImageIDs,
     getImageInfoBrief: getImageInfoBrief,
     getImageInfoAll: getImageInfoAll,
+    getDockerfile: getDockerfile,
 };

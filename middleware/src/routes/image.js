@@ -55,6 +55,19 @@ router.get("/info/:id", async (req, res) => {
     }
 });
 
+// Get dockerfile info by ID
+router.get("/dockerfile/:id", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getDockerfile(id);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 /**
  * Insertion of data from acquisition
  */
