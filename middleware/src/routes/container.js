@@ -19,7 +19,7 @@ const upload = multer({ storage: storage });
  * Get data from frontend
  */
 
-// Get container inspected info
+// List all image ids
 router.get("/id", async (_, res) => {
     res.setHeader("Content-Type", "application/json");
 
