@@ -124,56 +124,56 @@ def send_layers(url_path, image_hash, layers):
 def acquire_info():
     # Sending info
     image_info = get_info(["./helper/listimage", "-a"])
-    send_info("/image/info/insert", image_info)
+    send_info("/image/info", image_info)
     print("Image info sent")
 
     container_info = get_info(["./helper/listcontainer", "-a"])
-    send_info("/container/info/insert", container_info)
+    send_info("/container/info", container_info)
     print("Container info sent")
 
     volume_info = get_info(["./helper/listvolume", "-a"])
-    send_info("/volume/info/insert", volume_info, False)
+    send_info("/volume/info", volume_info, False)
     print("Volume info sent")
 
     network_info = get_info(["./helper/listnetwork", "-a"])
-    send_info("/network/info/insert", network_info)
+    send_info("/network/info", network_info)
     print("Network info sent")
 
     # Send dockerfiles
     image_hashes = get_info(["./helper/listimage"])
     dockerfiles = get_dockerfile(image_hashes)
-    send_dockerfile("/image/dockerfile/insert", image_hashes, dockerfiles)
+    send_dockerfile("/image/dockerfile", image_hashes, dockerfiles)
     print("Image dockerfile sent")
 
     # Sending logs
     container_hashes = get_info(["./helper/listcontainer"])
     get_logs(container_hashes)
     for hashh in container_hashes:
-        send_logs("/container/logs/upload", f"{hashh}.json")
+        send_logs("/container/logs", f"{hashh}.json")
     print("Container logs sent")
 
     # Sending diffs
     diffs = get_diffs(container_hashes)
     for hashh, diff in zip(container_hashes, diffs):
-        send_diffs("/container/diff/insert", hashh, diff)
+        send_diffs("/container/diff", hashh, diff)
     print("Container diffs sent")
 
     # Sending image dumps
     get_image(image_hashes)
     for hashh in image_hashes:
-        send_file("/image/fs/upload", f"{hashh}.tar.gz")
+        send_file("/image/fs", f"{hashh}.tar.gz")
     print("Image dumps sent")
 
     # Sending container dumps
     get_container(container_hashes)
     for hashh in container_hashes:
-        send_file("/container/fs/upload", f"{hashh}.tar.gz")
+        send_file("/container/fs", f"{hashh}.tar.gz")
     print("Container dumps sent")
 
     # Sending image layers
     layers = get_layers(image_hashes)
     for hashh, layer in zip(image_hashes, layers):
-        send_layers("/image/layer/insert", hashh, layer)
+        send_layers("/image/layer", hashh, layer)
     print("Imager layers sent")
 
     # Clean files

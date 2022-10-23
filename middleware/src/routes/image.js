@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Insert image inspected info
-router.post("/info/insert/:id", async (req, res) => {
+router.post("/info/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -28,7 +28,7 @@ router.post("/info/insert/:id", async (req, res) => {
 });
 
 // Insert image dockerfile
-router.post("/dockerfile/insert/:id", async (req, res) => {
+router.post("/dockerfile/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -42,7 +42,7 @@ router.post("/dockerfile/insert/:id", async (req, res) => {
 });
 
 // Insert image layers
-router.post("/layer/insert/:id", async (req, res) => {
+router.post("/layer/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -56,7 +56,7 @@ router.post("/layer/insert/:id", async (req, res) => {
 });
 
 // Allow image upload
-router.post("/fs/upload", upload.single("file"), (req, res) => {
+router.post("/fs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");

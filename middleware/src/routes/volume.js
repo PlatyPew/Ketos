@@ -5,7 +5,7 @@ const router = express.Router();
 const info = require("../utils/insertinfo");
 
 // Insert volume inspected info
-router.post("/info/insert/:id", async (req, res) => {
+router.post("/info/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 

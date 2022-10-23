@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Insert container inspected info
-router.post("/info/insert/:id", async (req, res) => {
+router.post("/info/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -29,7 +29,7 @@ router.post("/info/insert/:id", async (req, res) => {
 });
 
 // Insert container diff
-router.post("/diff/insert/:id", async (req, res) => {
+router.post("/diff/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -43,7 +43,7 @@ router.post("/diff/insert/:id", async (req, res) => {
 });
 
 // Allow container upload
-router.post("/fs/upload", upload.single("file"), (req, res) => {
+router.post("/fs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
@@ -51,7 +51,7 @@ router.post("/fs/upload", upload.single("file"), (req, res) => {
 });
 
 // Allow container logs upload
-router.post("/logs/upload", upload.single("file"), (req, res) => {
+router.post("/logs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
