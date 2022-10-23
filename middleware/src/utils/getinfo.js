@@ -37,8 +37,13 @@ const getImageInfoAll = async (id) => {
 };
 
 const getDockerfile = async (id) => {
-    const info = await DockerfileInfoModel.findById(id, { _id: 0 });
-    return info;
+    const dockerfile = await DockerfileInfoModel.findById(id, { _id: 0 });
+    return dockerfile.dockerfile;
+};
+
+const getLayer = async (id) => {
+    const layers = await LayerInfoModel.findById(id, { _id: 0 });
+    return layers.layers;
 };
 
 module.exports = {
@@ -46,4 +51,5 @@ module.exports = {
     getImageInfoBrief: getImageInfoBrief,
     getImageInfoAll: getImageInfoAll,
     getDockerfile: getDockerfile,
+    getLayer: getLayer,
 };
