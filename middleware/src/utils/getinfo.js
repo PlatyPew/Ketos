@@ -7,7 +7,8 @@ const getImageIDs = async () => {
 
 const getImageInfoBrief = async (id) => {
     const info = await ImageInfoModel.findById(id, {
-        _id: 1,
+        _id: 0,
+        Id: 1,
         RepoTags: 1,
         Created: 1,
         Author: 1,
@@ -31,7 +32,7 @@ const getImageInfoBrief = async (id) => {
 };
 
 const getImageInfoAll = async (id) => {
-    const info = await ImageInfoModel.findById(id);
+    const info = await ImageInfoModel.findById(id, { _id: 0 });
     return info;
 };
 
