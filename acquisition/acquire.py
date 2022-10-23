@@ -39,7 +39,10 @@ def get_info(cmd):
 def send_info(url_path, data, identifier=True):
     for entry in data:
         if identifier:
-            iden = entry["Id"]
+            if "sha256:" in entry["Id"]:
+                iden = entry["Id"].split(":")[1]
+            else:
+                iden = entry["Id"]
         else:
             iden = entry["Name"]
 
