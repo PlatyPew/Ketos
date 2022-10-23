@@ -75,7 +75,7 @@ router.get("/logs/:id", async (req, res) => {
 });
 
 // Allow container download
-router.get("/download/:id", async (req, res) => {
+router.get("/fs/:id", async (req, res) => {
     const id = req.params.id;
     const path = `./dockerdata/container/${id}.tar.gz`;
 
