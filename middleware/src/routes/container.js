@@ -44,6 +44,19 @@ router.get("/info/:id/all", async (req, res) => {
     }
 });
 
+// Get brief inspected info by ID
+router.get("/info/:id", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getContainerInfoBrief(id);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 /**
  * Insertion of data from acquisition
  */

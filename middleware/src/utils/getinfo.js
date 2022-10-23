@@ -52,6 +52,45 @@ const getContainerIDs = async () => {
     return ids.map((item) => item._id);
 };
 
+const getContainerInfoBrief = async (id) => {
+    let info = await ContainerInfoModel.findById(id, {
+        _id: 0,
+        Id: 1,
+        Created: 1,
+        Path: 1,
+        Args: 1,
+        Image: 1,
+        Name: 1,
+        AppArmorProfile: 1,
+        HostConfig: 1,
+        Mounts: 1,
+        NetworkSettings: {
+            Bridge: 1,
+            Ports: 1,
+            Networks: 1,
+        },
+    });
+
+    const hostconfig = {
+        NetworkMode: info.HostConfig.NetworkMode,
+        PortBindings: info.HostConfig.PortBindings,
+        RestartPolicy: info.HostConfig.RestartPolicy,
+        AutoRemove: info.HostConfig.AutoRemove,
+        CapAdd: info.HostConfig.CapAdd,
+        CapDrop: info.HostConfig.CapDrop,
+        Privileged: info.HostConfig.Privileged,
+        Memory: info.HostConfig.Memory,
+        MemorySwap: info.HostConfig.MemorySwap,
+        PidsLimit: info.HostConfig.PidsLimit,
+        MaskedPaths: info.HostConfig.MaskedPaths,
+        ReadonlyPaths: info.HostConfig.ReadonlyPaths,
+    };
+
+    info.HostConfig = hostconfig;
+
+    return info;
+};
+
 const getContainerInfoAll = async (id) => {
     const info = await ContainerInfoModel.findById(id, { _id: 0 });
     return info;
@@ -64,5 +103,6 @@ module.exports = {
     getDockerfile: getDockerfile,
     getLayer: getLayer,
     getContainerIDs: getContainerIDs,
+    getContainerInfoBrief: getContainerInfoBrief,
     getContainerInfoAll: getContainerInfoAll,
 };
