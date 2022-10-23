@@ -16,7 +16,7 @@ services:
     restart: always
     networks:
       - acquire
-      - api
+      - db
     volumes:
       - "./middleware/dockerdata:/opt/restapi/dockerdata:rw"
     ports:
@@ -27,12 +27,16 @@ services:
     container_name: database
     restart: always
     networks:
-      - api
+      - db
     volumes:
-      - "./middleware/dbdata:/data/db:rw"
+      - ketos-db-volume:/data/db:rw
+
+volumes:
+  ketos-db-volume:
+    external: false
 
 networks:
-  api:
-    name: api_local
+  db:
+    name: ketos_db_local
   acquire:
-    name: acquire_local
+    name: ketos_acquire_local
