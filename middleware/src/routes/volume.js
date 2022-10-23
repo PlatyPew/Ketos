@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 
-const info = require("../utils/insertinfo");
+const insert = require("../utils/insertinfo");
 
 // Insert volume inspected info
 router.post("/info/:id", async (req, res) => {
@@ -11,7 +11,7 @@ router.post("/info/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertVolume(id, data);
+        const out = await insert.insertVolume(id, data);
         res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });

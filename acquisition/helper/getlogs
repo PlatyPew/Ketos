@@ -7,4 +7,4 @@ if [[ -z "${1}" ]]; then
     exit 1
 fi
 
-docker container logs --timestamps ${1} &> ${1}.json
+docker container logs --timestamps ${1} &> ${1}.log

@@ -152,7 +152,7 @@ def acquire_info():
     container_hashes = get_info(["./helper/listcontainer"])
     get_logs(container_hashes)
     for hashh in container_hashes:
-        send_logs("/container/logs", f"{hashh}.json")
+        send_logs("/container/logs", f"{hashh}.log")
     print("Container logs sent")
 
     # Sending diffs
