@@ -19,7 +19,7 @@ const upload = multer({ storage: storage });
  */
 
 // Get image inspected info
-router.get("/", async (_, res) => {
+router.get("/id", async (_, res) => {
     res.setHeader("Content-Type", "application/json");
     try {
         const out = await get.getImageIDs();
@@ -30,7 +30,7 @@ router.get("/", async (_, res) => {
 });
 
 // Get all inspected info by ID
-router.get("/:id/all", async (req, res) => {
+router.get("/info/:id/all", async (req, res) => {
     const id = req.params.id;
 
     res.setHeader("Content-Type", "application/json");
@@ -43,7 +43,7 @@ router.get("/:id/all", async (req, res) => {
 });
 
 // Get brief inspected info by ID
-router.get("/:id", async (req, res) => {
+router.get("/info/:id", async (req, res) => {
     const id = req.params.id;
 
     res.setHeader("Content-Type", "application/json");
