@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const fs = require("fs");
 
 const insert = require("../utils/insertinfo");
 const get = require("../utils/getinfo");
@@ -84,8 +85,10 @@ router.get("/layer/:id", async (req, res) => {
 // Allow image download
 router.get("/download/:id", async (req, res) => {
     const id = req.params.id;
+    const path = `./dockerdata/image/${id}.tar.gz`;
 
-    res.download(`./dockerdata/image/${id}.tar.gz`);
+    if (fs.existsSync(path)) res.download(path);
+    else res.json({ response: "File not found" });
 });
 
 /**

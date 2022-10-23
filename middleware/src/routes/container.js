@@ -77,8 +77,10 @@ router.get("/logs/:id", async (req, res) => {
 // Allow container download
 router.get("/download/:id", async (req, res) => {
     const id = req.params.id;
+    const path = `./dockerdata/container/${id}.tar.gz`;
 
-    res.download(`./dockerdata/container/${id}.tar.gz`);
+    if (fs.existsSync(path)) res.download(path);
+    else res.json({ response: "File not found" });
 });
 
 /**
