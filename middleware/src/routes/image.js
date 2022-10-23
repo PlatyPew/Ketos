@@ -29,6 +29,19 @@ router.get("/", async (_, res) => {
     }
 });
 
+// Get all inspected info by ID
+router.get("/:id/all", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getImageInfoAll(id);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 /**
  * Insertion of data from acquisition
  */

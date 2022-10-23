@@ -5,6 +5,12 @@ const getImageIDs = async () => {
     return ids.map((item) => item._id);
 };
 
+const getImageInfoAll = async (id) => {
+    const info = await ImageInfoModel.findById(id);
+    return info;
+};
+
 module.exports = {
     getImageIDs: getImageIDs,
+    getImageInfoAll: getImageInfoAll,
 };
