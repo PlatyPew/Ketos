@@ -4,6 +4,7 @@ const router = express.Router();
 const multer = require("multer");
 
 const insert = require("../utils/insertinfo");
+const get = require("../utils/getinfo");
 
 const storage = multer.diskStorage({
     destination: "./dockerdata/image",
@@ -12,6 +13,25 @@ const storage = multer.diskStorage({
     },
 });
 const upload = multer({ storage: storage });
+
+/**
+ * Get data from frontend
+ */
+
+// Get image inspected info
+router.get("/", async (_, res) => {
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getImageIDs();
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
+/**
+ * Insertion of data from acquisition
+ */
 
 // Insert image inspected info
 router.post("/info/:id", async (req, res) => {
