@@ -4,7 +4,7 @@ const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
 
-const info = require("../utils/insertinfo");
+const insert = require("../utils/insertinfo");
 
 const storage = multer.diskStorage({
     destination: "./dockerdata/container",
@@ -21,7 +21,7 @@ router.post("/info/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertContainer(id, data);
+        const out = await insert.insertContainer(id, data);
         res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });
@@ -35,7 +35,7 @@ router.post("/diff/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertDiff(id, data);
+        const out = await insert.insertDiff(id, data);
         res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });

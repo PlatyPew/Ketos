@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 
-const info = require("../utils/insertinfo");
+const insert = require("../utils/insertinfo");
 
 const storage = multer.diskStorage({
     destination: "./dockerdata/image",
@@ -20,7 +20,7 @@ router.post("/info/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertImage(id, data);
+        const out = await insert.insertImage(id, data);
         res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });
@@ -34,7 +34,7 @@ router.post("/dockerfile/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertDockerfile(id, data);
+        const out = await insert.insertDockerfile(id, data);
         res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });
@@ -48,7 +48,7 @@ router.post("/layer/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await info.insertLayer(id, data);
+        const out = await insert.insertLayer(id, data);
         res.json({ response: out[0] });
     } catch (err) {
         res.status(500).json({ response: err });
