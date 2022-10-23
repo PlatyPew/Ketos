@@ -52,6 +52,11 @@ const getContainerIDs = async () => {
     return ids.map((item) => item._id);
 };
 
+const getContainerInfoAll = async (id) => {
+    const info = await ContainerInfoModel.findById(id, { _id: 0 });
+    return info;
+};
+
 module.exports = {
     getImageIDs: getImageIDs,
     getImageInfoBrief: getImageInfoBrief,
@@ -59,4 +64,5 @@ module.exports = {
     getDockerfile: getDockerfile,
     getLayer: getLayer,
     getContainerIDs: getContainerIDs,
+    getContainerInfoAll: getContainerInfoAll,
 };

@@ -31,6 +31,19 @@ router.get("/id", async (_, res) => {
     }
 });
 
+// Get container info
+router.get("/info/:id/all", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getContainerInfoAll(id);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 /**
  * Insertion of data from acquisition
  */
