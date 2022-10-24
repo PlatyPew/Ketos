@@ -21,6 +21,9 @@ app.use(bodyParser.json({ limit: "16mb" }));
 const acquire = require("./src/routes/acquire");
 app.use("/api/acquire", acquire);
 
+const analyse = require("./src/routes/analyse");
+app.use("/api/analyse", analyse);
+
 const staticc = require("./src/routes/static");
 app.use("/api/static", staticc);
 
