@@ -3,12 +3,11 @@ const mongoose = require("mongoose");
 const VulnInfoSchema = new mongoose.Schema(
     {
         _id: { type: "String" },
-        vulnerabilities: { type: "Array" },
+        vulnerabilities: { type: ["Mixed"] },
         dependencyCount: { type: "Number" },
         org: { type: "String" },
         isPrivate: { type: "Boolean" },
         packageManager: { type: "String" },
-        docker: { type: "Object" },
         summary: { type: "String" },
         filesystemPolicy: { type: "Boolean" },
         filtered: { ignore: { type: "Array" }, patch: { type: "Array" } },
