@@ -96,6 +96,18 @@ router.get("/fs/:id", async (req, res) => {
     else res.status(500).json({ response: "File not found" });
 });
 
+// Get container filesystem upload by ID
+router.get("/files/:id", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getFiles(id);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
 /**
  * Insertion of data from acquisition
  */

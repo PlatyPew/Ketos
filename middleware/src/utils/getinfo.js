@@ -1,5 +1,9 @@
 const { ImageInfoModel, DockerfileInfoModel, LayerInfoModel } = require("../models/ImageModel");
-const { ContainerInfoModel, DiffInfoModel } = require("../models/ContainerModel");
+const {
+    ContainerInfoModel,
+    DiffInfoModel,
+    FilesystemInfoModel,
+} = require("../models/ContainerModel");
 const { NetworkInfoModel } = require("../models/NetworkModel");
 const { VolumeInfoModel } = require("../models/VolumeModel");
 
@@ -103,6 +107,11 @@ const getDiffInfoBrief = async (id) => {
     return diff;
 };
 
+const getFiles = async (id) => {
+    const files = await FilesystemInfoModel.findById(id, { _id: 0 });
+    return files.filesystem;
+};
+
 const getNetworkIDs = async () => {
     const ids = await NetworkInfoModel.find({}, { _id: 1 });
     return ids.map((item) => item._id);
@@ -133,6 +142,7 @@ module.exports = {
     getContainerInfoBrief: getContainerInfoBrief,
     getContainerInfoAll: getContainerInfoAll,
     getDiffInfoBrief: getDiffInfoBrief,
+    getFiles: getFiles,
     getNetworkIDs: getNetworkIDs,
     getNetworkInfoAll: getNetworkInfoAll,
     getVolumeIDs: getVolumeIDs,
