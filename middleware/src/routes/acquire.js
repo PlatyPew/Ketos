@@ -6,7 +6,7 @@ const axios = require("axios");
 const ACQUIRER = "acquisition:5000";
 
 // Start acquisition
-router.put("/", async (req, res) => {
+router.get("/", async (req, res) => {
     res.setHeader("Content-Type", "application/json");
 
     const out = await axios.get(`http://${ACQUIRER}/acquire`);

@@ -98,6 +98,11 @@ const getContainerInfoAll = async (id) => {
     return info;
 };
 
+const getDiffInfoBrief = async (id) => {
+    const diff = await DiffInfoModel.findById(id, { _id: 0 });
+    return diff;
+};
+
 const getNetworkIDs = async () => {
     const ids = await NetworkInfoModel.find({}, { _id: 1 });
     return ids.map((item) => item._id);
@@ -127,6 +132,7 @@ module.exports = {
     getContainerIDs: getContainerIDs,
     getContainerInfoBrief: getContainerInfoBrief,
     getContainerInfoAll: getContainerInfoAll,
+    getDiffInfoBrief: getDiffInfoBrief,
     getNetworkIDs: getNetworkIDs,
     getNetworkInfoAll: getNetworkInfoAll,
     getVolumeIDs: getVolumeIDs,

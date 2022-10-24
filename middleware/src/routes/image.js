@@ -96,7 +96,7 @@ router.get("/fs/:id", async (req, res) => {
  */
 
 // Insert image inspected info
-router.post("/info/:id", async (req, res) => {
+router.put("/info/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -110,7 +110,7 @@ router.post("/info/:id", async (req, res) => {
 });
 
 // Insert image dockerfile
-router.post("/dockerfile/:id", async (req, res) => {
+router.put("/dockerfile/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -124,7 +124,7 @@ router.post("/dockerfile/:id", async (req, res) => {
 });
 
 // Insert image layers
-router.post("/layer/:id", async (req, res) => {
+router.put("/layer/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -138,7 +138,7 @@ router.post("/layer/:id", async (req, res) => {
 });
 
 // Allow image upload
-router.post("/fs", upload.single("file"), (req, res) => {
+router.put("/fs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");

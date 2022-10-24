@@ -34,7 +34,7 @@ router.get("/info/:id", async (req, res) => {
 });
 
 // Insert network inspected info
-router.post("/info/:id", async (req, res) => {
+router.put("/info/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
