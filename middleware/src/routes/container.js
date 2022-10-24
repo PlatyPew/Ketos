@@ -85,7 +85,7 @@ router.get("/diff/:id", async (req, res) => {
     } catch (err) {
         res.status(500).json({ response: err });
     }
-})
+});
 
 // Allow container download
 router.get("/fs/:id", async (req, res) => {
@@ -142,6 +142,20 @@ router.put("/logs", upload.single("file"), (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     res.json({ response: file });
+});
+
+// Allow container filesystem upload
+router.put("/files/:id", async (req, res) => {
+    const data = req.body;
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await insert.insertFiles(id, data);
+        res.json({ response: out[0] });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
 });
 
 module.exports = router;
