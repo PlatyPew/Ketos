@@ -119,6 +119,21 @@ def get_layers(image_hashes):
     return layers
 
 
+def get_files(container_hashes):
+    files = []
+    for hashh in container_hashes:
+        file = run_cmd(["./helper/getfilesystem", f"{hashh}.tar.gz"])
+        files.append(json.loads(file))
+
+    return files
+
+
+def send_files(url_path, container_hash, file):
+    r = requests.put(f"{API_URL}{url_path}/{container_hash}", json=file)
+    if r.status_code != 200:
+        error_msg()
+
+
 def send_layers(url_path, image_hash, layers):
     r = requests.put(f"{API_URL}{url_path}/{image_hash}", json=layers)
     if r.status_code != 200:
@@ -179,6 +194,12 @@ def acquire_info():
     for hashh, layer in zip(image_hashes, layers):
         send_layers("/image/layer", hashh, layer)
     print("Imager layers sent")
+
+    # Sending container filesystem
+    files = get_files(container_hashes)
+    for hashh, file in zip(container_hashes, files):
+        send_files("/container/files", hashh, file)
+    print("Container filesystem sent")
 
     # Clean files
     for hashh in image_hashes:
