@@ -10,6 +10,13 @@ services:
     networks:
       - acquire
 
+  analysis:
+    build: ./analysis
+    container_name: analysis
+    environment:
+      - DOCKER_HOST=${VM_SOCKET}
+      - SNYK_API_KEY=${SNYK_API_KEY}
+
   restapi:
     build: ./middleware
     container_name: restapi
