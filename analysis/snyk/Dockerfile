@@ -5,7 +5,7 @@ ENV DOCKER_SCAN_VERSION v0.21.0
 
 WORKDIR /opt/analysis
 
-RUN apt-get update && apt-get install curl bash jq -y
+RUN apt-get update && apt-get install curl -y && apt-get clean
 
 RUN curl -fsSLO https://download.docker.com/linux/static/stable/$(uname -m)/docker-${DOCKER_VERSION}.tgz && \
     tar xzvf docker-${DOCKER_VERSION}.tgz --strip 1 -C /usr/bin docker/docker && \
@@ -25,6 +25,10 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
     chmod +x /usr/local/bin/docker-scan && \
     chmod +x /usr/local/bin/snyk
 
+COPY ./requirements.txt .
+COPY ./vulnscan.py .
 COPY ./entrypoint.sh /
+
+RUN pip install -r requirements.txt
 
 ENTRYPOINT ["/entrypoint.sh"]
