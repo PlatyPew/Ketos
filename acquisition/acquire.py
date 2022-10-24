@@ -185,7 +185,7 @@ def acquire_info():
         shutil.rmtree(hashh)
 
     for hashh in container_hashes:
-        os.remove(f"{hashh}.json")
+        os.remove(f"{hashh}.log")
         os.remove(f"{hashh}.tar.gz")
 
     print("Files cleaned")
