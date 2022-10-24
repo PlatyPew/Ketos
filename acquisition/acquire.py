@@ -53,19 +53,14 @@ def send_info(url_path, data, identifier=True):
 
 
 def get_dockerfile(image_hashes):
-    final = []
     for iden in image_hashes:
-        dockerfile = run_cmd(["./helper/getdockerfile", iden])
-        final.append(json.loads(dockerfile))
-
-    return final
+        run_cmd(["./helper/getdockerfile", iden])
 
 
-def send_dockerfile(url_path, image_hashes, data):
-    for hashh, entry in zip(image_hashes, data):
-        r = requests.put(f"{API_URL}{url_path}/{hashh}", json=entry)
-        if r.status_code != 200:
-            error_msg()
+def send_dockerfile(url_path, dockerfile_path):
+    r = requests.put(f"{API_URL}{url_path}", files={"file": open(dockerfile_path, 'r')})
+    if r.status_code != 200:
+        error_msg()
 
 
 def get_logs(container_hashes):
@@ -160,8 +155,9 @@ def acquire_info():
 
     # Send dockerfiles
     image_hashes = get_info(["./helper/listimage"])
-    dockerfiles = get_dockerfile(image_hashes)
-    send_dockerfile("/image/dockerfile", image_hashes, dockerfiles)
+    get_dockerfile(image_hashes)
+    for hashh in image_hashes:
+        send_dockerfile("/image/dockerfile", f"{hashh}.dockerfile")
     print("Image dockerfile sent")
 
     # Sending logs
@@ -203,6 +199,7 @@ def acquire_info():
 
     # Clean files
     for hashh in image_hashes:
+        os.remove(f"{hashh}.dockerfile")
         os.remove(f"{hashh}.tar.gz")
         shutil.rmtree(hashh)
 

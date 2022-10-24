@@ -1,4 +1,4 @@
-const { ImageInfoModel, DockerfileInfoModel, LayerInfoModel } = require("../models/ImageModel");
+const { ImageInfoModel, LayerInfoModel } = require("../models/ImageModel");
 const {
     ContainerInfoModel,
     DiffInfoModel,
@@ -41,11 +41,6 @@ const getImageInfoBrief = async (id) => {
 const getImageInfoAll = async (id) => {
     const info = await ImageInfoModel.findById(id, { _id: 0 });
     return info;
-};
-
-const getDockerfile = async (id) => {
-    const dockerfile = await DockerfileInfoModel.findById(id, { _id: 0 });
-    return dockerfile.dockerfile;
 };
 
 const getLayer = async (id) => {
@@ -136,7 +131,6 @@ module.exports = {
     getImageIDs: getImageIDs,
     getImageInfoBrief: getImageInfoBrief,
     getImageInfoAll: getImageInfoAll,
-    getDockerfile: getDockerfile,
     getLayer: getLayer,
     getContainerIDs: getContainerIDs,
     getContainerInfoBrief: getContainerInfoBrief,

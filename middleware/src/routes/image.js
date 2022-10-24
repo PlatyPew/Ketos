@@ -62,8 +62,12 @@ router.get("/dockerfile/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await get.getDockerfile(id);
-        res.json({ response: out });
+        const dockerfile = fs.readFileSync(`./dockerdata/image/${id}.dockerfile`, {
+            encoding: "utf8",
+            flag: "r",
+        });
+
+        res.json({ response: dockerfile });
     } catch (err) {
         res.status(500).json({ response: err });
     }
@@ -110,17 +114,11 @@ router.put("/info/:id", async (req, res) => {
 });
 
 // Insert image dockerfile
-router.put("/dockerfile/:id", async (req, res) => {
-    const data = req.body;
-    const id = req.params.id;
+router.put("/dockerfile", upload.single("file"), (req, res) => {
+    const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
-    try {
-        const out = await insert.insertDockerfile(id, data);
-        res.json({ response: out[0] });
-    } catch (err) {
-        res.status(500).json({ response: err });
-    }
+    res.json({ response: file });
 });
 
 // Insert image layers
