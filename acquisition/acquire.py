@@ -24,7 +24,8 @@ def run_cmd(cmd):
                                 stderr=subprocess.PIPE).communicate()
 
     if err:
-        return False
+        print(err)
+        error_msg()
 
     return out.decode().strip()
 
