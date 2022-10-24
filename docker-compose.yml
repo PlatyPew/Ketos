@@ -10,12 +10,14 @@ services:
     networks:
       - acquire
 
-  analysis:
-    build: ./analysis
+  snyk:
+    build: ./analysis/snyk
     container_name: analysis
     environment:
       - DOCKER_HOST=${VM_SOCKET}
       - SNYK_API_KEY=${SNYK_API_KEY}
+    networks:
+      - analysis
 
   restapi:
     build: ./middleware
@@ -24,6 +26,7 @@ services:
     networks:
       - acquire
       - db
+      - analysis
     volumes:
       - "./middleware/dockerdata:/opt/restapi/dockerdata:rw"
     ports:
@@ -47,3 +50,5 @@ networks:
     name: ketos_db_local
   acquire:
     name: ketos_acquire_local
+  analysis:
+    name: ketos_analysis_local
