@@ -74,6 +74,19 @@ router.get("/logs/:id", async (req, res) => {
     }
 });
 
+// Get container diff by ID
+router.get("/diff/:id", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getDiffInfoBrief(id);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+})
+
 // Allow container download
 router.get("/fs/:id", async (req, res) => {
     const id = req.params.id;
@@ -88,7 +101,7 @@ router.get("/fs/:id", async (req, res) => {
  */
 
 // Insert container inspected info
-router.post("/info/:id", async (req, res) => {
+router.put("/info/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -102,7 +115,7 @@ router.post("/info/:id", async (req, res) => {
 });
 
 // Insert container diff
-router.post("/diff/:id", async (req, res) => {
+router.put("/diff/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -116,7 +129,7 @@ router.post("/diff/:id", async (req, res) => {
 });
 
 // Allow container upload
-router.post("/fs", upload.single("file"), (req, res) => {
+router.put("/fs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
@@ -124,7 +137,7 @@ router.post("/fs", upload.single("file"), (req, res) => {
 });
 
 // Allow container logs upload
-router.post("/logs", upload.single("file"), (req, res) => {
+router.put("/logs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");

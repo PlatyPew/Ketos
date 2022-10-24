@@ -46,7 +46,7 @@ def send_info(url_path, data, identifier=True):
         else:
             iden = entry["Name"]
 
-        r = requests.post(f"{API_URL}{url_path}/{iden}", json=entry)
+        r = requests.put(f"{API_URL}{url_path}/{iden}", json=entry)
         if r.status_code != 200:
             error_msg()
 
@@ -62,7 +62,7 @@ def get_dockerfile(image_hashes):
 
 def send_dockerfile(url_path, image_hashes, data):
     for hashh, entry in zip(image_hashes, data):
-        r = requests.post(f"{API_URL}{url_path}/{hashh}", json=entry)
+        r = requests.put(f"{API_URL}{url_path}/{hashh}", json=entry)
         if r.status_code != 200:
             error_msg()
 
@@ -82,13 +82,13 @@ def get_diffs(container_hashes):
 
 
 def send_diffs(url_path, container_hash, diff):
-    r = requests.post(f"{API_URL}{url_path}/{container_hash}", json=diff)
+    r = requests.put(f"{API_URL}{url_path}/{container_hash}", json=diff)
     if r.status_code != 200:
         error_msg()
 
 
 def send_logs(url_path, log_path):
-    r = requests.post(f"{API_URL}{url_path}", files={"file": open(log_path, 'r')})
+    r = requests.put(f"{API_URL}{url_path}", files={"file": open(log_path, 'r')})
     if r.status_code != 200:
         error_msg()
 
@@ -104,7 +104,7 @@ def get_container(container_hashes):
 
 
 def send_file(url_path, image_path):
-    r = requests.post(f"{API_URL}{url_path}", files={"file": open(image_path, 'rb')})
+    r = requests.put(f"{API_URL}{url_path}", files={"file": open(image_path, 'rb')})
     if r.status_code != 200:
         error_msg()
 
@@ -119,7 +119,7 @@ def get_layers(image_hashes):
 
 
 def send_layers(url_path, image_hash, layers):
-    r = requests.post(f"{API_URL}{url_path}/{image_hash}", json=layers)
+    r = requests.put(f"{API_URL}{url_path}/{image_hash}", json=layers)
     if r.status_code != 200:
         error_msg()
 
@@ -185,7 +185,7 @@ def acquire_info():
         shutil.rmtree(hashh)
 
     for hashh in container_hashes:
-        os.remove(f"{hashh}.json")
+        os.remove(f"{hashh}.log")
         os.remove(f"{hashh}.tar.gz")
 
     print("Files cleaned")
