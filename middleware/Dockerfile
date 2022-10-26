@@ -5,7 +5,7 @@ WORKDIR /opt/restapi
 COPY ./package.json .
 COPY ./package-lock.json .
 
-RUN npm install
+RUN npm install --omit=dev
 
 COPY ./app.js .
 COPY ./src ./src/
