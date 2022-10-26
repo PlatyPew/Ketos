@@ -181,8 +181,17 @@ const FilesystemInfoSchema = new mongoose.Schema(
     { _id: false, collection: "filesystem_info", versionKey: false }
 );
 
+const FilesOnlyInfoSchema = new mongoose.Schema(
+    {
+        _id: { type: "String" },
+        filesystem: { type: "Object" },
+    },
+    { _id: false, collection: "file_info", versionKey: false }
+);
+
 module.exports = {
     ContainerInfoModel: mongoose.model("ContainerInfoModel", ContainerInfoSchema),
     DiffInfoModel: mongoose.model("DiffInfoModel", DiffInfoSchema),
     FilesystemInfoModel: mongoose.model("FilesystemInfoModel", FilesystemInfoSchema),
+    FilesOnlyInfoModel: mongoose.model("FilesOnlyInfoModel", FilesOnlyInfoSchema),
 };

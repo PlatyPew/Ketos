@@ -3,6 +3,7 @@ const {
     ContainerInfoModel,
     DiffInfoModel,
     FilesystemInfoModel,
+    FilesOnlyInfoModel,
 } = require("../models/ContainerModel");
 const { VolumeInfoModel } = require("../models/VolumeModel");
 const { NetworkInfoModel } = require("../models/NetworkModel");
@@ -46,7 +47,20 @@ const insertDiff = async (id, diff) => {
 };
 
 const insertFiles = async (id, files) => {
+    _insertOnlyFiles(id, files);
     return await FilesystemInfoModel.insertMany([{ _id: id, filesystem: files }]);
+};
+
+const _insertOnlyFiles = async (id, files) => {
+    let onlyFiles = {};
+    files.forEach((element) => {
+        if (element.charAt(element.length - 1) !== "/")
+            onlyFiles[element] = { hashsum: "", type: "" };
+    });
+
+    const fileMetadata = { _id: id, filesystem: onlyFiles };
+
+    await FilesOnlyInfoModel.insertMany([fileMetadata]);
 };
 
 module.exports = {
