@@ -19,6 +19,14 @@ services:
     networks:
       - analysis
 
+  metadata:
+    build: ./analysis/metadata
+    container_name: metadata
+    networks:
+      - analysis
+    volumes:
+      - "./middleware/dockerdata:/opt/analysis/dockerdata:rw"
+
   restapi:
     build: ./middleware
     container_name: restapi
