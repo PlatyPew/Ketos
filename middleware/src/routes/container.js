@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
+const { exec } = require("child_process");
 
 const insert = require("../utils/insertinfo");
 const get = require("../utils/getinfo");
@@ -108,6 +109,20 @@ router.get("/files/:id", async (req, res) => {
         res.status(500).json({ response: err });
     }
 });
+
+// Get specific file
+router.get("/files/:id/single", async (req, res) => {
+    const file = req.query.file;
+    const id = req.params.id;
+
+    exec(`tar -xzf ./dockerdata/container/${id}.tar.gz -C tmp/ ${file}`, (err, stdout, stderr) => {
+        if (err) res.status(500).json({ response: err });
+        if (stderr) res.status(400).json({ response: stderr });
+
+        res.download(`tmp/${file}`);
+    });
+});
+
 /**
  * Insertion of data from acquisition
  */
