@@ -8,11 +8,14 @@ CONTAINER_DATA = "./dockerdata/container"
 app = Flask(__name__)
 
 
-def get_hash(iden, file_path):
+def _get_file(iden, file_path):
     with tarfile.open(f"{CONTAINER_DATA}/{iden}.tar.gz", "r:gz") as tar:
         with tar.extractfile(file_path) as f:
-            data = f.read()
+            return f.read()
 
+
+def get_hash(iden, file_path):
+    data = _get_file(iden, file_path)
     return hashlib.sha256(data).hexdigest()
 
 
