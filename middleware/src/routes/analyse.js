@@ -26,32 +26,49 @@ router.get("/metadata/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
 
-    const metadata = await get.getMetadata(id, file);
+    try {
+        const metadata = await get.getMetadata(id, file);
 
-    if (Object.keys(metadata.filesystem).length === 0) {
-        res.status(500).json({ responose: "File does not exist" });
-        return;
-    }
+        if (Object.keys(metadata.filesystem).length === 0) {
+            res.status(500).json({ responose: "File does not exist" });
+            return;
+        }
 
-    if (metadata.filesystem[file].hashsum === "" && metadata.filesystem[file].type === "") {
-        const hash = await axios.get(`http://${METADATA}/hash`, {
-            params: { id: id, file: file },
-        });
+        if (
+            metadata.filesystem[file].hashsum === "" &&
+            metadata.filesystem[file].type === "" &&
+            metadata.filesystem[file].strings === ""
+        ) {
+            const hash = await axios.get(`http://${METADATA}/hash`, {
+                params: { id: id, file: file },
+            });
 
-        const type = await axios.get(`http://${METADATA}/type`, {
-            params: { id: id, file: file },
-        });
+            const type = await axios.get(`http://${METADATA}/type`, {
+                params: { id: id, file: file },
+            });
 
-        insert.insertMetadata(id, file, { hashsum: hash.data, type: type.data });
+            const strings = await axios.get(`http://${METADATA}/strings`, {
+                params: { id: id, file: file },
+            });
 
-        res.json({ response: { hashsum: hash.data, type: type.data } });
-    } else {
-        res.json({
-            respose: {
-                hashsum: metadata.filesystem[file].hashsum,
-                type: metadata.filesystem[file].type,
-            },
-        });
+            insert.insertMetadata(id, file, {
+                hashsum: hash.data,
+                type: type.data,
+                strings: strings.data,
+            });
+
+            res.json({ response: { hashsum: hash.data, type: type.data, strings: strings.data } });
+        } else {
+            res.json({
+                respose: {
+                    hashsum: metadata.filesystem[file].hashsum,
+                    type: metadata.filesystem[file].type,
+                    strings: metadata.filesystem[file].strings,
+                },
+            });
+        }
+    } catch (err) {
+        res.status(500).json({ response: err });
     }
 });
 

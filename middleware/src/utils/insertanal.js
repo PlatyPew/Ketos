@@ -7,11 +7,18 @@ const insertVuln = async (id, vuln) => {
 };
 
 const insertMetadata = async (id, file, metadata) => {
-    await FilesOnlyInfoModel.updateOne({
-        $set: {
-            [`filesystem.${file}`]: { hashsum: metadata.hashsum, type: metadata.type },
-        },
-    });
+    await FilesOnlyInfoModel.updateOne(
+        { _id: id },
+        {
+            $set: {
+                [`filesystem.${file}`]: {
+                    hashsum: metadata.hashsum,
+                    type: metadata.type,
+                    strings: metadata.strings,
+                },
+            },
+        }
+    );
 };
 
 module.exports = {

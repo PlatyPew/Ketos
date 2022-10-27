@@ -55,7 +55,7 @@ const _insertOnlyFiles = async (id, files) => {
     let onlyFiles = {};
     files.forEach((element) => {
         if (element.charAt(element.length - 1) !== "/")
-            onlyFiles[element] = { hashsum: "", type: "" };
+            onlyFiles[element] = { hashsum: "", type: "", strings: "" };
     });
 
     const fileMetadata = { _id: id, filesystem: onlyFiles };
