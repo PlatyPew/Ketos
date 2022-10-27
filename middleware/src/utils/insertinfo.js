@@ -47,7 +47,7 @@ const insertDiff = async (id, diff) => {
 };
 
 const insertFiles = async (id, files) => {
-    _insertOnlyFiles(id, files);
+    await _insertOnlyFiles(id, files);
     return await FilesystemInfoModel.insertMany([{ _id: id, filesystem: files }]);
 };
 
