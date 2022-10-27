@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
-const { exec } = require("child_process");
+const axios = require("axios");
 
 const insert = require("../utils/insertinfo");
 const get = require("../utils/getinfo");
@@ -15,6 +15,8 @@ const storage = multer.diskStorage({
     },
 });
 const upload = multer({ storage: storage });
+
+const METADATA = "metadata:5000";
 
 /**
  * Get data from frontend
@@ -115,12 +117,17 @@ router.get("/files/:id/single", async (req, res) => {
     const file = req.query.file;
     const id = req.params.id;
 
-    exec(`tar -xzf ./dockerdata/container/${id}.tar.gz -C tmp/ ${file}`, (err, stdout, stderr) => {
-        if (err) res.status(500).json({ response: err });
-        if (stderr) res.status(400).json({ response: stderr });
+    try {
+        const content = await axios.get(`http://${METADATA}/file`, {
+            params: { id: id, file: file },
+        });
 
-        res.download(`tmp/${file}`);
-    });
+        res.setHeader("Content-Type", "application/octet-stream");
+        res.setHeader("Content-Disposition", `attachment; filename=${file}`);
+        res.send(content.data);
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
 });
 
 /**
