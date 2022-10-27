@@ -6,6 +6,7 @@ import tarfile
 import os
 import magic
 import shutil
+import subprocess
 
 TMP_LOC = "./tmp"
 CONTAINER_DATA = "./dockerdata/container"
@@ -15,6 +16,29 @@ app = Flask(__name__)
 def _extract(iden):
     with tarfile.open(f"{CONTAINER_DATA}/{iden}.tar.gz", "r:gz", dereference=True) as tar:
         tar.extractall(f"{TMP_LOC}/{iden}")
+
+
+def get_strings(iden, file_path):
+    loc = f"{TMP_LOC}/{iden}"
+    if not os.path.exists(loc):
+        _extract(iden)
+
+    file_path = f"{loc}/{file_path}"
+
+    if not os.path.exists(file_path):
+        return None
+
+    out, err = subprocess.Popen(
+        ["strings", file_path],
+        env=os.environ.copy(),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    ).communicate()
+
+    if err:
+        return None
+
+    return out.decode().strip()
 
 
 def get_file_loc(iden, file_path):
@@ -64,6 +88,20 @@ def clean():
             shutil.rmtree(f"{TMP_LOC}/{f}")
 
         return jsonify({"response": True})
+    except Exception as e:
+        return jsonify({"response": str(e)}), 500
+
+
+@app.route('/strings', methods=['GET'])
+def strings():
+    try:
+        iden = request.args.get("id")
+        file_path = request.args.get("file")
+
+        if (strings := get_strings(iden, file_path)) is None:
+            return jsonify({"response": "File not found"}), 400
+
+        return jsonify({"response": strings})
     except Exception as e:
         return jsonify({"response": str(e)}), 500
 
