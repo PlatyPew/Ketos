@@ -21,7 +21,12 @@ const insertFiledata = async (id, file, metadata) => {
     );
 };
 
+const insertMetadata = async (id, macrobber) => {
+    await MetadataInfoModel.insertMany([{ _id: id, metadata: macrobber }]);
+};
+
 module.exports = {
     insertVuln: insertVuln,
     insertFiledata: insertFiledata,
+    insertMetadata: insertMetadata,
 };

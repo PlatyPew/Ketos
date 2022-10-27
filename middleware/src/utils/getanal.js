@@ -1,4 +1,4 @@
-const { VulnInfoModel } = require("../models/StaticAnalysisModel");
+const { VulnInfoModel, MetadataInfoModel } = require("../models/StaticAnalysisModel");
 const { FilesOnlyInfoModel } = require("../models/ContainerModel");
 
 const getVulnBrief = async (id) => {
@@ -43,8 +43,19 @@ const getFiledata = async (id, file) => {
     return filedata;
 };
 
+const getMetadata = async (id, file) => {
+    const metadata = await MetadataInfoModel.findById(id, {
+        _id: 0,
+        metadata: {
+            [file]: 1,
+        },
+    });
+    return metadata;
+};
+
 module.exports = {
     getVulnBrief: getVulnBrief,
     getVulnAll: getVulnAll,
     getFiledata: getFiledata,
+    getMetadata: getMetadata,
 };

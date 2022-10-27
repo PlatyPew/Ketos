@@ -19,6 +19,32 @@ router.get("/vuln/:id", async (req, res) => {
     res.json(out.data);
 });
 
+// Get metadata of file
+router.get("/metadata/:id", async (req, res) => {
+    const id = req.params.id;
+    const file = req.query.file;
+
+    const metadata = await get.getMetadata(id, file);
+
+    try {
+        if (metadata === null) {
+            const macrobber = await axios.get(`http://${METADATA}/macrobber`, {
+                params: { id: id },
+            });
+            const data = macrobber.data.response;
+            await insert.insertMetadata(id, data);
+
+            res.json({ response: data[file] });
+        } else if (Object.keys(metadata.metadata).length === 0) {
+            res.status(400).json({ response: "File not found" });
+        } else {
+            res.json({ response: metadata.metadata[file] });
+        }
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 // Get data of file
 router.get("/filedata/:id", async (req, res) => {
     const id = req.params.id;
