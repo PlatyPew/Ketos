@@ -32,19 +32,19 @@ const getVulnAll = async (id) => {
     return vuln;
 };
 
-const getMetadata = async (id, file) => {
-    const metadata = await FilesOnlyInfoModel.findById(id, {
+const getFiledata = async (id, file) => {
+    const filedata = await FilesOnlyInfoModel.findById(id, {
         _id: 0,
         filesystem: {
             [file]: 1,
         },
     });
 
-    return metadata;
+    return filedata;
 };
 
 module.exports = {
     getVulnBrief: getVulnBrief,
     getVulnAll: getVulnAll,
-    getMetadata: getMetadata,
+    getFiledata: getFiledata,
 };

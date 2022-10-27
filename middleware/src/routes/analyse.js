@@ -19,25 +19,25 @@ router.get("/vuln/:id", async (req, res) => {
     res.json(out.data);
 });
 
-// Get metadata of file
-router.get("/metadata/:id", async (req, res) => {
+// Get data of file
+router.get("/filedata/:id", async (req, res) => {
     const id = req.params.id;
     const file = req.query.file;
 
     res.setHeader("Content-Type", "application/json");
 
     try {
-        const metadata = await get.getMetadata(id, file);
+        const filedata = await get.getFiledata(id, file);
 
-        if (Object.keys(metadata.filesystem).length === 0) {
+        if (Object.keys(filedata.filesystem).length === 0) {
             res.status(500).json({ responose: "File does not exist" });
             return;
         }
 
         if (
-            metadata.filesystem[file].hashsum === "" &&
-            metadata.filesystem[file].type === "" &&
-            metadata.filesystem[file].strings === ""
+            filedata.filesystem[file].hashsum === "" &&
+            filedata.filesystem[file].type === "" &&
+            filedata.filesystem[file].strings === ""
         ) {
             const hash = await axios.get(`http://${METADATA}/hash`, {
                 params: { id: id, file: file },
@@ -51,7 +51,7 @@ router.get("/metadata/:id", async (req, res) => {
                 params: { id: id, file: file },
             });
 
-            insert.insertMetadata(id, file, {
+            insert.insertFiledata(id, file, {
                 hashsum: hash.data,
                 type: type.data,
                 strings: strings.data,
@@ -61,9 +61,9 @@ router.get("/metadata/:id", async (req, res) => {
         } else {
             res.json({
                 respose: {
-                    hashsum: metadata.filesystem[file].hashsum,
-                    type: metadata.filesystem[file].type,
-                    strings: metadata.filesystem[file].strings,
+                    hashsum: filedata.filesystem[file].hashsum,
+                    type: filedata.filesystem[file].type,
+                    strings: filedata.filesystem[file].strings,
                 },
             });
         }

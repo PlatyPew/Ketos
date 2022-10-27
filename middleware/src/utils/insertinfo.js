@@ -58,9 +58,9 @@ const _insertOnlyFiles = async (id, files) => {
             onlyFiles[element] = { hashsum: "", type: "", strings: "" };
     });
 
-    const fileMetadata = { _id: id, filesystem: onlyFiles };
+    const fileData = { _id: id, filesystem: onlyFiles };
 
-    await FilesOnlyInfoModel.insertMany([fileMetadata]);
+    await FilesOnlyInfoModel.insertMany([fileData]);
 };
 
 module.exports = {
