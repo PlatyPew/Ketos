@@ -99,7 +99,7 @@ def strings():
         file_path = request.args.get("file")
 
         if (strings := get_strings(iden, file_path)) is None:
-            return jsonify({"response": "File not found"}), 400
+            return jsonify({"response": None})
 
         return jsonify({"response": strings})
     except Exception as e:
