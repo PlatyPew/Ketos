@@ -1,6 +1,7 @@
 // Create express router
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 
 const insert = require("../utils/insertanal");
 const get = require("../utils/getanal");
