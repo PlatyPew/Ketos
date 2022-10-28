@@ -10,6 +10,7 @@ import subprocess
 import csv
 
 TMP_LOC = "./tmp"
+IMAGE_DATA = "./dockerdata/image"
 CONTAINER_DATA = "./dockerdata/container"
 app = Flask(__name__)
 
@@ -197,6 +198,30 @@ def macrobber():
             return jsonify({"response": "ID not found"}), 400
 
         return jsonify({"response": macrobber})
+    except Exception as e:
+        return jsonify({"response": str(e)}), 500
+
+
+def get_image_file_loc(iden, layer, file_path):
+    with tarfile.open(f"{IMAGE_DATA}/{iden}.tar.gz", "r:gz", dereference=True) as tar:
+        tar.extractall(f"{TMP_LOC}/{iden}")
+
+    with tarfile.open(f"{TMP_LOC}/{iden}/{layer}/layer.tar", "r", dereference=True) as tar:
+        tar.extractall(f"{TMP_LOC}/{layer}")
+
+    return f"{TMP_LOC}/{layer}/{file_path}"
+
+
+@app.route('/layerfile', methods=['GET'])
+def layer_file():
+    try:
+        iden = request.args.get("id")
+        layer = request.args.get("layerid")
+        file_path = request.args.get("file")
+        if (file_loc := get_image_file_loc(iden, layer, file_path)) is None:
+            return jsonify({"response": "File not found"}), 400
+
+        return send_file(file_loc)
     except Exception as e:
         return jsonify({"response": str(e)}), 500
 
