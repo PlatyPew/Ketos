@@ -82,7 +82,7 @@ router.get("/filedata/:id", async (req, res) => {
         const filedata = await get.getFiledata(id, file);
 
         if (Object.keys(filedata.filesystem).length === 0) {
-            res.status(500).json({ responose: "File does not exist" });
+            res.status(500).json({ response: "File does not exist" });
             return;
         }
 
@@ -104,12 +104,18 @@ router.get("/filedata/:id", async (req, res) => {
             });
 
             insert.insertFiledata(id, file, {
-                hashsum: hash.data,
-                type: type.data,
-                strings: strings.data,
+                hashsum: hash.data.response,
+                type: type.data.response,
+                strings: strings.data.response,
             });
 
-            res.json({ response: { hashsum: hash.data, type: type.data, strings: strings.data } });
+            res.json({
+                response: {
+                    hashsum: hash.data.response,
+                    type: type.data.response,
+                    strings: strings.data.response,
+                },
+            });
         } else {
             res.json({
                 respose: {
