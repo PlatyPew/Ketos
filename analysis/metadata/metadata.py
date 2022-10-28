@@ -7,6 +7,7 @@ import os
 import magic
 import shutil
 import subprocess
+import csv
 
 TMP_LOC = "./tmp"
 CONTAINER_DATA = "./dockerdata/container"
@@ -99,7 +100,7 @@ def strings():
         file_path = request.args.get("file")
 
         if (strings := get_strings(iden, file_path)) is None:
-            return jsonify({"response": "File not found"}), 400
+            return jsonify({"response": None})
 
         return jsonify({"response": strings})
     except Exception as e:
@@ -137,6 +138,65 @@ def type():
         file_path = request.args.get("file")
         hashh = get_type(iden, file_path)
         return jsonify({"response": hashh})
+    except Exception as e:
+        return jsonify({"response": str(e)}), 500
+
+
+def _parse(data, strip=64):
+    result = csv.reader(data.splitlines(), delimiter=",")
+    next(result, None)
+
+    final = dict()
+
+    for entry in result:
+        date = entry[0]
+        size = int(entry[1])
+        mode = entry[3]
+        uid = int(entry[4])
+        gid = int(entry[5])
+        name = entry[7][strip + 1:]
+
+        if mode[0] == "d":
+            name += "/"
+
+        final[name] = {
+            'date': date,
+            'size': size,
+            'mode': mode,
+            'uid': uid,
+            'gid': gid,
+        }
+
+    return final
+
+
+def get_macrobber(iden):
+    if not os.path.exists(f"{TMP_LOC}/{iden}"):
+        _extract(iden)
+
+    out, err = subprocess.Popen(f"mac-robber {iden} | mactime -d -y",
+                                env=os.environ.copy(),
+                                cwd=TMP_LOC,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                shell=True).communicate()
+
+    if err:
+        return None
+
+    out = out.decode().strip()
+
+    return _parse(out)
+
+
+@app.route('/macrobber', methods=['GET'])
+def macrobber():
+    try:
+        iden = request.args.get("id")
+        if (macrobber := get_macrobber(iden)) is None:
+            return jsonify({"response": "ID not found"}), 400
+
+        return jsonify({"response": macrobber})
     except Exception as e:
         return jsonify({"response": str(e)}), 500
 

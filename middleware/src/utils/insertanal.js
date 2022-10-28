@@ -1,4 +1,4 @@
-const { VulnInfoModel } = require("../models/StaticAnalysisModel");
+const { VulnInfoModel, MetadataInfoModel } = require("../models/StaticAnalysisModel");
 const { FilesOnlyInfoModel } = require("../models/ContainerModel");
 
 const insertVuln = async (id, vuln) => {
@@ -6,7 +6,7 @@ const insertVuln = async (id, vuln) => {
     return await VulnInfoModel.insertMany([vuln]);
 };
 
-const insertMetadata = async (id, file, metadata) => {
+const insertFiledata = async (id, file, metadata) => {
     await FilesOnlyInfoModel.updateOne(
         { _id: id },
         {
@@ -21,7 +21,12 @@ const insertMetadata = async (id, file, metadata) => {
     );
 };
 
+const insertMetadata = async (id, macrobber) => {
+    await MetadataInfoModel.insertMany([{ _id: id, metadata: macrobber }]);
+};
+
 module.exports = {
     insertVuln: insertVuln,
+    insertFiledata: insertFiledata,
     insertMetadata: insertMetadata,
 };

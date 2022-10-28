@@ -5,7 +5,8 @@ WORKDIR /opt/analysis
 COPY ./requirements.txt .
 COPY ./metadata.py .
 
-RUN pip install -r requirements.txt && mkdir tmp
+RUN apt-get update && apt-get install mac-robber sleuthkit -y && apt-get clean && \
+    pip install -r requirements.txt && mkdir tmp
 
 EXPOSE 5000
 
