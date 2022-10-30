@@ -182,6 +182,37 @@ const _checkDetectDB = async (id, file) => {
     return detect;
 };
 
+router.get("/detect/:id", async (req, res) => {
+    const id = req.params.id;
+    const file = req.query.file;
+
+    let data = await _checkDetectDB(id, file);
+
+    if (data === null) data = await _pullWithFile(id, file);
+
+    const briefData = {
+        names: data.names,
+        stats: data.last_analysis_stats,
+        results: {
+            BitDefender: data.last_analysis_results.BitDefender.result,
+            CrowdStrike: data.last_analysis_results.CrowdStrike.result,
+            FireEye: data.last_analysis_results.FireEye.result,
+            Kaspersky: data.last_analysis_results.Kaspersky.result,
+            Malwarebytes: data.last_analysis_results.Malwarebytes.result,
+            McAfee: data.last_analysis_results.McAfee.result,
+            Microsoft: data.last_analysis_results.Microsoft.result,
+            Symantec: data.last_analysis_results.Symantec.result,
+        },
+        type: {
+            description: data.type_description,
+            extension: data.type_extension,
+        },
+    };
+
+    res.setHeader("Content-Type", "application/json");
+    res.json({ response: briefData });
+});
+
 router.get("/detect/:id/all", async (req, res) => {
     const id = req.params.id;
     const file = req.query.file;
