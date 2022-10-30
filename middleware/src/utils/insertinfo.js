@@ -58,7 +58,7 @@ const _insertOnlyFiles = async (id, files) => {
     files.forEach((element) => {
         if (element.charAt(element.length - 1) !== "/") {
             onlyFiles[element] = { hashsum: "", type: "", strings: "" };
-            onlyFilesDetect[element] = {};
+            onlyFilesDetect[element] = null;
         }
     });
 
