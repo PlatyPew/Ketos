@@ -7,6 +7,7 @@ const {
 } = require("../models/ContainerModel");
 const { VolumeInfoModel } = require("../models/VolumeModel");
 const { NetworkInfoModel } = require("../models/NetworkModel");
+const { DetectInfoModel } = require("../models/StaticAnalysisModel");
 
 const insertImage = async (id, imageInfo) => {
     imageInfo._id = id;
@@ -47,20 +48,34 @@ const insertDiff = async (id, diff) => {
 };
 
 const insertFiles = async (id, files) => {
+    files = _escapeChars(files);
     await _insertOnlyFiles(id, files);
     return await FilesystemInfoModel.insertMany([{ _id: id, filesystem: files }]);
 };
 
+const _escapeChars = (files) => {
+    const escapedFiles = files.map((element) => {
+        return element.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e");
+    });
+
+    return escapedFiles;
+};
+
 const _insertOnlyFiles = async (id, files) => {
     let onlyFiles = {};
+    let onlyFilesDetect = {};
     files.forEach((element) => {
-        if (element.charAt(element.length - 1) !== "/")
+        if (element.charAt(element.length - 1) !== "/") {
             onlyFiles[element] = { hashsum: "", type: "", strings: "" };
+            onlyFilesDetect[element] = null;
+        }
     });
 
     const fileData = { _id: id, filesystem: onlyFiles };
+    const fileDataDetect = { _id: id, filesystem: onlyFilesDetect };
 
     await FilesOnlyInfoModel.insertMany([fileData]);
+    await DetectInfoModel.insertMany([fileDataDetect]);
 };
 
 module.exports = {

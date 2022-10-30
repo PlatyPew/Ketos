@@ -12,7 +12,7 @@ services:
 
   snyk:
     build: ./analysis/snyk
-    container_name: analysis
+    container_name: snyk
     environment:
       - DOCKER_HOST=${VM_SOCKET}
       - SNYK_API_KEY=${SNYK_API_KEY}
@@ -26,6 +26,14 @@ services:
       - analysis
     volumes:
       - "./middleware/dockerdata:/opt/analysis/dockerdata:rw"
+
+  virustotal:
+    build: ./analysis/virustotal
+    container_name: virustotal
+    environment:
+      - VIRUSTOTAL_API_KEY=${VT_API_KEY}
+    networks:
+      - analysis
 
   restapi:
     build: ./middleware
