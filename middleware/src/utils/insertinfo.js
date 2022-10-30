@@ -48,8 +48,17 @@ const insertDiff = async (id, diff) => {
 };
 
 const insertFiles = async (id, files) => {
+    files = _escapeChars(files);
     await _insertOnlyFiles(id, files);
     return await FilesystemInfoModel.insertMany([{ _id: id, filesystem: files }]);
+};
+
+const _escapeChars = (files) => {
+    const escapedFiles = files.map((element) => {
+        return element.replace("$", "\\u0024").replace(".", "\\u002e");
+    });
+
+    return escapedFiles;
 };
 
 const _insertOnlyFiles = async (id, files) => {

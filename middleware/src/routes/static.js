@@ -48,7 +48,7 @@ router.put("/vuln/:id", async (req, res) => {
 // Get metadata of file
 router.get("/metadata/:id", async (req, res) => {
     const id = req.params.id;
-    const file = req.query.file;
+    const file = req.query.file.replace("$", "\\u0024").replace(".", "\\u002e");
 
     const metadata = await get.getMetadata(id, file);
 
@@ -74,7 +74,7 @@ router.get("/metadata/:id", async (req, res) => {
 // Get data of file
 router.get("/filedata/:id", async (req, res) => {
     const id = req.params.id;
-    const file = req.query.file;
+    const file = req.query.file.replace("$", "\\u0024").replace(".", "\\u002e");
 
     res.setHeader("Content-Type", "application/json");
 
@@ -82,7 +82,7 @@ router.get("/filedata/:id", async (req, res) => {
         const filedata = await get.getFiledata(id, file);
 
         if (Object.keys(filedata.filesystem).length === 0) {
-            res.status(500).json({ response: "File does not exist" });
+            res.status(400).json({ response: "File does not exist" });
             return;
         }
 
