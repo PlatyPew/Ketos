@@ -7,6 +7,7 @@ const insert = require("../utils/insertanal");
 const get = require("../utils/getanal");
 
 const METADATA = "metadata:5000";
+const VIRUSTOTAL = "virustotal:5000";
 
 router.get("/vuln/:id", async (req, res) => {
     const id = req.params.id;
@@ -128,6 +129,44 @@ router.get("/filedata/:id", async (req, res) => {
     } catch (err) {
         res.status(500).json({ response: err });
     }
+});
+
+const _checkDetectDB = async (id, file) => {
+    let detect = await get.getDetect(id, file);
+
+    if (detect === undefined) res.status(400).json({ response: "File does not exist" });
+
+    if (detect === null) {
+        let hash = (await get.getFiledata(id, file)).filesystem[file].hashsum;
+
+        if (hash === "") {
+            hash = await axios.get(`http://${METADATA}/hash`, {
+                params: { id: id, file: file },
+            });
+
+            hash = hash.data.response;
+        }
+
+        const data = await axios.get(`http://${VIRUSTOTAL}/hashscan`, {
+            params: { id: id, hashsum: hash },
+        });
+
+        await insert.insertDetect(id, file, data.data.response);
+
+        return data.data.response;
+    }
+
+    return detect;
+};
+
+router.get("/detect/:id/all", async (req, res) => {
+    const id = req.params.id;
+    const file = req.query.file.replace("$", "\\u0024").replace(".", "\\u002e");
+
+    const data = await _checkDetectDB(id, file);
+
+    res.setHeader("Content-Type", "application/json");
+    res.json({ response: data });
 });
 
 module.exports = router;
