@@ -34,7 +34,6 @@ const getVulnAll = async (id) => {
 };
 
 const getFiledata = async (id, file) => {
-    file = file.replace("$", "\\u0024").replace(".", "\\u002e");
     const filedata = await FilesOnlyInfoModel.findById(id, {
         _id: 0,
         filesystem: {
@@ -46,7 +45,6 @@ const getFiledata = async (id, file) => {
 };
 
 const getMetadata = async (id, file) => {
-    file = file.replace("$", "\\u0024").replace(".", "\\u002e");
     const metadata = await MetadataInfoModel.findById(id, {
         _id: 0,
         metadata: {

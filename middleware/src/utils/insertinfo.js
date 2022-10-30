@@ -55,7 +55,7 @@ const insertFiles = async (id, files) => {
 
 const _escapeChars = (files) => {
     const escapedFiles = files.map((element) => {
-        return element.replace("$", "\\u0024").replace(".", "\\u002e");
+        return element.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e");
     });
 
     return escapedFiles;

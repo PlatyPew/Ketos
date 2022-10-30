@@ -26,7 +26,12 @@ const insertFiledata = async (id, file, metadata) => {
 };
 
 const insertMetadata = async (id, macrobber) => {
-    await MetadataInfoModel.insertMany([{ _id: id, metadata: macrobber }]);
+    let macrobberNew = {};
+    Object.keys(macrobber).forEach((element) => {
+        macrobberNew[element.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e")] =
+            macrobber[element];
+    });
+    await MetadataInfoModel.insertMany([{ _id: id, metadata: macrobberNew }]);
 };
 
 const insertDetect = async (id, file, detection) => {

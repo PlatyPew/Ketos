@@ -105,7 +105,7 @@ const getDiffInfoBrief = async (id) => {
 const getFiles = async (id) => {
     const files = await FilesystemInfoModel.findById(id, { _id: 0 });
     return files.filesystem.map((element) => {
-        return element.replace("\\u0024", "$").replace("\\u002e", ".");
+        return element.replace(/\\u0024/g, "$").replace(/\\u002e/g, ".");
     });
 };
 

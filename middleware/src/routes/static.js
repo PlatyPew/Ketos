@@ -49,7 +49,7 @@ router.put("/vuln/:id", async (req, res) => {
 // Get metadata of file
 router.get("/metadata/:id", async (req, res) => {
     const id = req.params.id;
-    const file = req.query.file;
+    const file = req.query.file.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e");
 
     const metadata = await get.getMetadata(id, file);
 
@@ -75,7 +75,7 @@ router.get("/metadata/:id", async (req, res) => {
 // Get data of file
 router.get("/filedata/:id", async (req, res) => {
     const id = req.params.id;
-    const file = req.query.file;
+    const file = req.query.file.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e");
 
     res.setHeader("Content-Type", "application/json");
 
@@ -119,7 +119,7 @@ router.get("/filedata/:id", async (req, res) => {
             });
         } else {
             res.json({
-                respose: {
+                response: {
                     hashsum: filedata.filesystem[file].hashsum,
                     type: filedata.filesystem[file].type,
                     strings: filedata.filesystem[file].strings,
