@@ -49,7 +49,7 @@ router.put("/vuln/:id", async (req, res) => {
 // Get metadata of file
 router.get("/metadata/:id", async (req, res) => {
     const id = req.params.id;
-    const file = req.query.file.replace("$", "\\u0024").replace(".", "\\u002e");
+    const file = req.query.file;
 
     const metadata = await get.getMetadata(id, file);
 
@@ -75,7 +75,7 @@ router.get("/metadata/:id", async (req, res) => {
 // Get data of file
 router.get("/filedata/:id", async (req, res) => {
     const id = req.params.id;
-    const file = req.query.file.replace("$", "\\u0024").replace(".", "\\u002e");
+    const file = req.query.file;
 
     res.setHeader("Content-Type", "application/json");
 
@@ -131,6 +131,8 @@ router.get("/filedata/:id", async (req, res) => {
     }
 });
 
+const _pullWithFile = async (id, file) => {};
+
 const _checkDetectDB = async (id, file) => {
     let detect = await get.getDetect(id, file);
 
@@ -147,7 +149,7 @@ const _checkDetectDB = async (id, file) => {
             hash = hash.data.response;
         }
 
-        const data = await axios.get(`http://${VIRUSTOTAL}/hashscan`, {
+        let data = await axios.get(`http://${VIRUSTOTAL}/hashscan`, {
             params: { id: id, hashsum: hash },
         });
 
@@ -161,7 +163,7 @@ const _checkDetectDB = async (id, file) => {
 
 router.get("/detect/:id/all", async (req, res) => {
     const id = req.params.id;
-    const file = req.query.file.replace("$", "\\u0024").replace(".", "\\u002e");
+    const file = req.query.file;
 
     const data = await _checkDetectDB(id, file);
 
