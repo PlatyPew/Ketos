@@ -32,10 +32,40 @@ def get_file_report(file_content):
     status = False
 
     while status != "completed":
-        sleep(5)
-        r = requests.post(f"{URL}/analyses/{iden}", headers=headers)
+        sleep(3)
+        r = requests.get(f"{URL}/analyses/{iden}", headers=headers)
         status = json.loads(r.text)["data"]["attributes"]["status"]
 
     hashh = json.loads(r.text)["meta"]["file_info"]["sha256"]
 
-    return get_hash_report(hashh)
+    data = get_hash_report(hashh)
+
+    return data
+
+
+@app.route('/hashscan', methods=['GET'])
+def hash_scan():
+    try:
+        hashh = request.args.get("hashsum")
+        if (result := get_hash_report(hashh)) is False:
+            return jsonify({"response": None})
+
+        return jsonify({"response": result})
+    except Exception as e:
+        return jsonify({"response": str(e)}), 500
+
+
+@app.route('/filescan', methods=['GET'])
+def file_scan():
+    try:
+        file_content = request.files.get('filecontent').read()
+        if (result := get_file_report(file_content)) is False:
+            return jsonify({"response": None})
+
+        return jsonify({"response": result})
+    except Exception as e:
+        return jsonify({"response": str(e)}), 500
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
