@@ -61,7 +61,7 @@ router.get("/metadata/:id", async (req, res) => {
             const data = macrobber.data.response;
             await insert.insertMetadata(id, data);
 
-            res.json({ response: data[file] });
+            res.json({ response: data[req.query.file] });
         } else if (Object.keys(metadata.metadata).length === 0) {
             res.status(400).json({ response: "File not found" });
         } else {
@@ -93,15 +93,15 @@ router.get("/filedata/:id", async (req, res) => {
             filedata.filesystem[file].strings === ""
         ) {
             const hash = await axios.get(`http://${METADATA}/hash`, {
-                params: { id: id, file: file },
+                params: { id: id, file: req.query.file },
             });
 
             const type = await axios.get(`http://${METADATA}/type`, {
-                params: { id: id, file: file },
+                params: { id: id, file: req.query.file },
             });
 
             const strings = await axios.get(`http://${METADATA}/strings`, {
-                params: { id: id, file: file },
+                params: { id: id, file: req.query.file },
             });
 
             insert.insertFiledata(id, file, {
