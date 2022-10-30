@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const FormData = require("form-data");
 
 const insert = require("../utils/insertanal");
 const get = require("../utils/getanal");
@@ -131,15 +132,35 @@ router.get("/filedata/:id", async (req, res) => {
     }
 });
 
-const _pullWithFile = async (id, file) => {};
+const _pullWithFile = async (id, file) => {
+    const escapedFile = file.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e");
+
+    const content = await axios.get(`http://${METADATA}/file`, {
+        params: { id: id, file: file },
+    });
+
+    const form = new FormData();
+    form.append("filecontent", content.data, "file");
+
+    const response = await axios.post(`http://${VIRUSTOTAL}/filescan`, form, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+
+    await insert.insertDetect(id, escapedFile, response.data.response);
+
+    return response.data.response;
+};
 
 const _checkDetectDB = async (id, file) => {
-    let detect = await get.getDetect(id, file);
+    const escapedFile = file.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e");
+    let detect = await get.getDetect(id, escapedFile);
 
     if (detect === undefined) res.status(400).json({ response: "File does not exist" });
 
     if (detect === null) {
-        let hash = (await get.getFiledata(id, file)).filesystem[file].hashsum;
+        let hash = (await get.getFiledata(id, escapedFile)).filesystem[escapedFile].hashsum;
 
         if (hash === "") {
             hash = await axios.get(`http://${METADATA}/hash`, {
@@ -150,10 +171,10 @@ const _checkDetectDB = async (id, file) => {
         }
 
         let data = await axios.get(`http://${VIRUSTOTAL}/hashscan`, {
-            params: { id: id, hashsum: hash },
+            params: { hashsum: hash },
         });
 
-        await insert.insertDetect(id, file, data.data.response);
+        await insert.insertDetect(id, escapedFile, data.data.response);
 
         return data.data.response;
     }
@@ -165,7 +186,9 @@ router.get("/detect/:id/all", async (req, res) => {
     const id = req.params.id;
     const file = req.query.file;
 
-    const data = await _checkDetectDB(id, file);
+    let data = await _checkDetectDB(id, file);
+
+    if (data === null) data = await _pullWithFile(id, file);
 
     res.setHeader("Content-Type", "application/json");
     res.json({ response: data });

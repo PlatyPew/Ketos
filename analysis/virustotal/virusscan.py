@@ -17,10 +17,11 @@ app = Flask(__name__)
 
 def get_hash_report(hashh):
     r = requests.get(f"{URL}/files/{hashh}", headers=headers)
-    data = json.loads(r.text)["data"]["attributes"]
 
     if r.status_code != 200:
         return False
+
+    data = json.loads(r.text)["data"]["attributes"]
 
     return data
 
@@ -55,7 +56,7 @@ def hash_scan():
         return jsonify({"response": str(e)}), 500
 
 
-@app.route('/filescan', methods=['GET'])
+@app.route('/filescan', methods=['POST'])
 def file_scan():
     try:
         file_content = request.files.get('filecontent').read()
