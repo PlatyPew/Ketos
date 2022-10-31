@@ -9,6 +9,7 @@ const get = require("../utils/getanal");
 
 const METADATA = "metadata:5000";
 const VIRUSTOTAL = "virustotal:5000";
+const YARA = "yara:5000";
 
 router.get("/vuln/:id", async (req, res) => {
     const id = req.params.id;
@@ -223,6 +224,40 @@ router.get("/detect/:id/all", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     res.json({ response: data });
+});
+
+router.get("/match/:id", async (req, res) => {
+    const id = req.params.id;
+    const file = req.query.file;
+
+    const escapedFile = file.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e");
+
+    let match = await get.getMatch(id, escapedFile);
+
+    if (match === undefined) {
+        res.status(400).json({ response: "File does not exist" });
+        return;
+    }
+
+    if (match === null) {
+        const content = await axios.get(`http://${METADATA}/file`, {
+            params: { id: id, file: file },
+        });
+
+        const form = new FormData();
+        form.append("filecontent", content.data, "file");
+
+        const response = await axios.post(`http://${YARA}/filescan`, form, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        match = response.data.response;
+        await insert.insertMatch(id, escapedFile, match);
+    }
+
+    res.json({ response: match });
 });
 
 module.exports = router;

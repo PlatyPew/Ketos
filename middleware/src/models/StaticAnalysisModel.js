@@ -36,8 +36,17 @@ const DetectInfoSchema = new mongoose.Schema(
     { _id: false, collection: "detect_anal", versionKey: false }
 );
 
+const MatchInfoSchema = new mongoose.Schema(
+    {
+        _id: { type: "String" },
+        filesystem: { type: "Object" },
+    },
+    { _id: false, collection: "match_anal", versionKey: false }
+);
+
 module.exports = {
     VulnInfoModel: mongoose.model("VulnInfoSchema", VulnInfoSchema),
     MetadataInfoModel: mongoose.model("MetadataInfoSchema", MetadataInfoSchema),
     DetectInfoModel: mongoose.model("DetectInfoSchema", DetectInfoSchema),
+    MatchInfoModel: mongoose.model("MatchInfoSchema", MatchInfoSchema),
 };

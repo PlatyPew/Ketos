@@ -2,6 +2,7 @@ const {
     VulnInfoModel,
     MetadataInfoModel,
     DetectInfoModel,
+    MatchInfoModel,
 } = require("../models/StaticAnalysisModel");
 const { FilesOnlyInfoModel } = require("../models/ContainerModel");
 
@@ -47,9 +48,23 @@ const insertDetect = async (id, file, detection) => {
     return detect;
 };
 
+const insertMatch = async (id, file, match) => {
+    const matches = await MatchInfoModel.updateOne(
+        { _id: id },
+        {
+            $set: {
+                [`filesystem.${file}`]: match,
+            },
+        }
+    );
+
+    return matches;
+};
+
 module.exports = {
     insertVuln: insertVuln,
     insertFiledata: insertFiledata,
     insertMetadata: insertMetadata,
     insertDetect: insertDetect,
+    insertMatch: insertMatch,
 };
