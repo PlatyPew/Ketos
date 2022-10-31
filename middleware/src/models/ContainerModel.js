@@ -160,10 +160,10 @@ const DiffInfoSchema = new mongoose.Schema(
         _id: { type: "String" },
         diff: {
             Add: {
-                type: ["String"],
+                type: "Array",
             },
             Edit: {
-                type: ["String"],
+                type: "Array",
             },
             Delete: {
                 type: "Array",
