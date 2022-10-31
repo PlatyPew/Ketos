@@ -23,13 +23,13 @@
 // Chakra imports
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import ColumnsTable from "views/admin/container/components/ColumnsTable";
-import ContainerTable from "views/admin/container/components/ContainerTable";
+//import ContainerTable from "views/admin/container/components/ContainerTable";
 import {
   columnsDataColumns,
-  columnsDataContainer,
+  //columnsDataContainer,
 } from "views/admin/container/variables/columnsData";
 import tableDataColumns from "views/admin/container/variables/tableDataColumns.json";
-import tableDataContainer from "views/admin/container/variables/container1.json";
+//import tableDataContainer from "views/admin/container/variables/container1.json";
 
 import React from "react";
 
@@ -51,16 +51,15 @@ export default function Settings() {
           tableData={tableDataColumns}
         />
 
-        
-      
       </SimpleGrid>
       
     </Box>
-  /*
-        <ColumnsTable
-          columnsData={columnsDataColumns}
-          tableData={tableDataColumns}
-        />*/  
+  
   );
   
 }
+ /*
+        <ColumnsTable
+          columnsData={columnsDataColumns}
+          tableData={tableDataColumns}
+        />*/ 

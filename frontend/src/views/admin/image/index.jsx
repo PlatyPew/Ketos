@@ -22,22 +22,43 @@
 
 // Chakra imports
 import { Box } from "@chakra-ui/react";
-import DevelopmentTable from "views/admin/dataTables/components/DevelopmentTable";
-//import TestScrollingModal from "views/admin/dataTables/components/DevelopmentTable";
+import DevelopmentTable from "views/admin/image/components/DevelopmentTable";
+//import ImageInfoTable from "views/admin/image/components/ImageInfoTable";
 import {
-  columnsDataDevelopment,
-} from "views/admin/dataTables/variables/columnsData";
-import tableDataDevelopment from "views/admin/dataTables/variables/tableDataDevelopment.json";
+  columnsDataDevelopment, 
+  //columnsDataImageInfo
+} from "views/admin/image/variables/columnsData";
+import tableDataDevelopment from "views/admin/image/variables/tableDataDevelopment.json";
+import tableDataImageInfo from "views/admin/image/variables/image-info.json";
 import React from "react";
+
 
 export default function Settings() {
   // Chakra Color Mode
-  return (
+  console.log(tableDataImageInfo.response)
+  return ( 
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-        <DevelopmentTable
+      
+      <DevelopmentTable
           columnsData={columnsDataDevelopment}
           tableData={tableDataDevelopment}
         />
+
     </Box>
   );
+  
 }
+
+
+/*
+<SimpleGrid
+mb='20px'
+columns={{ sm: 1, md: 2 }}
+spacing={{ base: "20px", xl: "20px" }}>
+
+        <ImageInfoTable
+          columnsData={columnsDataImageInfo}
+          tableData={tableDataImageInfo.response}
+          
+        />
+</SimpleGrid>*/

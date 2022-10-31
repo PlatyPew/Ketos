@@ -3,22 +3,25 @@ import React from "react";
 import { Icon } from "@chakra-ui/react";
 import {
   MdBarChart,
-  MdPerson,
+  //MdPerson,
   MdHome,
-  MdLock,
-  MdOutlineShoppingCart,
+  MdImage,
+  MdSquareFoot
+  //MdLock,
+  //MdOutlineShoppingCart,
 } from "react-icons/md";
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
-import Profile from "views/admin/profile";
+//import NFTMarketplace from "views/admin/marketplace";
+//import Profile from "views/admin/profile";
 import DataTables from "views/admin/dataTables";
+import Image from "views/admin/image";
 import Container from "views/admin/container";
-import RTL from "views/admin/rtl";
+//import RTL from "views/admin/rtl";
 
 // Auth Imports
-import SignInCentered from "views/auth/signIn";
+//import SignInCentered from "views/auth/signIn";
 
 const routes = [
   {
@@ -32,23 +35,8 @@ const routes = [
     name: "Container Dashboard",
     layout: "/admin",
     path: "/container",
-    icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={MdSquareFoot} width='20px' height='20px' color='inherit' />,
     component: Container,
-  },
-  {
-    name: "NFT Marketplace",
-    layout: "/admin",
-    path: "/nft-marketplace",
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width='20px'
-        height='20px'
-        color='inherit'
-      />
-    ),
-    component: NFTMarketplace,
-    secondary: true,
   },
   {
     name: "Data Tables",
@@ -58,6 +46,13 @@ const routes = [
     component: DataTables,
   },
   {
+    name: "Image",
+    layout: "/admin",
+    icon: <Icon as={MdImage} width='20px' height='20px' color='inherit' />,
+    path: "/image",
+    component: Image,
+  },
+  /*{
     name: "Profile",
     layout: "/admin",
     path: "/profile",
@@ -78,6 +73,21 @@ const routes = [
     icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
     component: RTL,
   },
+    {
+    name: "NFT Marketplace",
+    layout: "/admin",
+    path: "/nft-marketplace",
+    icon: (
+      <Icon
+        as={MdOutlineShoppingCart}
+        width='20px'
+        height='20px'
+        color='inherit'
+      />
+    ),
+    component: NFTMarketplace,
+    secondary: true,
+  },*/
 ];
 
 export default routes;
