@@ -35,6 +35,12 @@ services:
     networks:
       - analysis
 
+  yara:
+    build: ./analysis/yara
+    container_name: yara
+    networks:
+      - analysis
+
   restapi:
     build: ./middleware
     container_name: restapi

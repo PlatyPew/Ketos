@@ -7,7 +7,7 @@ const {
 } = require("../models/ContainerModel");
 const { VolumeInfoModel } = require("../models/VolumeModel");
 const { NetworkInfoModel } = require("../models/NetworkModel");
-const { DetectInfoModel } = require("../models/StaticAnalysisModel");
+const { DetectInfoModel, MatchInfoModel } = require("../models/StaticAnalysisModel");
 
 const insertImage = async (id, imageInfo) => {
     imageInfo._id = id;
@@ -76,6 +76,7 @@ const _insertOnlyFiles = async (id, files) => {
 
     await FilesOnlyInfoModel.insertMany([fileData]);
     await DetectInfoModel.insertMany([fileDataDetect]);
+    await MatchInfoModel.insertMany([fileDataDetect]);
 };
 
 module.exports = {
