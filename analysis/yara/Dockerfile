@@ -30,6 +30,6 @@ COPY ./yara.py .
 
 RUN pip install -r requirements.txt && mkdir tmp
 
-EXPOSE 5000
+EXPOSE 5004
 
 CMD ["python3", "yara.py"]

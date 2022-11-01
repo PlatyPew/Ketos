@@ -31,6 +31,6 @@ COPY ./entrypoint.sh /
 
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 5002
 
 ENTRYPOINT ["/entrypoint.sh"]
