@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-const METADATA = "metadata:5000";
+const { METADATA } = require("../utils/ip");
 
 /**
  * Get data from frontend

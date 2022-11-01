@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-const ACQUIRER = "acquisition:5000";
-const SNYK = "snyk:5000";
+const { ACQUIRER, SNYK } = require("../utils/ip");
 
 router.put("/", async (req, res) => {
     const host = req.query.host;

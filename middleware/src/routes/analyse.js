@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-const SNYK = "snyk:5000";
+const { SNYK } = require("../utils/ip");
 
 // Start snyk analysis
 router.get("/vuln/:id", async (req, res) => {

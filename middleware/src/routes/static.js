@@ -7,9 +7,7 @@ const FormData = require("form-data");
 const insert = require("../utils/insertanal");
 const get = require("../utils/getanal");
 
-const METADATA = "metadata:5000";
-const VIRUSTOTAL = "virustotal:5000";
-const YARA = "yara:5000";
+const { METADATA, VIRUSTOTAL, YARA } = require("../utils/ip");
 
 router.get("/vuln/:id", async (req, res) => {
     const id = req.params.id;
