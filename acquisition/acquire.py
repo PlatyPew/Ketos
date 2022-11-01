@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 import subprocess
 import os
@@ -212,11 +212,28 @@ def acquire_info():
 
 @app.route('/acquire', methods=['GET'])
 def start():
+    if not _docker_socket:
+        return jsonify({"response": "Docker Socket not initialised"}), 400
+
     try:
         acquire_info()
         return jsonify({"response": True})
     except:
         return jsonify({"response": False})
+
+
+def _docker_socket():
+    if os.getenv("DOCKER_HOST") is None:
+        return False
+
+    return True
+
+
+@app.route('/socket', methods=['PUT'])
+def update_socket():
+    os.environ["DOCKER_HOST"] = request.args.get("dockerhost")
+
+    return jsonify({"response": True})
 
 
 if __name__ == '__main__':

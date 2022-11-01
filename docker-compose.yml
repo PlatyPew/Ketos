@@ -4,8 +4,6 @@ services:
   acquisition:
     build: ./acquisition
     container_name: acquisition
-    environment:
-      - DOCKER_HOST=${VM_SOCKET}
     restart: always
     networks:
       - acquire
@@ -14,7 +12,6 @@ services:
     build: ./analysis/snyk
     container_name: snyk
     environment:
-      - DOCKER_HOST=${VM_SOCKET}
       - SNYK_API_KEY=${SNYK_API_KEY}
     networks:
       - analysis

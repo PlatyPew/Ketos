@@ -39,6 +39,9 @@ app.use("/api/network", network);
 const volume = require("./src/routes/volume");
 app.use("/api/volume", volume);
 
+const socket = require("./src/routes/socket");
+app.use("/api/socket", socket);
+
 // Start Server
 console.log(`Waiting to connect to ${MONGO}`);
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
