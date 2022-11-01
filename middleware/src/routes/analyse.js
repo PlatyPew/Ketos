@@ -6,7 +6,7 @@ const axios = require("axios");
 const { SNYK } = require("../utils/ip");
 
 // Start snyk analysis
-router.get("/vuln/:id", async (req, res) => {
+router.put("/vuln/:id", async (req, res) => {
     const id = req.params.id;
 
     res.setHeader("Content-Type", "application/json");
