@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 
 def get_processes(container_hash):
-    out, err = subprocess.Popen(["docker", "container", "top", container_hash, "-ef"],
+    out, err = subprocess.Popen(["docker", "container", "top", container_hash, "-eLf"],
                                 env=os.environ.copy(),
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE).communicate()
@@ -27,7 +27,8 @@ def get_processes(container_hash):
             "uid": entry[0],
             "pid": int(entry[1]),
             "ppid": int(entry[2]),
-            "cmd": " ".join(entry[7:])
+            "lwp": int(entry[3]),
+            "cmd": " ".join(entry[9:])
         })
 
     return processes
