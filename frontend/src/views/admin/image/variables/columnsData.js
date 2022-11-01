@@ -1,3 +1,24 @@
+export const columnsDataImageInfo = [
+  {
+    Header: "WorkingDir",
+    accessor: "WorkingDir",
+  },
+  {
+    Header: "User",
+    accessor: "User",
+  },
+  {
+    Header: "Hostname",
+    accessor: "Hostname",
+  },
+  {
+    Header: "Button",
+  }
+];
+
+
+
+
 export const columnsDataDevelopment = [
   {
     Header: "Id",
@@ -11,23 +32,10 @@ export const columnsDataDevelopment = [
     Header: "Path",
     accessor: "Path",
   },
-];
-
-export const columnsDataImageInfo = [
-  {
-    Header: "WorkingDir",
-    accessor: "Config.WorkingDir",
-  },
-  {
-    Header: "User",
-    accessor: "Config.User",
-  },
-  {
-    Header: "Hostname",
-    accessor: "Config.Hostname",
-  },
   {
     Header: "Button",
   }
 ];
+
+
 

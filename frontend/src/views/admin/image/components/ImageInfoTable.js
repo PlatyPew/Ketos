@@ -116,6 +116,11 @@ export default function ImageInfoTable(props) {
                       </Text>
                     );
                   }
+                  else if (cell.column.Header === "Button") {
+                    data = (
+                      <Button onClick={onOpen}>View full data</Button>
+                    );
+                  }
                   return (
                     <Td
                       {...cell.getCellProps()}

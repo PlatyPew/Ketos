@@ -10,16 +10,6 @@ import {
   Thead,
   Tr,
   useColorModeValue,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  Button,
-  Code
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/card/Card";
@@ -33,7 +23,7 @@ import {
   useTable,
 } from "react-table";
 
-export default function DevelopmentTable(props) {
+export default function VolumeInfoTable(props) {
   const { columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -48,6 +38,7 @@ export default function DevelopmentTable(props) {
     useSortBy,
     usePagination
   );
+  
 
   const {
     getTableProps,
@@ -62,9 +53,6 @@ export default function DevelopmentTable(props) {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const iconColor = useColorModeValue("secondaryGray.500", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
   return (
     <Card
       direction='column'
@@ -77,10 +65,13 @@ export default function DevelopmentTable(props) {
           fontSize='22px'
           fontWeight='700'
           lineHeight='100%'>
-          Development Table
+          Volume Info Table
         </Text>
         <Button onClick={onOpen}>View full data</Button>
+
+        
       </Flex>
+      
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
           {headerGroups.map((headerGroup, index) => (
@@ -106,30 +97,30 @@ export default function DevelopmentTable(props) {
         <Tbody {...getTableBodyProps()}>
           {page.map((row, index) => {
             prepareRow(row);
+            console.log(row);
             return (
               <Tr {...row.getRowProps()} key={index}>
                 {row.cells.map((cell, index) => {
                   let data = "";
-                  if (cell.column.Header === "Id") {
+                  if (cell.column.Header === "Created At") {
                     data = (
                       <Text color={textColor} fontSize="sm" fontWeight="700">
                         {cell.value}
                       </Text>
                     );
-                  } else if (cell.column.Header === "Created") {
+                  } else if (cell.column.Header === "Driver") {
                     data = (
                       <Text color={textColor} fontSize="sm" fontWeight="700">
                         {cell.value}
                       </Text>
                     );
-                  } else if (cell.column.Header === "Path") {
+                  } else if (cell.column.Header === "Labels") {
                     data = (
                       <Text color={textColor} fontSize="xl" fontWeight="700">
                         {cell.value}
                       </Text>
                     );
-                  }
-                  else if (cell.column.Header === "Button") {
+                  } else if (cell.column.Header === "Button") {
                     data = (
                       <Button onClick={onOpen}>View full data</Button>
                     );
@@ -151,25 +142,6 @@ export default function DevelopmentTable(props) {
           })}
         </Tbody>
       </Table>
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Container Data</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>{JSON.stringify(data)}</Text> #test data
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="brand" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Export</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
-
     </Card>
   );
 }

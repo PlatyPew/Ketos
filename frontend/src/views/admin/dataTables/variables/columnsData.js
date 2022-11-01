@@ -11,7 +11,6 @@ export const columnsDataDevelopment = [
     Header: "Path",
     accessor: "Path",
   },
-  ,
   {
     Header: "Button",
   }

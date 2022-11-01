@@ -128,8 +128,7 @@ export default function DevelopmentTable(props) {
                         {cell.value}
                       </Text>
                     );
-                  }
-                  else if (cell.column.Header === "Button") {
+                  } else if (cell.column.Header === "Button") {
                     data = (
                       <Button onClick={onOpen}>View full data</Button>
                     );

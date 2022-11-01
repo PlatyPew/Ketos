@@ -22,43 +22,25 @@
 
 // Chakra imports
 import { Box } from "@chakra-ui/react";
-//import DevelopmentTable from "views/admin/image/components/DevelopmentTable";
-import ImageInfoTable from "views/admin/image/components/ImageInfoTable";
-import {
-  //columnsDataDevelopment, 
-  columnsDataImageInfo
-} from "views/admin/image/variables/columnsData";
-//import tableDataDevelopment from "views/admin/image/variables/tableDataDevelopment.json";
-import tableDataImageInfo from "views/admin/image/variables/image-info.json";
+import VolumeInfoTable from "views/admin/volume/components/VolumeInfoTable";
+import { 
+  columnsDataVolumeInfo
+} from "views/admin/volume/variables/columnsData";
+import tableDataVolumeInfo from "views/admin/volume/variables/volume-info.json";
 import React from "react";
 
 
 export default function Settings() {
   // Chakra Color Mode
-  console.log(tableDataImageInfo.response.Config.WorkingDir)
+  //console.log(columnsDataVolumeInfo)
   return ( 
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       
-      
-        <ImageInfoTable
-          columnsData={columnsDataImageInfo}
-          tableData={tableDataImageInfo.response.Config}
-          
+      <VolumeInfoTable
+          columnsData={columnsDataVolumeInfo}
+          tableData={tableDataVolumeInfo}
         />
 
     </Box>
   );  
 }
-
-
-/*
-<SimpleGrid
-mb='20px'
-columns={{ sm: 1, md: 2 }}
-spacing={{ base: "20px", xl: "20px" }}>
-
-        <DevelopmentTable
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
-        />
-</SimpleGrid>*/

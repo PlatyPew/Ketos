@@ -1,0 +1,51 @@
+{
+  "response": {
+    "Config": {
+      "Hostname": "",
+      "User": "helper",
+      "Env": [
+        "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D",
+        "PYTHON_VERSION=3.10.7",
+        "PYTHON_PIP_VERSION=22.2.2",
+        "PYTHON_SETUPTOOLS_VERSION=63.2.0",
+        "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/5eaac1050023df1f5c98b173b248c260023f2278/public/get-pip.py",
+        "PYTHON_GET_PIP_SHA256=5aefe6ade911d997af080b315ebcb7f882212d070465df544e1175ac2be519b4"
+      ],
+      "Cmd": [
+        "python3",
+        "-m",
+        "http.server"
+      ],
+      "Volumes": null,
+      "WorkingDir": "/home/helper",
+      "Entrypoint": null
+    },
+    "RootFS": {
+      "Type": "layers",
+      "Layers": [
+        "sha256:5d3e392a13a0fdfbf8806cb4a5e4b0a92b5021103a146249d8a2c999f06a9772",
+        "sha256:2b9a5d7065f7409a953449364887a80927fc6ff4bbbe0716bda71a20a34a35a6",
+        "sha256:2fcf8ef43fa80c3c65a537844ecf9d7bfccfe54525d5d4d89785a799c2984c37",
+        "sha256:7eadf509b853f4649c09db98520fa553c71faeb1a43dc85b2e888e039f6d3907",
+        "sha256:63befb14a37dd3cba8269db292b8c51866e14120c8561cece9f30a2ad4fd7ea0",
+        "sha256:cd636004a98eca8df90a0e0f37d23ecab9d6a8515f751eccf6c4d6baf9381f61",
+        "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+        "sha256:7d40794112d5982b7ddad105bfcdd122db70cdcd80b641a3e36b7e91aeb40562"
+      ]
+    },
+    "Metadata": {
+      "LastTagTime": "0001-01-01T00:00:00.000Z"
+    },
+    "Id": "sha256:641d4df633190213ad7e678e1b005884f73f68376222af34200f1860edaec6f4",
+    "RepoTags": [
+      "vulnbox-helper:latest"
+    ],
+    "Created": "2022-10-10T03:34:13.947Z",
+    "Author": "",
+    "Architecture": "arm64",
+    "Variant": "v8",
+    "Size": 47934459
+  }
+}

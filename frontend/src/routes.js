@@ -18,6 +18,8 @@ import MainDashboard from "views/admin/default";
 import DataTables from "views/admin/dataTables";
 import Image from "views/admin/image";
 import Container from "views/admin/container";
+import Network from "views/admin/network";
+import Volume from "views/admin/volume";
 //import RTL from "views/admin/rtl";
 
 // Auth Imports
@@ -51,6 +53,20 @@ const routes = [
     icon: <Icon as={MdImage} width='20px' height='20px' color='inherit' />,
     path: "/image",
     component: Image,
+  },
+  {
+    name: "Network",
+    layout: "/admin",
+    icon: <Icon as={MdImage} width='20px' height='20px' color='inherit' />,
+    path: "/network",
+    component: Network,
+  },
+  {
+    name: "Volume",
+    layout: "/admin",
+    icon: <Icon as={MdImage} width='20px' height='20px' color='inherit' />,
+    path: "/volume",
+    component: Volume,
   },
   /*{
     name: "Profile",

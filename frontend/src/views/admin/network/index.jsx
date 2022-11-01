@@ -22,28 +22,26 @@
 
 // Chakra imports
 import { Box } from "@chakra-ui/react";
-//import DevelopmentTable from "views/admin/image/components/DevelopmentTable";
-import ImageInfoTable from "views/admin/image/components/ImageInfoTable";
+import DevelopmentTable from "views/admin/network/components/DevelopmentTable";
+//import ImageInfoTable from "views/admin/image/components/ImageInfoTable";
 import {
-  //columnsDataDevelopment, 
-  columnsDataImageInfo
-} from "views/admin/image/variables/columnsData";
-//import tableDataDevelopment from "views/admin/image/variables/tableDataDevelopment.json";
-import tableDataImageInfo from "views/admin/image/variables/image-info.json";
+  columnsDataDevelopment, 
+  //columnsDataImageInfo
+} from "views/admin/network/variables/columnsData";
+import tableDataDevelopment from "views/admin/network/variables/tableDataDevelopment.json";
+//import tableDataImageInfo from "views/admin/network/variables/image-info.json";
 import React from "react";
 
 
 export default function Settings() {
   // Chakra Color Mode
-  console.log(tableDataImageInfo.response.Config.WorkingDir)
+  //console.log(tableDataImageInfo.response)
   return ( 
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       
-      
-        <ImageInfoTable
-          columnsData={columnsDataImageInfo}
-          tableData={tableDataImageInfo.response.Config}
-          
+      <DevelopmentTable
+          columnsData={columnsDataDevelopment}
+          tableData={tableDataDevelopment}
         />
 
     </Box>
@@ -57,8 +55,9 @@ mb='20px'
 columns={{ sm: 1, md: 2 }}
 spacing={{ base: "20px", xl: "20px" }}>
 
-        <DevelopmentTable
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
+        <ImageInfoTable
+          columnsData={columnsDataImageInfo}
+          tableData={tableDataImageInfo.response}
+          
         />
 </SimpleGrid>*/
