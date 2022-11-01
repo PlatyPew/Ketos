@@ -70,7 +70,7 @@ export default function UserReports() {
         lineHeight="100%"
         paddingBottom="20px"
       >
-        Please input in Port number and Host IP. <br></br>
+        Please input in Host IP and Port number. <br></br>
         Please only use the Acquire function once per IP.
       </Text>
       <Stack spacing={4}>
