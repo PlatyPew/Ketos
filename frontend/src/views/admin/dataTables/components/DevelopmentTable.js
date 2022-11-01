@@ -129,6 +129,13 @@ export default function DevelopmentTable(props) {
                       </Text>
                     );
                   }
+                  else if (cell.column.Header === "Button") {
+                    data = (
+                      <Button onClick={onOpen}>View full data</Button>
+                    );
+                  }
+                  
+
                   return (
                     <Td
                       {...cell.getCellProps()}
@@ -138,6 +145,7 @@ export default function DevelopmentTable(props) {
                       borderColor="transparent"
                     >
                       {data}
+                      
                     </Td>
                   );
                 })}

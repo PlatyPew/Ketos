@@ -66,7 +66,7 @@ export default function ImageInfoTable(props) {
           lineHeight='100%'>
           Image Info Table
         </Text>
-        <Menu />
+        <Button onClick={onOpen}>View full data</Button>
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>

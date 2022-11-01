@@ -26,5 +26,8 @@ export const columnsDataImageInfo = [
     Header: "Hostname",
     accessor: "Config.Hostname",
   },
+  {
+    Header: "Button",
+  }
 ];
 

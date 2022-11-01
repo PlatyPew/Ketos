@@ -19,7 +19,7 @@ import {
   ModalCloseButton,
   useDisclosure,
   Button,
-  Code 
+  Code
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/card/Card";
@@ -146,16 +146,14 @@ export default function DevelopmentTable(props) {
           })}
         </Tbody>
       </Table>
-    
-      
-      
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Container Data</ModalHeader> 
+          <ModalHeader>Container Data</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          <Text>{JSON.stringify(data)}</Text> #test data
+            <Text>{JSON.stringify(data)}</Text> #test data
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="brand" mr={3} onClick={onClose}>
@@ -165,6 +163,8 @@ export default function DevelopmentTable(props) {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+
     </Card>
   );
 }
