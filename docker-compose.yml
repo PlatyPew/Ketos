@@ -9,7 +9,7 @@ services:
       - acquire
 
   snyk:
-    build: ./analysis/snyk
+    build: ./analysis/static/snyk
     container_name: snyk
     environment:
       - SNYK_API_KEY=${SNYK_API_KEY}
@@ -17,7 +17,7 @@ services:
       - analysis
 
   metadata:
-    build: ./analysis/metadata
+    build: ./analysis/static/metadata
     container_name: metadata
     networks:
       - analysis
@@ -25,7 +25,7 @@ services:
       - "./middleware/dockerdata:/opt/analysis/dockerdata:rw"
 
   virustotal:
-    build: ./analysis/virustotal
+    build: ./analysis/static/virustotal
     container_name: virustotal
     environment:
       - VIRUSTOTAL_API_KEY=${VT_API_KEY}
@@ -33,13 +33,13 @@ services:
       - analysis
 
   yara:
-    build: ./analysis/yara
+    build: ./analysis/static/yara
     container_name: yara
     networks:
       - analysis
 
   process:
-    build: ./analysis/process
+    build: ./analysis/dynamic/process
     container_name: process
     networks:
       - analysis
