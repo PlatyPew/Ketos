@@ -53,7 +53,7 @@ export default function UserReports() {
 
     await axios.put(`http://127.0.0.1:3000/api/socket`, { params: { host: host, port: port } });
     setAcquireDone(true);
-    //const out = await axios.put(`http://127.0.0.1/api/acquire`);
+    //const out = await axios.put(`http://127.0.0.1:3000/api/acquire`);
     //if (out.data.response === true){
       //setAcquireDone(true);
     //}
