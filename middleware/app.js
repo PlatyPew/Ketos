@@ -27,6 +27,9 @@ app.use("/api/analyse", analyse);
 const staticc = require("./src/routes/static");
 app.use("/api/static", staticc);
 
+const dynamic = require("./src/routes/dynamic");
+app.use("/api/dynamic", dynamic);
+
 const image = require("./src/routes/image");
 app.use("/api/image", image);
 

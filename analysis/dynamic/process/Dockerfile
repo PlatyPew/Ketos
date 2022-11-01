@@ -16,6 +16,6 @@ COPY ./process.py .
 
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 6001
 
 CMD ["python3", "process.py"]
