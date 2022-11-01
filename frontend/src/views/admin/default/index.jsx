@@ -96,17 +96,10 @@ export default function UserReports() {
               borderRadius="16px"
             />
           </InputGroup>
-
-         
           <Button type='Submit' colorScheme="teal" size="md">
             Acquire
           </Button>
         </form>
-        <form onSubmit={()=>{console.log(acquireDone)}}>
-        <Button type='Submit' colorScheme="teal" size="md">
-            YES
-          </Button>
-          </form>
       </Stack>
     </Box>
   );
