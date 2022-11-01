@@ -38,6 +38,12 @@ services:
     networks:
       - analysis
 
+  process:
+    build: ./analysis/process
+    container_name: process
+    networks:
+      - analysis
+
   restapi:
     build: ./middleware
     container_name: restapi
