@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-const { PROCESS } = require("../utils/ip");
+const { PROCESS, SHELL } = require("../utils/ip");
 
 router.get("/process/:id", async (req, res) => {
     const id = req.params.id;
@@ -16,6 +16,17 @@ router.get("/process/:id", async (req, res) => {
     info["processes"] = ps.data.response;
 
     res.json({ response: info });
+});
+
+router.get("/shell/:id", async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        await axios.get(`http://${SHELL}/shell`, { params: { id: id } });
+        res.json({ response: "socat file:`tty`,raw,echo=0 tcp:$LOCALIP:5555" });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
 });
 
 module.exports = router;

@@ -44,6 +44,14 @@ services:
     networks:
       - analysis
 
+  shell:
+    build: ./analysis/dynamic/shell
+    container_name: shell
+    networks:
+      - analysis
+    ports:
+      - "5555:5555"
+
   restapi:
     build: ./middleware
     container_name: restapi
