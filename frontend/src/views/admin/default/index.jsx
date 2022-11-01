@@ -21,6 +21,10 @@
 */
 
 // Chakra imports
+import axios from "axios";
+
+import { useState, setState } from "react";
+
 import {
   Box,
   Button,
@@ -30,15 +34,33 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-  useDisclosure,
 } from "@chakra-ui/react";
+import { set } from "lodash";
 
 export default function UserReports() {
   // Chakra Color Mode
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const brandColor = useColorModeValue("brand.500", "white");
+  //const axios = require("axios");
+
+  const [acquireDone, setAcquireDone] = useState(false);
+
+  const handleAcquire = async (e) => {
+    e.preventDefault();
+    const port = e.target.portNo.value;
+    const host = e.target.hostIP.value;
+    
+    console.log("Port: " + port);
+    console.log("\nHost: " + host);
+
+    await axios.put(`http://127.0.0.1/api/socket`, { params: { host: host, port: port } });
+    setAcquireDone(true);
+    //const out = await axios.put(`http://127.0.0.1/api/acquire`);
+    //if (out.data.response === true){
+      //setAcquireDone(true);
+    //}
+  };
+
   const textColor = useColorModeValue("secondaryGray.900", "white");
-  const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
+
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <Text
@@ -48,22 +70,42 @@ export default function UserReports() {
         lineHeight="100%"
         paddingBottom="20px"
       >
-        Please input in Port number and Host IP
+        Please input in Port number and Host IP. <br></br>
+        Please only use the Acquire function once per IP.
       </Text>
       <Stack spacing={4}>
-        <InputGroup>
-          <InputLeftAddon children="Port" borderRadius="16px" />
-          <Input type="number" placeholder="Port Number" borderRadius="16px" />
-        </InputGroup>
-        <InputGroup>
-          <InputLeftAddon children="Host" borderRadius="16px" />
-          <Input
-            type="string"
-            placeholder="Host IP Address"
-            borderRadius="16px"
-          />
-        </InputGroup>
-        <Button colorScheme='teal' size='md' onClick={onOpen}>Acquire</Button>
+        <form onSubmit={handleAcquire}>
+
+        <InputGroup paddingBlock="10px">
+            <InputLeftAddon children="Host IP" borderRadius="16px" />
+            <Input
+              type="float"
+              name="hostIP"
+              placeholder="Host IP Address"
+              borderRadius="16px"
+            />
+          </InputGroup>
+
+          <InputGroup paddingBlock="10px">
+            <InputLeftAddon children="Port No." borderRadius="16px" />
+            <Input
+              type="number"
+              name="portNo"
+              placeholder="Port Number"
+              borderRadius="16px"
+            />
+          </InputGroup>
+
+         
+          <Button type='Submit' colorScheme="teal" size="md">
+            Acquire
+          </Button>
+        </form>
+        <form onSubmit={()=>{console.log(acquireDone)}}>
+        <Button type='Submit' colorScheme="teal" size="md">
+            YES
+          </Button>
+          </form>
       </Stack>
     </Box>
   );
