@@ -51,7 +51,7 @@ export default function UserReports() {
     console.log("Port: " + port);
     console.log("\nHost: " + host);
 
-    await axios.put(`http://127.0.0.1/api/socket`, { params: { host: host, port: port } });
+    await axios.put(`http://127.0.0.1:3000/api/socket`, { params: { host: host, port: port } });
     setAcquireDone(true);
     //const out = await axios.put(`http://127.0.0.1/api/acquire`);
     //if (out.data.response === true){
