@@ -4,11 +4,45 @@ services:
   acquisition:
     build: ./acquisition
     container_name: acquisition
-    environment:
-      - DOCKER_HOST=${VM_SOCKET}
     restart: always
     networks:
       - acquire
+
+  snyk:
+    build: ./analysis/static/snyk
+    container_name: snyk
+    environment:
+      - SNYK_API_KEY=${SNYK_API_KEY}
+    networks:
+      - analysis
+
+  metadata:
+    build: ./analysis/static/metadata
+    container_name: metadata
+    networks:
+      - analysis
+    volumes:
+      - "./middleware/dockerdata:/opt/analysis/dockerdata:rw"
+
+  virustotal:
+    build: ./analysis/static/virustotal
+    container_name: virustotal
+    environment:
+      - VIRUSTOTAL_API_KEY=${VT_API_KEY}
+    networks:
+      - analysis
+
+  yara:
+    build: ./analysis/static/yara
+    container_name: yara
+    networks:
+      - analysis
+
+  process:
+    build: ./analysis/dynamic/process
+    container_name: process
+    networks:
+      - analysis
 
   restapi:
     build: ./middleware
@@ -17,6 +51,7 @@ services:
     networks:
       - acquire
       - db
+      - analysis
     volumes:
       - "./middleware/dockerdata:/opt/restapi/dockerdata:rw"
     ports:
@@ -40,3 +75,5 @@ networks:
     name: ketos_db_local
   acquire:
     name: ketos_acquire_local
+  analysis:
+    name: ketos_analysis_local

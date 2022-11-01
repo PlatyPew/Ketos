@@ -1,7 +1,13 @@
-const { ImageInfoModel, DockerfileInfoModel, LayerInfoModel } = require("../models/ImageModel");
-const { ContainerInfoModel, DiffInfoModel } = require("../models/ContainerModel");
+const { ImageInfoModel, LayerInfoModel } = require("../models/ImageModel");
+const {
+    ContainerInfoModel,
+    DiffInfoModel,
+    FilesystemInfoModel,
+    FilesOnlyInfoModel,
+} = require("../models/ContainerModel");
 const { VolumeInfoModel } = require("../models/VolumeModel");
 const { NetworkInfoModel } = require("../models/NetworkModel");
+const { DetectInfoModel, MatchInfoModel } = require("../models/StaticAnalysisModel");
 
 const insertImage = async (id, imageInfo) => {
     imageInfo._id = id;
@@ -23,11 +29,6 @@ const insertNetwork = async (id, networkInfo) => {
     return await NetworkInfoModel.insertMany([networkInfo]);
 };
 
-const insertDockerfile = async (id, dockerfile) => {
-    dockerfile._id = id;
-    return await DockerfileInfoModel.insertMany([dockerfile]);
-};
-
 const insertLayer = async (id, layer) => {
     const layers = {
         _id: id,
@@ -46,12 +47,44 @@ const insertDiff = async (id, diff) => {
     return await DiffInfoModel.insertMany([diffs]);
 };
 
+const insertFiles = async (id, files) => {
+    files = _escapeChars(files);
+    await _insertOnlyFiles(id, files);
+    return await FilesystemInfoModel.insertMany([{ _id: id, filesystem: files }]);
+};
+
+const _escapeChars = (files) => {
+    const escapedFiles = files.map((element) => {
+        return element.replace(/\$/g, "\\u0024").replace(/\./g, "\\u002e");
+    });
+
+    return escapedFiles;
+};
+
+const _insertOnlyFiles = async (id, files) => {
+    let onlyFiles = {};
+    let onlyFilesDetect = {};
+    files.forEach((element) => {
+        if (element.charAt(element.length - 1) !== "/") {
+            onlyFiles[element] = { hashsum: "", type: "", strings: "" };
+            onlyFilesDetect[element] = null;
+        }
+    });
+
+    const fileData = { _id: id, filesystem: onlyFiles };
+    const fileDataDetect = { _id: id, filesystem: onlyFilesDetect };
+
+    await FilesOnlyInfoModel.insertMany([fileData]);
+    await DetectInfoModel.insertMany([fileDataDetect]);
+    await MatchInfoModel.insertMany([fileDataDetect]);
+};
+
 module.exports = {
     insertImage: insertImage,
     insertContainer: insertContainer,
     insertVolume: insertVolume,
     insertNetwork: insertNetwork,
-    insertDockerfile: insertDockerfile,
     insertLayer: insertLayer,
     insertDiff: insertDiff,
+    insertFiles: insertFiles,
 };

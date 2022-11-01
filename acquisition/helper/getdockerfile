@@ -42,8 +42,8 @@ def main():
 
     layers = layers[::-1]
 
-    final = {"Id": image_id, "dockerfile": "\n".join(layers)}
-    print(json.dumps(final))
+    with open(f"{image_id}.dockerfile", "w") as f:
+        f.write("\n".join(layers))
 
 
 if __name__ == '__main__':

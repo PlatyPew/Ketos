@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 import subprocess
 import os
@@ -24,7 +24,8 @@ def run_cmd(cmd):
                                 stderr=subprocess.PIPE).communicate()
 
     if err:
-        return False
+        print(err)
+        error_msg()
 
     return out.decode().strip()
 
@@ -46,25 +47,20 @@ def send_info(url_path, data, identifier=True):
         else:
             iden = entry["Name"]
 
-        r = requests.post(f"{API_URL}{url_path}/{iden}", json=entry)
+        r = requests.put(f"{API_URL}{url_path}/{iden}", json=entry)
         if r.status_code != 200:
             error_msg()
 
 
 def get_dockerfile(image_hashes):
-    final = []
     for iden in image_hashes:
-        dockerfile = run_cmd(["./helper/getdockerfile", iden])
-        final.append(json.loads(dockerfile))
-
-    return final
+        run_cmd(["./helper/getdockerfile", iden])
 
 
-def send_dockerfile(url_path, image_hashes, data):
-    for hashh, entry in zip(image_hashes, data):
-        r = requests.post(f"{API_URL}{url_path}/{hashh}", json=entry)
-        if r.status_code != 200:
-            error_msg()
+def send_dockerfile(url_path, dockerfile_path):
+    r = requests.put(f"{API_URL}{url_path}", files={"file": open(dockerfile_path, 'r')})
+    if r.status_code != 200:
+        error_msg()
 
 
 def get_logs(container_hashes):
@@ -82,13 +78,13 @@ def get_diffs(container_hashes):
 
 
 def send_diffs(url_path, container_hash, diff):
-    r = requests.post(f"{API_URL}{url_path}/{container_hash}", json=diff)
+    r = requests.put(f"{API_URL}{url_path}/{container_hash}", json=diff)
     if r.status_code != 200:
         error_msg()
 
 
 def send_logs(url_path, log_path):
-    r = requests.post(f"{API_URL}{url_path}", files={"file": open(log_path, 'r')})
+    r = requests.put(f"{API_URL}{url_path}", files={"file": open(log_path, 'r')})
     if r.status_code != 200:
         error_msg()
 
@@ -104,7 +100,7 @@ def get_container(container_hashes):
 
 
 def send_file(url_path, image_path):
-    r = requests.post(f"{API_URL}{url_path}", files={"file": open(image_path, 'rb')})
+    r = requests.put(f"{API_URL}{url_path}", files={"file": open(image_path, 'rb')})
     if r.status_code != 200:
         error_msg()
 
@@ -118,8 +114,23 @@ def get_layers(image_hashes):
     return layers
 
 
+def get_files(container_hashes):
+    files = []
+    for hashh in container_hashes:
+        file = run_cmd(["./helper/getfilesystem", f"{hashh}.tar.gz"])
+        files.append(json.loads(file))
+
+    return files
+
+
+def send_files(url_path, container_hash, file):
+    r = requests.put(f"{API_URL}{url_path}/{container_hash}", json=file)
+    if r.status_code != 200:
+        error_msg()
+
+
 def send_layers(url_path, image_hash, layers):
-    r = requests.post(f"{API_URL}{url_path}/{image_hash}", json=layers)
+    r = requests.put(f"{API_URL}{url_path}/{image_hash}", json=layers)
     if r.status_code != 200:
         error_msg()
 
@@ -144,8 +155,9 @@ def acquire_info():
 
     # Send dockerfiles
     image_hashes = get_info(["./helper/listimage"])
-    dockerfiles = get_dockerfile(image_hashes)
-    send_dockerfile("/image/dockerfile", image_hashes, dockerfiles)
+    get_dockerfile(image_hashes)
+    for hashh in image_hashes:
+        send_dockerfile("/image/dockerfile", f"{hashh}.dockerfile")
     print("Image dockerfile sent")
 
     # Sending logs
@@ -179,13 +191,20 @@ def acquire_info():
         send_layers("/image/layer", hashh, layer)
     print("Imager layers sent")
 
+    # Sending container filesystem
+    files = get_files(container_hashes)
+    for hashh, file in zip(container_hashes, files):
+        send_files("/container/files", hashh, file)
+    print("Container filesystem sent")
+
     # Clean files
     for hashh in image_hashes:
+        os.remove(f"{hashh}.dockerfile")
         os.remove(f"{hashh}.tar.gz")
         shutil.rmtree(hashh)
 
     for hashh in container_hashes:
-        os.remove(f"{hashh}.json")
+        os.remove(f"{hashh}.log")
         os.remove(f"{hashh}.tar.gz")
 
     print("Files cleaned")
@@ -193,6 +212,9 @@ def acquire_info():
 
 @app.route('/acquire', methods=['GET'])
 def start():
+    if not _docker_socket:
+        return jsonify({"response": "Docker Socket not initialised"}), 400
+
     try:
         acquire_info()
         return jsonify({"response": True})
@@ -200,5 +222,19 @@ def start():
         return jsonify({"response": False})
 
 
+def _docker_socket():
+    if os.getenv("DOCKER_HOST") is None:
+        return False
+
+    return True
+
+
+@app.route('/socket', methods=['PUT'])
+def update_socket():
+    os.environ["DOCKER_HOST"] = request.args.get("dockerhost")
+
+    return jsonify({"response": True})
+
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=5000)

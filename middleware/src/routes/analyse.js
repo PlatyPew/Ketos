@@ -3,13 +3,15 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-const { ACQUIRER } = require("../utils/ip");
+const { SNYK } = require("../utils/ip");
 
-// Start acquisition
-router.put("/", async (req, res) => {
+// Start snyk analysis
+router.put("/vuln/:id", async (req, res) => {
+    const id = req.params.id;
+
     res.setHeader("Content-Type", "application/json");
 
-    const out = await axios.get(`http://${ACQUIRER}/acquire`);
+    const out = await axios.get(`http://${SNYK}/vulnscan`, { params: { id: id } });
     res.json(out.data);
 });
 

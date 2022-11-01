@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
+const axios = require("axios");
 
 const insert = require("../utils/insertinfo");
 const get = require("../utils/getinfo");
@@ -14,6 +15,8 @@ const storage = multer.diskStorage({
     },
 });
 const upload = multer({ storage: storage });
+
+const { METADATA } = require("../utils/ip");
 
 /**
  * Get data from frontend
@@ -74,6 +77,19 @@ router.get("/logs/:id", async (req, res) => {
     }
 });
 
+// Get container diff by ID
+router.get("/diff/:id", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getDiffInfoBrief(id);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 // Allow container download
 router.get("/fs/:id", async (req, res) => {
     const id = req.params.id;
@@ -83,12 +99,43 @@ router.get("/fs/:id", async (req, res) => {
     else res.status(500).json({ response: "File not found" });
 });
 
+// Get specific file
+router.get("/fs/:id/single", async (req, res) => {
+    const file = req.query.file;
+    const id = req.params.id;
+
+    try {
+        const content = await axios.get(`http://${METADATA}/file`, {
+            params: { id: id, file: file },
+        });
+
+        res.setHeader("Content-Type", "application/octet-stream");
+        res.setHeader("Content-Disposition", `attachment; filename=${file}`);
+        res.send(content.data);
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
+// Get container filesystem upload by ID
+router.get("/filestruct/:id", async (req, res) => {
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await get.getFiles(id);
+        res.json({ response: out });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 /**
  * Insertion of data from acquisition
  */
 
 // Insert container inspected info
-router.post("/info/:id", async (req, res) => {
+router.put("/info/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -102,7 +149,7 @@ router.post("/info/:id", async (req, res) => {
 });
 
 // Insert container diff
-router.post("/diff/:id", async (req, res) => {
+router.put("/diff/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -116,7 +163,7 @@ router.post("/diff/:id", async (req, res) => {
 });
 
 // Allow container upload
-router.post("/fs", upload.single("file"), (req, res) => {
+router.put("/fs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
@@ -124,11 +171,25 @@ router.post("/fs", upload.single("file"), (req, res) => {
 });
 
 // Allow container logs upload
-router.post("/logs", upload.single("file"), (req, res) => {
+router.put("/logs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
     res.json({ response: file });
+});
+
+// Allow container filesystem upload
+router.put("/files/:id", async (req, res) => {
+    const data = req.body;
+    const id = req.params.id;
+
+    res.setHeader("Content-Type", "application/json");
+    try {
+        const out = await insert.insertFiles(id, data);
+        res.json({ response: out[0] });
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
 });
 
 module.exports = router;

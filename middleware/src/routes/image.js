@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
+const axios = require("axios");
 
 const insert = require("../utils/insertinfo");
 const get = require("../utils/getinfo");
@@ -14,6 +15,8 @@ const storage = multer.diskStorage({
     },
 });
 const upload = multer({ storage: storage });
+
+const { METADATA } = require("../utils/ip");
 
 /**
  * Get data from frontend
@@ -62,8 +65,12 @@ router.get("/dockerfile/:id", async (req, res) => {
 
     res.setHeader("Content-Type", "application/json");
     try {
-        const out = await get.getDockerfile(id);
-        res.json({ response: out });
+        const dockerfile = fs.readFileSync(`./dockerdata/image/${id}.dockerfile`, {
+            encoding: "utf8",
+            flag: "r",
+        });
+
+        res.json({ response: dockerfile });
     } catch (err) {
         res.status(500).json({ response: err });
     }
@@ -91,12 +98,31 @@ router.get("/fs/:id", async (req, res) => {
     else res.status(500).json({ response: "File not found" });
 });
 
+// Allow file download from layer
+router.get("/fs/:id/:layerid", async (req, res) => {
+    const id = req.params.id;
+    const layerid = req.params.layerid;
+    const file = req.query.file;
+
+    try {
+        const content = await axios.get(`http://${METADATA}/layerfile`, {
+            params: { id: id, layerid: layerid, file: file },
+        });
+
+        res.setHeader("Content-Type", "application/octet-stream");
+        res.setHeader("Content-Disposition", `attachment; filename=${file}`);
+        res.send(content.data);
+    } catch (err) {
+        res.status(500).json({ response: err });
+    }
+});
+
 /**
  * Insertion of data from acquisition
  */
 
 // Insert image inspected info
-router.post("/info/:id", async (req, res) => {
+router.put("/info/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -110,21 +136,15 @@ router.post("/info/:id", async (req, res) => {
 });
 
 // Insert image dockerfile
-router.post("/dockerfile/:id", async (req, res) => {
-    const data = req.body;
-    const id = req.params.id;
+router.put("/dockerfile", upload.single("file"), (req, res) => {
+    const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
-    try {
-        const out = await insert.insertDockerfile(id, data);
-        res.json({ response: out[0] });
-    } catch (err) {
-        res.status(500).json({ response: err });
-    }
+    res.json({ response: file });
 });
 
 // Insert image layers
-router.post("/layer/:id", async (req, res) => {
+router.put("/layer/:id", async (req, res) => {
     const data = req.body;
     const id = req.params.id;
 
@@ -138,7 +158,7 @@ router.post("/layer/:id", async (req, res) => {
 });
 
 // Allow image upload
-router.post("/fs", upload.single("file"), (req, res) => {
+router.put("/fs", upload.single("file"), (req, res) => {
     const file = req.file;
 
     res.setHeader("Content-Type", "application/json");
