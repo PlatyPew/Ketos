@@ -48,15 +48,16 @@ export default function UserReports() {
     const port = e.target.portNo.value;
     const host = e.target.hostIP.value;
     
-    console.log("Port: " + port);
-    console.log("\nHost: " + host);
+    console.log("Host: " + host);
+    console.log("\nPort: " + port);
 
-    await axios.put(`http://127.0.0.1:3000/api/socket`, { params: { host: host, port: port } });
-    setAcquireDone(true);
-    //const out = await axios.put(`http://127.0.0.1:3000/api/acquire`);
-    //if (out.data.response === true){
-      //setAcquireDone(true);
-    //}
+    await axios.put(`http://127.0.0.1:3000/api/socket`, null, { params: { host: host, port: port } });
+    console.log("Waiting");
+    const out = await axios.put(`http://127.0.0.1:3000/api/acquire`);
+    console.log(out.data.response);
+    if (out.data.response === true){
+      setAcquireDone(true);
+    }
   };
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
