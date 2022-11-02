@@ -42,21 +42,31 @@ export default function UserReports() {
   //const axios = require("axios");
 
   const [acquireDone, setAcquireDone] = useState(false);
+  const [isButtonLoad, setIsButtonLoad] = useState(false);
 
   const handleAcquire = async (e) => {
     e.preventDefault();
     const port = e.target.portNo.value;
     const host = e.target.hostIP.value;
-    
-    console.log("Host: " + host);
-    console.log("\nPort: " + port);
 
-    await axios.put(`http://127.0.0.1:3000/api/socket`, null, { params: { host: host, port: port } });
+    setIsButtonLoad(true);
+
+    console.log("Host: " + host);
+    console.log("Port: " + port);
+
+    await axios.put(`http://127.0.0.1:3000/api/socket`, null, {
+      params: { host: host, port: port },
+    });
     console.log("Waiting");
     const out = await axios.put(`http://127.0.0.1:3000/api/acquire`);
     console.log(out.data.response);
-    if (out.data.response === true){
+    if (out.data.response === true) {
       setAcquireDone(true);
+      setIsButtonLoad(false);
+      console.log("Acquired was successfully completed");
+    } else {
+      setIsButtonLoad(false);
+      console.log("Acquiring Failed");
     }
   };
 
@@ -76,8 +86,7 @@ export default function UserReports() {
       </Text>
       <Stack spacing={4}>
         <form onSubmit={handleAcquire}>
-
-        <InputGroup paddingBlock="10px">
+          <InputGroup paddingBlock="10px">
             <InputLeftAddon children="Host IP" borderRadius="16px" />
             <Input
               type="float"
@@ -86,7 +95,6 @@ export default function UserReports() {
               borderRadius="16px"
             />
           </InputGroup>
-
           <InputGroup paddingBlock="10px">
             <InputLeftAddon children="Port No." borderRadius="16px" />
             <Input
@@ -96,9 +104,21 @@ export default function UserReports() {
               borderRadius="16px"
             />
           </InputGroup>
-          <Button type='Submit' colorScheme="teal" size="md">
-            Acquire
-          </Button>
+          {isButtonLoad ? (
+            <Button
+              isLoading
+              loadingText="Acquiring"
+              type="Submit"
+              colorScheme="teal"
+              size="md"
+            >
+              Acquire
+            </Button>
+          ) : (
+            <Button type="Submit" colorScheme="teal" size="md">
+              Acquire
+            </Button>
+          )}
         </form>
       </Stack>
     </Box>
