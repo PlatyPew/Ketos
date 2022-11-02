@@ -84,7 +84,6 @@ import {
               as="s">
               Container Diff is fucked
             </Text>
-            <Button onClick={onOpen}>View full data</Button>
           </Flex>
           <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
             <Thead>

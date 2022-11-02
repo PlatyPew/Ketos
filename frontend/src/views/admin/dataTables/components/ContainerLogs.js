@@ -1,4 +1,5 @@
 import {
+    Box,
     Flex,
     //Progress,
     Table,
@@ -63,7 +64,7 @@ export default function ImageDockerFile(props) {
                     fontSize='22px'
                     fontWeight='700'
                     lineHeight='100%'>
-                    Container Logs
+                     Truncated Container Logs
                 </Text>
             </Flex>
             <Table {...getTableProps()} variant="simple" color={textColor}>
@@ -97,9 +98,11 @@ export default function ImageDockerFile(props) {
                                     let data = "";
                                     if (cell.column.Header === "Logs") {
                                         data = (
-                                            <Text color={textColor} fontSize="xs" fontWeight="700">
-                                                {cell.value}
-                                            </Text>
+                                            <Box overflow="hidden">
+                                                <Text color={textColor} fontSize="xs" fontWeight="700" noOfLines={[1, 2, 3, 4, 5]}>
+                                                    {cell.value}
+                                                </Text>
+                                            </Box>
                                         );
                                     }
                                     return (
