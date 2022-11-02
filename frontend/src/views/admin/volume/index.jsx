@@ -27,6 +27,7 @@ import {
   columnsDataVolumeInfo
 } from "views/admin/volume/variables/columnsData";
 import tableDataVolumeInfo from "views/admin/volume/variables/volume-info.json";
+import { json2array } from "../default/components/json2array";
 import React from "react";
 
 
@@ -38,7 +39,7 @@ export default function Settings() {
       
       <VolumeInfoTable
           columnsData={columnsDataVolumeInfo}
-          tableData={tableDataVolumeInfo}
+          tableData={json2array(tableDataVolumeInfo)}
         />
 
     </Box>

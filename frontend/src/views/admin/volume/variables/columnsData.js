@@ -4,12 +4,12 @@ export const columnsDataVolumeInfo = [
     accessor: "CreatedAt",
   },
   {
-    Header: "Driver",
-    accessor: "Driver",
+    Header: "Name",
+    accessor: "Name",
   },
   {
-    Header: "Labels",
-    accessor: "Labels",
+    Header: "Mountpoint",
+    accessor: "Mountpoint",
   },
   {
     Header: "Button"

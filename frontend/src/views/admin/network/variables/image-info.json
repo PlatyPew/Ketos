@@ -1,9 +1,0 @@
-{
-  "response": {
-    "Config": {
-      "Hostname": "",
-      "User": "helper",
-      "WorkingDir": "/home/helper"
-    }
-  }
-}

@@ -22,14 +22,12 @@
 
 // Chakra imports
 import { Box } from "@chakra-ui/react";
-import DevelopmentTable from "views/admin/network/components/DevelopmentTable";
-//import ImageInfoTable from "views/admin/image/components/ImageInfoTable";
+import NetworkInfoTable from "views/admin/network/components/NetworkTable";
 import {
-  columnsDataDevelopment, 
-  //columnsDataImageInfo
+  columnsDataNetwork, 
 } from "views/admin/network/variables/columnsData";
-import tableDataDevelopment from "views/admin/network/variables/tableDataDevelopment.json";
-//import tableDataImageInfo from "views/admin/network/variables/image-info.json";
+import tableDataNetwork from "views/admin/network/variables/network-info.json";
+import { json2array } from "../default/components/json2array";
 import React from "react";
 
 
@@ -39,25 +37,12 @@ export default function Settings() {
   return ( 
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       
-      <DevelopmentTable
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
+      <NetworkInfoTable
+          columnsData={columnsDataNetwork}
+          tableData={json2array(tableDataNetwork)}
         />
 
     </Box>
   );  
 }
 
-
-/*
-<SimpleGrid
-mb='20px'
-columns={{ sm: 1, md: 2 }}
-spacing={{ base: "20px", xl: "20px" }}>
-
-        <ImageInfoTable
-          columnsData={columnsDataImageInfo}
-          tableData={tableDataImageInfo.response}
-          
-        />
-</SimpleGrid>*/

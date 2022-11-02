@@ -1,41 +1,25 @@
 export const columnsDataImageInfo = [
   {
     Header: "WorkingDir",
-    accessor: "WorkingDir",
+    accessor: "Config.WorkingDir",
   },
   {
     Header: "User",
-    accessor: "User",
+    accessor: "Config.User",
   },
   {
-    Header: "Hostname",
-    accessor: "Hostname",
-  },
-  {
-    Header: "Button",
-  }
-];
-
-
-
-
-export const columnsDataDevelopment = [
-  {
-    Header: "Id",
-    accessor: "Id",
-  },
-  {
-    Header: "Created",
-    accessor: "Created",
-  },
-  {
-    Header: "Path",
-    accessor: "Path",
+    Header: "Architecture",
+    accessor: "Architecture",
   },
   {
     Header: "Button",
   }
 ];
 
-
+export const columnsDataImageID = [
+  {
+    Header: "ID",
+    accessor: "0",
+  }
+];
 

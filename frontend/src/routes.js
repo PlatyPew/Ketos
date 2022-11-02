@@ -6,8 +6,8 @@ import {
   //MdPerson,
   MdHome,
   MdImage,
-  MdSquareFoot
-  //MdLock,
+  MdSquareFoot,
+  MdLock,
   //MdOutlineShoppingCart,
 } from "react-icons/md";
 
@@ -15,9 +15,9 @@ import {
 import MainDashboard from "views/admin/default";
 //import NFTMarketplace from "views/admin/marketplace";
 //import Profile from "views/admin/profile";
-import DataTables from "views/admin/dataTables";
+import DataTables from "views/admin/dataTables"; // Container Page
 import Image from "views/admin/image";
-import Container from "views/admin/container";
+//import Container from "views/admin/container";
 import Network from "views/admin/network";
 import Volume from "views/admin/volume";
 //import RTL from "views/admin/rtl";
@@ -33,17 +33,10 @@ const routes = [
     icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
     component: MainDashboard,
   },
-  {
-    name: "Container Dashboard",
+    {
+    name: "Container",
     layout: "/admin",
-    path: "/container",
     icon: <Icon as={MdSquareFoot} width='20px' height='20px' color='inherit' />,
-    component: Container,
-  },
-  {
-    name: "Data Tables",
-    layout: "/admin",
-    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
     path: "/data-tables",
     component: DataTables,
   },
@@ -57,18 +50,28 @@ const routes = [
   {
     name: "Network",
     layout: "/admin",
-    icon: <Icon as={MdImage} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
     path: "/network",
     component: Network,
   },
   {
     name: "Volume",
     layout: "/admin",
-    icon: <Icon as={MdImage} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
     path: "/volume",
     component: Volume,
   },
-  /*{
+  /*
+  {
+    name: "Container Dashboard",
+    layout: "/admin",
+    path: "/container",
+    icon: <Icon as={MdSquareFoot} width='20px' height='20px' color='inherit' />,
+    component: Container,
+  },
+  
+
+  {
     name: "Profile",
     layout: "/admin",
     path: "/profile",

@@ -23,20 +23,23 @@
 // Chakra imports
 import { Box } from "@chakra-ui/react";
 import DevelopmentTable from "views/admin/dataTables/components/DevelopmentTable";
-//import TestScrollingModal from "views/admin/dataTables/components/DevelopmentTable";
 import {
   columnsDataDevelopment,
 } from "views/admin/dataTables/variables/columnsData";
-import tableDataDevelopment from "views/admin/dataTables/variables/tableDataDevelopment.json";
+import tableDataDevelopment from "views/admin/dataTables/variables/container-info.json";
+import { json2array } from "../default/components/json2array";
 import React from "react";
 
 export default function Settings() {
   // Chakra Color Mode
+  //console.log(tableDataDevelopment["response"])
+  console.log(json2array(tableDataDevelopment))
+ //console.log(test)
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
         <DevelopmentTable
           columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
+          tableData={json2array(tableDataDevelopment)}
         />
     </Box>
   );

@@ -19,13 +19,16 @@ import {
   ModalCloseButton,
   useDisclosure,
   Button,
-  Code 
+  Icon
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/card/Card";
 //import { AndroidLogo, AppleLogo, WindowsLogo } from "components/icons/Icons";
-import Menu from "components/menu/MainMenu";
+//import Menu from "components/menu/MainMenu";
 import React, { useMemo } from "react";
+//import TreeItem from '@mui/lab/TreeItem';
+//import TreeView from '@mui/lab/TreeView';
+//import { MdArrowDropDown, MdChevronRight } from 'react-icons/md'
 import {
   useGlobalFilter,
   usePagination,
@@ -65,114 +68,135 @@ export default function DevelopmentTable(props) {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  return (
-    <Card
-      direction='column'
-      w='100%'
-      px='0px'
-      overflowX={{ sm: "scroll", lg: "hidden" }}>
-      <Flex px='25px' justify='space-between' mb='20px' align='center'>
-        <Text
-          color={textColor}
-          fontSize='22px'
-          fontWeight='700'
-          lineHeight='100%'>
-          Development Table
-        </Text>
-        <Button onClick={onOpen}>View full data</Button>
-      </Flex>
-      <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
-        <Thead>
-          {headerGroups.map((headerGroup, index) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
-              {headerGroup.headers.map((column, index) => (
-                <Th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  pe='10px'
-                  key={index}
-                  borderColor={borderColor}>
-                  <Flex
-                    justify='space-between'
-                    align='center'
-                    fontSize={{ sm: "10px", lg: "12px" }}
-                    color='gray.400'>
-                    {column.render("Header")}
-                  </Flex>
-                </Th>
-              ))}
-            </Tr>
-          ))}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {page.map((row, index) => {
-            prepareRow(row);
-            return (
-              <Tr {...row.getRowProps()} key={index}>
-                {row.cells.map((cell, index) => {
-                  let data = "";
-                  if (cell.column.Header === "Id") {
-                    data = (
-                      <Text color={textColor} fontSize="sm" fontWeight="700">
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "Created") {
-                    data = (
-                      <Text color={textColor} fontSize="sm" fontWeight="700">
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "Path") {
-                    data = (
-                      <Text color={textColor} fontSize="xl" fontWeight="700">
-                        {cell.value}
-                      </Text>
-                    );
-                  }
-                  else if (cell.column.Header === "Button") {
-                    data = (
-                      <Button onClick={onOpen}>View full data</Button>
-                    );
-                  }
-                  
 
-                  return (
-                    <Td
-                      {...cell.getCellProps()}
-                      key={index}
-                      fontSize={{ sm: "14px" }}
-                      minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                      borderColor="transparent"
-                    >
-                      {data}
-                      
-                    </Td>
-                  );
-                })}
+    return (
+      <Card
+        direction='column'
+        w='100%'
+        px='0px'
+        overflowX={{ sm: "scroll", lg: "hidden" }}>
+        <Flex px='25px' justify='space-between' mb='20px' align='center'>
+          <Text
+            color={textColor}
+            fontSize='22px'
+            fontWeight='700'
+            lineHeight='100%'>
+            Container Info Table
+          </Text>
+          <Button onClick={onOpen}>View full data</Button>
+        </Flex>
+        <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
+          <Thead>
+            {headerGroups.map((headerGroup, index) => (
+              <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                {headerGroup.headers.map((column, index) => (
+                  <Th
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    pe='10px'
+                    key={index}
+                    borderColor={borderColor}>
+                    <Flex
+                      justify='space-between'
+                      align='center'
+                      fontSize={{ sm: "10px", lg: "12px" }}
+                      color='gray.400'>
+                      {column.render("Header")}
+                    </Flex>
+                  </Th>
+                ))}
               </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-    
-      
-      
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Container Data</ModalHeader> 
-          <ModalCloseButton />
-          <ModalBody>
-          <Text>{JSON.stringify(data)}</Text> #test data
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="brand" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Export</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Card>
-  );
-}
+            ))}
+          </Thead>
+          <Tbody {...getTableBodyProps()}>
+            {page.map((row, index) => {
+              prepareRow(row);
+              return (
+                <Tr {...row.getRowProps()} key={index}>
+                  {row.cells.map((cell, index) => {
+                    let data = "";
+                    if (cell.column.Header === "Id") {
+                      data = (
+                        <Text color={textColor} fontSize="sm" fontWeight="700">
+                          {cell.value}
+                        </Text>
+                      );
+                    } else if (cell.column.Header === "Created") {
+                      data = (
+                        <Text color={textColor} fontSize="sm" fontWeight="700">
+                          {cell.value}
+                        </Text>
+                      );
+                    } else if (cell.column.Header === "Path") {
+                      data = (
+                        <Text color={textColor} fontSize="sm" fontWeight="700">
+                          {cell.value}
+                        </Text>
+                      );
+                    }
+                    else if (cell.column.Header === "Button") {
+                      data = (
+                        <Button onClick={onOpen}>View full data</Button>
+                      );
+                    }
+
+
+                    return (
+                      <Td
+                        {...cell.getCellProps()}
+                        key={index}
+                        fontSize={{ sm: "14px" }}
+                        minW={{ sm: "150px", md: "200px", lg: "auto" }}
+                        borderColor="transparent"
+                      >
+                        {data}
+
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </Table>
+
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Container Data</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+             
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="brand" mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button variant="ghost">Export</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Card>
+    );
+  }
+
+  /*
+
+   <TreeItem key={index} nodeId={data.id} label={nodes.name}>
+                {Array.isArray(nodes.children)
+                  ? nodes.children.map((node) => renderTree(node))
+                  : null}
+              </TreeItem>
+
+
+              <TreeView
+                aria-label="rich object"
+                defaultCollapseIcon={<MdArrowDropDown />}
+                defaultExpanded={['root']}
+                defaultExpandIcon={<MdChevronRight />}
+                sx={{ height: 110, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+              >
+                {renderTree(data)}
+              </TreeView>
+
+              */

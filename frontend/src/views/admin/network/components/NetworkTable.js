@@ -1,7 +1,8 @@
+/* eslint-disable */
 import {
   Flex,
+  //Progress,
   Table,
-  Checkbox,
   Tbody,
   Td,
   Text,
@@ -9,7 +10,21 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Button,
+  Code
 } from "@chakra-ui/react";
+// Custom components
+import Card from "components/card/Card";
+//import { AndroidLogo, AppleLogo, WindowsLogo } from "components/icons/Icons";
+import Menu from "components/menu/MainMenu";
 import React, { useMemo } from "react";
 import {
   useGlobalFilter,
@@ -18,10 +33,7 @@ import {
   useTable,
 } from "react-table";
 
-// Custom components
-import Card from "components/card/Card";
-import Menu from "components/menu/MainMenu";
-export default function CheckTable(props) {
+export default function NetworkInfoTable(props) {
   const { columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -48,7 +60,11 @@ export default function CheckTable(props) {
   initialState.pageSize = 11;
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
+  const iconColor = useColorModeValue("secondaryGray.500", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   return (
     <Card
       direction='column'
@@ -61,9 +77,9 @@ export default function CheckTable(props) {
           fontSize='22px'
           fontWeight='700'
           lineHeight='100%'>
-          Check Table
+          Network Info
         </Text>
-        <Menu />
+        <Button onClick={onOpen}>View full data</Button>
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
@@ -94,51 +110,38 @@ export default function CheckTable(props) {
               <Tr {...row.getRowProps()} key={index}>
                 {row.cells.map((cell, index) => {
                   let data = "";
-                  if (cell.column.Header === "NAME") {
+                  if (cell.column.Header === "Id") {
                     data = (
-                      <Flex align='center'>
-                        <Checkbox
-                          defaultChecked={cell.value[1]}
-                          colorScheme='brandScheme'
-                          me='10px'
-                        />
-                        <Text color={textColor} fontSize='sm' fontWeight='700'>
-                          {cell.value[0]}
-                        </Text>
-                      </Flex>
-                    );
-                  } else if (cell.column.Header === "PROGRESS") {
-                    data = (
-                      <Flex align='center'>
-                        <Text
-                          me='10px'
-                          color={textColor}
-                          fontSize='sm'
-                          fontWeight='700'>
-                          {cell.value}%
-                        </Text>
-                      </Flex>
-                    );
-                  } else if (cell.column.Header === "QUANTITY") {
-                    data = (
-                      <Text color={textColor} fontSize='sm' fontWeight='700'>
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
                         {cell.value}
                       </Text>
                     );
-                  } else if (cell.column.Header === "DATE") {
+                  } else if (cell.column.Header === "Name") {
                     data = (
-                      <Text color={textColor} fontSize='sm' fontWeight='700'>
+                      <Text color={textColor} fontSize="xl" fontWeight="700">
                         {cell.value}
                       </Text>
+                    );
+                  } else if (cell.column.Header === "Created") {
+                    data = (
+                      <Text color={textColor} fontSize="sm" fontWeight="700">
+                        {cell.value}
+                      </Text>
+                    );
+                  }else if (cell.column.Header === "Button") {
+                    data = (
+                      <Button onClick={onOpen}>View full data</Button>
                     );
                   }
+
                   return (
                     <Td
                       {...cell.getCellProps()}
                       key={index}
                       fontSize={{ sm: "14px" }}
                       minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                      borderColor='transparent'>
+                      borderColor="transparent"
+                    >
                       {data}
                     </Td>
                   );
@@ -148,6 +151,25 @@ export default function CheckTable(props) {
           })}
         </Tbody>
       </Table>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Container Data</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>{JSON.stringify(data)}</Text> #test data
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="brand" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost">Export</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+
     </Card>
   );
 }
