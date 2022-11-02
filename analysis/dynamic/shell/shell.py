@@ -3,7 +3,6 @@ from flask import Flask, jsonify, request
 
 import os
 import sys
-import signal
 
 app = Flask(__name__)
 
