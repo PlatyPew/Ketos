@@ -50,7 +50,7 @@ services:
     networks:
       - analysis
     ports:
-      - "5555:5555"
+      - "2323:2323"
 
   restapi:
     build: ./middleware

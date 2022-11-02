@@ -23,7 +23,7 @@ router.get("/shell/:id", async (req, res) => {
 
     try {
         await axios.get(`http://${SHELL}/shell`, { params: { id: id } });
-        res.json({ response: "socat file:`tty`,raw,echo=0 tcp:$LOCALIP:5555" });
+        res.json({ response: "Telnet service running on port 2323" });
     } catch (err) {
         res.status(500).json({ response: err });
     }

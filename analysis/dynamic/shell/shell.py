@@ -11,9 +11,10 @@ app = Flask(__name__)
 def start_shell(container_hash, shell="sh"):
     pid = os.fork()
     if pid == 0:
-        os.system(
-            f"socat exec:'docker exec -it {container_hash} {shell}',pty,stderr,setsid,sigint,sane" +
-            " tcp-l:5555,reuseaddr")
+        os.system(' '.join([
+            f"socat exec:'docker exec -it {container_hash} {shell}',pty,stderr,setsid,sigint,sane",
+            "tcp-l:2323,reuseaddr"
+        ]))
 
         sys.exit()
 
