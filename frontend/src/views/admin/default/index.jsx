@@ -63,7 +63,7 @@ export default function UserReports() {
     if (out.data.response === true) {
       setAcquireDone(true);
       setIsButtonLoad(false);
-      console.log("Acquired was successfully completed");
+      console.log("Acquiring was successfully completed");
     } else {
       setIsButtonLoad(false);
       console.log("Acquiring Failed");
