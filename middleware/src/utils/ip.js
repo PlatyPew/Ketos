@@ -7,4 +7,5 @@ module.exports = {
 
     PROCESS: "process:6001",
     SHELL: "shell:6002",
+    TRAFFIC: "traffic:6003",
 };

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-const { ACQUIRER, SNYK, PROCESS, SHELL } = require("../utils/ip");
+const { ACQUIRER, SNYK, PROCESS, SHELL, TRAFFIC } = require("../utils/ip");
 
 router.put("/", async (req, res) => {
     const host = req.query.host;
@@ -24,7 +24,11 @@ router.put("/", async (req, res) => {
         params: { dockerhost: `${host}:${port}` },
     });
 
-    await Promise.all([acquire, snyk, process, shell]);
+    const traffic = axios.put(`http://${TRAFFIC}/socket`, null, {
+        params: { dockerhost: `${host}:${port}` },
+    });
+
+    await Promise.all([acquire, snyk, process, shell, traffic]);
 
     res.setHeader("Content-Type", "application/json");
 
