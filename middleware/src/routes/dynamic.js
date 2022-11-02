@@ -52,4 +52,14 @@ router.get("/capture/id", async (_, res) => {
     }
 });
 
+router.get("/capture/:id/:iface", async (req, res) => {
+    const id = req.params.id;
+    const iface = req.params.iface;
+
+    const filename = `${CAPTURES}/${id}-${iface}.pcap`;
+
+    if (fs.existsSync(filename)) res.download(filename);
+    else res.status(400).json({ response: "File not found" });
+});
+
 module.exports = router;
