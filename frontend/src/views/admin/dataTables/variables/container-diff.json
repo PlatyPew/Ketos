@@ -1,0 +1,15 @@
+{
+    "response": {
+        "diff": {
+            "Add": [
+                "/var/www/html/uploads"
+            ],
+            "Edit": [
+                "/var",
+                "/var/www",
+                "/var/www/html"
+            ],
+            "Delete": []
+        }
+    }
+}

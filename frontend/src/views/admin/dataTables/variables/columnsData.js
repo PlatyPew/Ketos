@@ -15,3 +15,31 @@ export const columnsDataDevelopment = [
     Header: "Button",
   }
 ];
+
+export const columnsDataContainerID = [
+  {
+    Header: "ID",
+    accessor: row => `${row}`
+  }
+];
+
+export const columnsDataContainerDiff = [
+  {
+    Header: "Add",
+    accessor: row => `${row}`
+  },
+  {
+    Header: "Edit",
+    accessor: "2"
+  },
+  {
+    Header: "Delete",
+    accessor: "0"
+  },
+];
+export const columnsDataContainerLogs = [
+  {
+    Header: "Logs",
+    accessor: row => `${row}`
+  }
+];

@@ -22,7 +22,7 @@ import {
     useTable,
 } from "react-table";
 
-export default function ImageID(props) {
+export default function ImageDockerFile(props) {
     const { columnsData, tableData } = props;
 
     const columns = useMemo(() => columnsData, [columnsData]);
@@ -62,9 +62,8 @@ export default function ImageID(props) {
                     color={textColor}
                     fontSize='22px'
                     fontWeight='700'
-                    lineHeight='100%'
-                    as="s">
-                    Image ID  is fucked
+                    lineHeight='100%'>
+                    Image Dockerfile
                 </Text>
             </Flex>
             <Table {...getTableProps()} variant="simple" color={textColor}>
@@ -94,13 +93,12 @@ export default function ImageID(props) {
                         prepareRow(row);
                         return (
                             <Tr {...row.getRowProps()} key={index}>
-                                {row.cells.map ((cell, index) => {
+                                {row.cells.map((cell, index) => {
                                     let data = "";
-                                    if (cell.column.Header === "ID") {
-                                        console.log(cell.value.split(','))
+                                    if (cell.column.Header === "Dockerfile") {
                                         data = (
-                                            <Text color={textColor} fontSize="md" fontWeight="700">
-                                                {cell.value.split(',')}
+                                            <Text color={textColor} fontSize="xs" fontWeight="700">
+                                                {cell.value}
                                             </Text>
                                         );
                                     }
@@ -110,7 +108,7 @@ export default function ImageID(props) {
                                             key={index}
                                             fontSize={{ sm: "14px" }}
                                             minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                                            borderColor='transparent'>
+                                            borderColor="transparent" >
                                             {data}
                                         </Td>
                                     );

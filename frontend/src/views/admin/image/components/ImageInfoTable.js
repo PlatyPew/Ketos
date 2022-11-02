@@ -23,9 +23,9 @@ import {
 } from "@chakra-ui/react";
 // Custom components
 import Card from "components/card/Card";
+import React, { useMemo } from "react";
 //import { AndroidLogo, AppleLogo, WindowsLogo } from "components/icons/Icons";
 //import Menu from "components/menu/MainMenu";
-import React, { useMemo } from "react";
 //import TreeItem from '@mui/lab/TreeItem';
 //import TreeView from '@mui/lab/TreeView';
 //import { MdArrowDropDown, MdChevronRight } from 'react-icons/md'
@@ -63,7 +63,7 @@ export default function ImageInfoTable(props) {
   initialState.pageSize = 11;
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
-  const iconColor = useColorModeValue("secondaryGray.500", "white");
+  //const iconColor = useColorModeValue("secondaryGray.500", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -138,8 +138,6 @@ export default function ImageInfoTable(props) {
                         <Button onClick={onOpen}>View full data</Button>
                       );
                     }
-
-
                     return (
                       <Td
                         {...cell.getCellProps()}
@@ -179,24 +177,3 @@ export default function ImageInfoTable(props) {
       </Card>
     );
   }
-
-  /*
-
-   <TreeItem key={index} nodeId={data.id} label={nodes.name}>
-                {Array.isArray(nodes.children)
-                  ? nodes.children.map((node) => renderTree(node))
-                  : null}
-              </TreeItem>
-
-
-              <TreeView
-                aria-label="rich object"
-                defaultCollapseIcon={<MdArrowDropDown />}
-                defaultExpanded={['root']}
-                defaultExpandIcon={<MdChevronRight />}
-                sx={{ height: 110, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-              >
-                {renderTree(data)}
-              </TreeView>
-
-              */

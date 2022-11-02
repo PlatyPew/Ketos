@@ -23,17 +23,26 @@
 // Chakra imports
 import { Box } from "@chakra-ui/react";
 import DevelopmentTable from "views/admin/dataTables/components/DevelopmentTable";
+import ContainerIDTable from "views/admin/dataTables/components/ContainerID";
+import ContainerDiffTable from "views/admin/dataTables/components/ContainerDiff";
+import ContainerLogsTable from "views/admin/dataTables/components/ContainerLogs";
 import {
-  columnsDataDevelopment,
+  columnsDataDevelopment, // Kazy change name but container info
+  columnsDataContainerID,
+  columnsDataContainerDiff,
+  columnsDataContainerLogs,
 } from "views/admin/dataTables/variables/columnsData";
 import tableDataDevelopment from "views/admin/dataTables/variables/container-info.json";
+import tableDataContainerID from "views/admin/dataTables/variables/container-id.json";
+import tableDataContainerDiff from "views/admin/dataTables/variables/container-diff.json";
+import tableDataContainerLogs from "views/admin/dataTables/variables/container-logs.json";
 import { json2array } from "../default/components/json2array";
 import React from "react";
 
 export default function Settings() {
   // Chakra Color Mode
   //console.log(tableDataDevelopment["response"])
-  console.log(json2array(tableDataDevelopment))
+  console.log(json2array(tableDataContainerDiff.response.diff))
  //console.log(test)
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
@@ -41,6 +50,22 @@ export default function Settings() {
           columnsData={columnsDataDevelopment}
           tableData={json2array(tableDataDevelopment)}
         />
+        <br></br>
+        <ContainerIDTable
+          columnsData={columnsDataContainerID}
+          tableData={json2array(tableDataContainerID)}
+        />
+        <br></br>
+        <ContainerDiffTable
+          columnsData={columnsDataContainerDiff}
+          tableData={json2array(tableDataContainerDiff.response.diff)}
+        />
+        <br></br>
+        <ContainerLogsTable
+          columnsData={columnsDataContainerLogs}
+          tableData={json2array(tableDataContainerLogs)}
+        />
+
     </Box>
   );
 }

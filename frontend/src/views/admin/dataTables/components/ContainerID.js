@@ -64,7 +64,7 @@ export default function ImageID(props) {
                     fontWeight='700'
                     lineHeight='100%'
                     as="s">
-                    Image ID  is fucked
+                    Container ID  is fucked
                 </Text>
             </Flex>
             <Table {...getTableProps()} variant="simple" color={textColor}>

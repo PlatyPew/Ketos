@@ -14,7 +14,7 @@ import React, { useState, useEffect } from "react";
 //import AdminNavbarLinks from "components/navbar/NavbarLinksAdmin";
 
 export default function AdminNavbar(props) {
-  const [ setScrolled] = useState(false);
+  const [  setScrolled] = useState(false);
   //scrolled,
   useEffect(() => {
     window.addEventListener("scroll", changeNavbar);
@@ -133,7 +133,7 @@ export default function AdminNavbar(props) {
             {brandText}
           </Link>
         </Box>
-       
+        
       </Flex>
       {secondary ? <Text color='white'>{message}</Text> : null}
     </Box>
@@ -150,14 +150,14 @@ AdminNavbar.propTypes = {
 
 
 /*
-
- <Box ms='auto' w={{ sm: "100%", md: "unset" }}>
+<Box ms='auto' w={{ sm: "100%", md: "unset" }}>
           <AdminNavbarLinks
-            onOpen={props.onOpen}
-            logoText={props.logoText}
-            secondary={props.secondary}
+            //onOpen={props.onOpen}
+            //logoText={props.logoText}
+            //secondary={props.secondary}
             fixed={props.fixed}
             scrolled={scrolled}
           />
         </Box>
+ 
 */

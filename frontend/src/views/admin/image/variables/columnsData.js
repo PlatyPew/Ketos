@@ -19,7 +19,21 @@ export const columnsDataImageInfo = [
 export const columnsDataImageID = [
   {
     Header: "ID",
-    accessor: "0",
+    accessor: row => `${row}`
+  }
+];
+
+export const columnsDataImageDockerFile = [
+  {
+    Header: "Dockerfile",
+    accessor: row => `${row}`
+  }
+];
+
+export const columnsDataImageLayer = [
+  {
+    Header: "Layers",
+    //accessor: row => `${row}`
   }
 ];
 
