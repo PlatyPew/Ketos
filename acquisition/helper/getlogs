@@ -1,0 +1,10 @@
+#!/bin/bash
+# Prints container logs in JSON
+
+# getlogs [ container-id ]
+if [[ -z "${1}" ]]; then
+    >&2 echo "Please input container name/id"
+    exit 1
+fi
+
+docker container logs --timestamps ${1} &> ${1}.log

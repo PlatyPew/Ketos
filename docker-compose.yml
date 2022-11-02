@@ -1,0 +1,97 @@
+version: "3.9"
+
+services:
+  acquisition:
+    build: ./acquisition
+    container_name: acquisition
+    restart: always
+    networks:
+      - acquire
+
+  snyk:
+    build: ./analysis/static/snyk
+    container_name: snyk
+    environment:
+      - SNYK_API_KEY=${SNYK_API_KEY}
+    networks:
+      - analysis
+
+  metadata:
+    build: ./analysis/static/metadata
+    container_name: metadata
+    networks:
+      - analysis
+    volumes:
+      - "./middleware/dockerdata:/opt/analysis/dockerdata:rw"
+
+  virustotal:
+    build: ./analysis/static/virustotal
+    container_name: virustotal
+    environment:
+      - VIRUSTOTAL_API_KEY=${VT_API_KEY}
+    networks:
+      - analysis
+
+  yara:
+    build: ./analysis/static/yara
+    container_name: yara
+    networks:
+      - analysis
+
+  process:
+    build: ./analysis/dynamic/process
+    container_name: process
+    networks:
+      - analysis
+
+  shell:
+    build: ./analysis/dynamic/shell
+    container_name: shell
+    networks:
+      - analysis
+    ports:
+      - "2323:2323"
+
+  traffic:
+    build: ./analysis/dynamic/traffic
+    container_name: traffic
+    networks:
+      - analysis
+    volumes:
+      - "./analysis/dynamic/traffic/images:/opt/traffic/images:ro"
+      - "./analysis/dynamic/traffic/captures:/opt/traffic/captures:rw"
+
+  restapi:
+    build: ./middleware
+    container_name: restapi
+    restart: always
+    networks:
+      - acquire
+      - db
+      - analysis
+    volumes:
+      - "./middleware/dockerdata:/opt/restapi/dockerdata:rw"
+      - "./analysis/dynamic/traffic/captures:/opt/restapi/captures:rw"
+    ports:
+      - "3000:3000"
+
+  database:
+    image: mongo
+    container_name: database
+    restart: always
+    networks:
+      - db
+    volumes:
+      - ketos-db-volume:/data/db:rw
+
+volumes:
+  ketos-db-volume:
+    external: false
+
+networks:
+  db:
+    name: ketos_db_local
+  acquire:
+    name: ketos_acquire_local
+  analysis:
+    name: ketos_analysis_local

@@ -1,0 +1,37 @@
+#!/usr/bin/python3
+
+import subprocess
+import os
+import sys
+import json
+
+if len(sys.argv) != 2:
+    print("Please indicate container id", file=sys.stderr)
+    sys.exit(1)
+
+container_id = sys.argv[1]
+
+out, err = subprocess.Popen(
+    ["docker", "container", "diff", container_id],
+    env=os.environ.copy(),
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE,
+).communicate()
+
+out = out.decode().strip().split("\n")
+
+FINAL = {"Add": [], "Edit": [], "Delete": []}
+
+if out == [""]:
+    print(json.dumps(FINAL, separators=(",", ":")))
+    sys.exit(0)
+
+for entry in out:
+    if entry[0] == "A":
+        FINAL["Add"].append(entry[2:])
+    elif entry[0] == "C":
+        FINAL["Edit"].append(entry[2:])
+    elif entry[0] == "D":
+        FINAL["Delete"].append(entry[2:])
+
+print(json.dumps(FINAL, separators=(",", ":")))
