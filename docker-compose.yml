@@ -52,6 +52,15 @@ services:
     ports:
       - "2323:2323"
 
+  traffic:
+    build: ./analysis/dynamic/traffic
+    container_name: traffic
+    networks:
+      - analysis
+    volumes:
+      - "./analysis/dynamic/traffic/images:/opt/traffic/images:ro"
+      - "./analysis/dynamic/traffic/captures:/opt/traffic/captures:rw"
+
   restapi:
     build: ./middleware
     container_name: restapi
@@ -62,6 +71,7 @@ services:
       - analysis
     volumes:
       - "./middleware/dockerdata:/opt/restapi/dockerdata:rw"
+      - "./analysis/dynamic/traffic/captures:/opt/restapi/captures:rw"
     ports:
       - "3000:3000"
 
