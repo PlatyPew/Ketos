@@ -1,9 +1,0 @@
-{
-    "Id": "8526681ef07d76079e49b4171f40ee76d27a176e0f7553170aa28d0c078ae6b7",
-    "Created": "2022-10-16T15:19:22.091167323Z",
-    "Path": "python3",
-    "Args": ["-m", "http.server"],
-    "Image": "sha256:641d4df633190213ad7e678e1b005884f73f68376222af34200f1860edaec6f4",
-    "LogPath": "/var/lib/docker/containers/8526681ef07d76079e49b4171f40ee76d27a176e0f7553170aa28d0c078ae6b7/8526681ef07d76079e49b4171f40ee76d27a176e0f7553170aa28d0c078ae6b7-json.log",
-    "Name": "/helper"
-}
