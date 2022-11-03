@@ -37,13 +37,16 @@ import {
   InputLeftAddon,
 } from "@chakra-ui/react";
 import Card from "components/card/Card";
+
 //import { set } from "lodash";
+
+const API = "127.0.0.1:3000"
 
 export default function UserReports() {
   // Chakra Color Mode
   //const axios = require("axios");
 
-  const [setAcquireDone] = useState(false);
+  const [acquireDone, setAcquireDone] = useState(false);
   const [isButtonLoad, setIsButtonLoad] = useState(false);
   //acquireDone,
   const handleAcquire = async (e) => {
@@ -52,23 +55,18 @@ export default function UserReports() {
     const host = e.target.hostIP.value;
 
     setIsButtonLoad(true);
+    setAcquireDone(false);
 
-    console.log("Host: " + host);
-    console.log("Port: " + port);
-
-    await axios.put(`http://127.0.0.1:3000/api/socket`, null, {
+    await axios.put(`http://${API}/api/socket`, null, {
       params: { host: host, port: port },
     });
-    console.log("Waiting");
-    const out = await axios.put(`http://127.0.0.1:3000/api/acquire`);
-    console.log(out.data.response);
+
+    const out = await axios.put(`http://${API}/api/acquire`);
     if (out.data.response === true) {
       setAcquireDone(true);
       setIsButtonLoad(false);
-      console.log("Acquiring was successfully completed");
     } else {
       setIsButtonLoad(false);
-      console.log("Acquiring Failed");
     }
   };
 
@@ -76,7 +74,7 @@ export default function UserReports() {
 
   return (
 
-    <Box borderWidth='1px' borderRadius='lg' overflow='hidden' pt={{ base: "130px", md: "80px", xl: "80px" }}>
+    <Box borderRadius='lg' overflow='hidden' pt={{ base: "50px", md: "80px", xl: "80px" }}>
       <Card direction='column'
         w='100%'
         px='0px'
@@ -93,14 +91,11 @@ export default function UserReports() {
         <Box p='6' pt={{ base: "15px", md: "15px", xl: "15px" }}>
           <Stack spacing={3}>
 
-            <Text fontSize='2xl' as='b'>
-              ***ONLY USE THE ACQUITE FUNCTION ONCE PER IP****</Text>
-            <Text fontSize='1xl' as='b'>
-              Please input in Host IP and Port number.</Text>
+            <Text fontSize='1xl' as='b'>Press acquire only once per IP</Text>
 
             <form onSubmit={handleAcquire}>
               <InputGroup paddingBlock="10px">
-                <InputLeftAddon children="Host IP" borderRadius="16px" />
+                <InputLeftAddon children="Host" borderRadius="16px" />
                 <Input
                   type="float"
                   name="hostIP"
@@ -109,7 +104,7 @@ export default function UserReports() {
                 />
               </InputGroup>
               <InputGroup paddingBlock="10px">
-                <InputLeftAddon children="Port No." borderRadius="16px" />
+                <InputLeftAddon children="Port" borderRadius="16px" />
                 <Input
                   type="number"
                   name="portNo"
@@ -132,6 +127,12 @@ export default function UserReports() {
                   Acquire
                 </Button>
               )}
+              {acquireDone ? (
+                <Text fontSize='1xl' as='b' marginLeft="10px">Successfully Acquired!</Text>
+              ) : (
+                  <></>
+                )
+              }
             </form>
           </Stack>
         </Box>
