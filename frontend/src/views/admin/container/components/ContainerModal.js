@@ -15,6 +15,8 @@ import {
 } from "@chakra-ui/react";
 
 import ContainerInfoModal from "views/admin/container/components/ContainerInfoModal";
+import ContainerExportInfoModal from "views/admin/container/components/ContainerExportInfoModal";
+import ContainerExportImageModal from "views/admin/container/components/ContainerExportImageModal";
 
 
 export default function ContainerModal(props) {
@@ -41,8 +43,8 @@ export default function ContainerModal(props) {
             <Button margin="5px" bg="purple.300" _hover={{ bg: "purple.400" }}>View File Structure</Button>
             <Button margin="5px" bg="cyan.500" _hover={{ bg: "cyan.600" }}>View File Difference</Button>
             <br />
-            <Button margin="5px" bg="blue.300" _hover={{ bg: "blue.400" }}>Export All Info</Button>
-            <Button margin="5px" bg="pink.300" _hover={{ bg: "pink.400" }}>Export Container Image</Button>
+            <ContainerExportInfoModal id={id} />
+            <ContainerExportImageModal id={id} />
           </ModalBody>
 
           <ModalFooter>
