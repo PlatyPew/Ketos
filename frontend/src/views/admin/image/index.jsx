@@ -23,7 +23,7 @@
 // Chakra imports
 import { Box } from "@chakra-ui/react";
 import ImageInfoTable from "views/admin/image/components/ImageInfoTable"; // Image INFO 
-import ImageID from "views/admin/image/components/ImageID"; //Image ID
+import ImageID from "views/admin/image/components/Imageid"; //Image ID
 import ImageDockerFile from "views/admin/image/components/ImageDockerFile"; // Image Docker File 
 import ImageLayer from "views/admin/image/components/ImageLayer"; // Image Layer
 import {
