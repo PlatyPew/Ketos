@@ -1,7 +1,5 @@
 import React from "react";
 
-import { InfoIcon } from '@chakra-ui/icons'
-
 import {
   Modal,
   ModalContent,
@@ -38,9 +36,7 @@ export default function ContainerInfoModal(props) {
 
   return (
     <>
-      <Button onClick={onOpen}>
-        <InfoIcon />
-      </Button>
+    <Button onClick={onOpen} margin="5px" bg="teal.300" _hover={{ bg: "teal.400" }}>View Info</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />
@@ -60,10 +56,9 @@ export default function ContainerInfoModal(props) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='gray' mr={3} onClick={onClose}>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button colorScheme='blue'>Export Data</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

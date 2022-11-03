@@ -1,6 +1,6 @@
 // Chakra imports
 import ColumnsTable from "views/admin/container/components/ColumnsTable";
-import ContainerInfoModal from "views/admin/container/components/ContainerInfoModal";
+import ContainerModal from "views/admin/container/components/ContainerModal";
 
 import React from "react";
 import { useState, useEffect } from "react";
@@ -52,7 +52,7 @@ export default function ContainerInfo() {
         name: info.Name.slice(1),
         image: info.Image.slice(7).slice(0, 12),
         cmd: `${info.Path} ${info.Args.join(' ')}`,
-        info: <ContainerInfoModal id={info.Id} />,
+        info: <ContainerModal id={info.Id} />,
       };
     });
 
