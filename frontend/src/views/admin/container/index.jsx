@@ -22,44 +22,20 @@
 
 // Chakra imports
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import ColumnsTable from "views/admin/container/components/ColumnsTable";
-//import ContainerTable from "views/admin/container/components/ContainerTable";
-import {
-  columnsDataColumns,
-  //columnsDataContainer,
-} from "views/admin/container/variables/columnsData";
-import tableDataColumns from "views/admin/container/variables/tableDataColumns.json";
-//import tableDataContainer from "views/admin/container/variables/container1.json";
+import ContainerInfo from "views/admin/container/components/ContainerInfo";
 
 import React from "react";
 
-export default function Settings() {
+export default function Containers() {
 
-  //tableDataContainer = JSON.stringify(tableDataContainer);
-  //tableDataContainer = JSON.parse(tableDataContainer);
-  //console.log(tableDataContainer);
-  //console.log(ContainerTable);
-  // Chakra Color Mode
   return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+    <Box pt={{ base: "50px", md: "80px", xl: "80px" }}>
       <SimpleGrid
         mb='20px'
-        columns={{ sm: 1, md: 2 }}
         spacing={{ base: "20px", xl: "20px" }}>
-        <ColumnsTable
-          columnsData={columnsDataColumns}
-          tableData={tableDataColumns}
-        />
 
+        <ContainerInfo />
       </SimpleGrid>
-      
     </Box>
-  
   );
-  
 }
- /*
-        <ColumnsTable
-          columnsData={columnsDataColumns}
-          tableData={tableDataColumns}
-        />*/ 

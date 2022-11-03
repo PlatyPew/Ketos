@@ -15,9 +15,8 @@ import {
 import MainDashboard from "views/admin/default";
 //import NFTMarketplace from "views/admin/marketplace";
 //import Profile from "views/admin/profile";
-import DataTables from "views/admin/dataTables"; // Container Page
 import Image from "views/admin/image";
-//import Container from "views/admin/container";
+import Container from "views/admin/container";
 import Network from "views/admin/network";
 import Volume from "views/admin/volume";
 //import RTL from "views/admin/rtl";
@@ -37,8 +36,8 @@ const routes = [
     name: "Container",
     layout: "/admin",
     icon: <Icon as={MdSquareFoot} width='20px' height='20px' color='inherit' />,
-    path: "/data-tables",
-    component: DataTables,
+    path: "/container",
+    component: Container,
   },
   {
     name: "Image",
