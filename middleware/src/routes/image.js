@@ -37,11 +37,13 @@ router.get("/id", async (_, res) => {
 router.get("/info/:id/all", async (req, res) => {
     const id = req.params.id;
 
-    res.setHeader("Content-Type", "application/json");
     try {
         const out = await get.getImageInfoAll(id);
-        res.json({ response: out });
+        res.setHeader("Content-Type", "application/octet-stream");
+        res.setHeader("Content-Disposition", `attachment; filename=image-${id}.json`);
+        res.send(out);
     } catch (err) {
+        res.setHeader("Content-Type", "application/json");
         res.status(500).json({ response: err });
     }
 });
