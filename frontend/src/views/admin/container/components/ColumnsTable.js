@@ -19,6 +19,7 @@ import {
 
 // Custom components
 import Card from "components/card/Card";
+import ContainerInfoModal from "views/admin/container/components/ContainerInfoModal";
 export default function ColumnsTable(props) {
   const { header, columnsData, tableData } = props;
 
