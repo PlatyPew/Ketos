@@ -23,6 +23,7 @@ import ContainerExportInfoModal from "views/admin/container/components/Container
 import ContainerExportImageModal from "views/admin/container/components/ContainerExportImageModal";
 import ContainerFileStructureModal from "views/admin/container/components/ContainerFileStructureModal"
 import ContainerDiffModal from "views/admin/container/components/ContainerDiffModal"
+import ContainerExportFileModal from "views/admin/container/components/ContainerExportFileModal"
 
 
 export default function ContainerModal(props) {
@@ -51,6 +52,7 @@ export default function ContainerModal(props) {
             <br />
             <ContainerExportInfoModal id={id} />
             <ContainerExportImageModal id={id} />
+            <ContainerExportFileModal id={id} />
           </ModalBody>
 
           <ModalFooter>
