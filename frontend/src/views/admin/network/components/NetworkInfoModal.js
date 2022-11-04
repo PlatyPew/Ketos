@@ -30,14 +30,14 @@ export default function VolumeInfoModal(props) {
 
   useEffect(async () => {
     if (!id) return;
-    
+
     const networkInfo = (await axios.get(`http://${API}/api/network/info/${id}`)).data.response;
     setInfo(JSON.stringify(networkInfo, null, 2));
   }, []);
 
   return (
     <>
-    <Button onClick={onOpen}>
+      <Button onClick={onOpen}>
         <InfoIcon />
       </Button>
 

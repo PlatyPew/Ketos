@@ -1,7 +1,7 @@
 import React from "react";
 
 // Chakra imports
-import { Flex, useColorModeValue, Text } from "@chakra-ui/react";
+import { Image, Flex } from "@chakra-ui/react";
 
 // Custom components
 //import { HorizonLogo } from "components/icons/Icons";
@@ -10,13 +10,15 @@ import { HSeparator } from "components/separator/Separator";
 
 export function SidebarBrand() {
   //   Chakra color mode
-  let logoColor = useColorModeValue("navy.700", "white");
+  //let logoColor = useColorModeValue("navy.700", "white");
 
   return (
     <Flex align='center' direction='column'>
-      <Text h='35px' w='175px' my='40px' fontSize='5xl' as='b' color={logoColor} >
-        KETOS</Text>
-      
+      <Image
+        objectFit='cover'
+        boxSize='180px'
+        src={MyImageSvg}
+        alt='Ketos Logo'/>
       <HSeparator mb='20px' />
     </Flex>
   );
