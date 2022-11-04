@@ -24,10 +24,13 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import ContainerInfo from "views/admin/container/components/ContainerInfo";
 
-import React from "react";
+
+import React, { useState } from "react";
+
+import { Text } from "@chakra-ui/react"
+
 
 export default function Containers() {
-
   return (
     <Box pt={{ base: "50px", md: "80px", xl: "80px" }}>
       <SimpleGrid
@@ -36,6 +39,7 @@ export default function Containers() {
 
         <ContainerInfo />
       </SimpleGrid>
+
     </Box>
   );
 }

@@ -25,26 +25,27 @@ export default function ContainerInfoModal(props) {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [info, setInfo] = useState();
+  const [logs, setLogs] = useState();
 
   useEffect(async () => {
     if (!id) return;
 
-    const containerInfo = (await axios.get(`http://${API}/api/container/info/${id}`)).data.response;
+    let containerLogs = (await axios.get(`http://${API}/api/container/logs/${id}`)).data.response;
 
-    setInfo(JSON.stringify(containerInfo, null, 2));
+    if (containerLogs === "") containerLogs = "NO LOGS FOUND"
+    setLogs(containerLogs);
   }, []);
 
   return (
     <>
-    <Button onClick={onOpen} margin="5px" bg="teal.300" _hover={{ bg: "teal.400" }}>View Info</Button>
+    <Button onClick={onOpen} margin="5px" bg="orange.300" _hover={{ bg: "orange.400" }}>View Logs</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
-            <Text fontSize="lg">Information</Text>
+            <Text fontSize="lg">Logs</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -53,7 +54,7 @@ export default function ContainerInfoModal(props) {
                 bg="gray.200"
                 display="block"
                 whiteSpace="pre"
-                children={info}
+                children={logs}
                 style={{ whiteSpace: "pre-wrap" }}
               />
             </Box>
