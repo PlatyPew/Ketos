@@ -3,6 +3,8 @@ import React from "react";
 import { InfoIcon } from '@chakra-ui/icons'
 
 import {
+  Box,
+  ButtonGroup,
   Modal,
   ModalContent,
   ModalHeader,
@@ -37,19 +39,23 @@ export default function ImageModal(props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontSize="2xl">
-            Image ID: {id.slice(7, 12)}
+            Image ID: {id.slice(7, 19)}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontSize="lg">What would you like to do?</Text>
-            <ImageInfoModal id={id} />
-            <Button margin="5px" bg="purple.300" _hover={{ bg: "purple.400" }}>View File Structure</Button>
-            <Button margin="5px" bg="cyan.500" _hover={{ bg: "cyan.600" }}>View File Difference</Button>
-            <br />
-            <ImageLayerModal id={id} />
-            <ImageDockerFileModal id={id} />
-            <ImageExportInfoModal id={id} />
-            <ImageExportImageModal id={id} />
+            <br></br>
+            <Box alignItems="center">
+              <ButtonGroup variant="outline" spacing="3">
+                <ImageInfoModal id={id} />
+                <ImageLayerModal id={id} />
+                <ImageDockerFileModal id={id} />
+              </ButtonGroup>
+              <ButtonGroup variant="outline" spacing="3">
+                <ImageExportInfoModal id={id} />
+                <ImageExportImageModal id={id} />
+              </ButtonGroup>
+            </Box>
           </ModalBody>
 
           <ModalFooter>

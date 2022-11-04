@@ -22,7 +22,7 @@
 
 // Chakra imports
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import VolumeInfo from "views/admin/volume/components/VolumeInfoTable";
+import StaticAnalysis from "views/admin/staticanalysis/components/StaticAnalysisTable";
 import React from "react";
 
 export default function Settings() {
@@ -33,7 +33,7 @@ export default function Settings() {
       mb='20px'
       spacing={{ base: "20px", xl: "20px" }}>
 
-      <VolumeInfo />
+      <StaticAnalysis />
     </SimpleGrid>
   </Box>
   );  

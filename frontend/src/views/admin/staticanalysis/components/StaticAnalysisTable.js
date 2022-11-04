@@ -29,27 +29,31 @@ const columnsData = [
 
 ];
 
-export default function VolumeInfo() {
+export default function StaticAnalInfo() {
   const [truncInfo, setTruncInfo] = useState([{ id: "", title: "", severity: "" }]);
 
   useEffect(async () => {
     const imageIDs = (await axios.get(`http://${API}/api/image/id`)).data.response;
 
 
-    const analInfo = (await Promise.all(
+    const staticanalInfo = (await Promise.all(
       imageIDs.map((id) => {
-        return axios.get(`http://${API}api/static/vuln/${id}`)
+        const out = axios.get(`http://${API}/api/static/vuln/${id}`)
+        return out
+
       })
     )).map((response) => {
+
       return response.data.response;
 
     });
 
-    const truncStaticAnalInfo = StaticAnalInfo.map((info) => {
+    const truncStaticAnalInfo = staticanalInfo.map((info) => {
+      console.log(info.vulnerabilities)
       return {
-        id: info.Name,
-        title: info.vulnerabilities.title, //=== null ? "NIL" : info.Labels,
-        severity: info.Mountpoint,
+        id: info.id,
+        title: info.vulnerabilities[0].title, //=== null ? "NIL" : info.Labels,
+        severity: info.vulnerabilities.severity,
         //info: <VolumeInfoModal id={info.Name} />,
       };
     });
@@ -61,7 +65,7 @@ export default function VolumeInfo() {
 
   return (
     <>
-        <ColumnsTable header="Information" columnsData={columnsData} tableData={truncInfo} />
+      <ColumnsTable header="Information" columnsData={columnsData} tableData={truncInfo} />
     </>
   );
 }
