@@ -22,6 +22,7 @@ import ContainerLogsModal from "views/admin/container/components/ContainerLogsMo
 import ContainerExportInfoModal from "views/admin/container/components/ContainerExportInfoModal";
 import ContainerExportImageModal from "views/admin/container/components/ContainerExportImageModal";
 import ContainerFileStructureModal from "views/admin/container/components/ContainerFileStructureModal"
+import ContainerDiffModal from "views/admin/container/components/ContainerDiffModal"
 
 
 export default function ContainerModal(props) {
@@ -46,7 +47,7 @@ export default function ContainerModal(props) {
             <ContainerInfoModal id={id} />
             <ContainerLogsModal id={id} />
             <ContainerFileStructureModal id={id} />
-            <Button margin="5px" bg="cyan.500" _hover={{ bg: "cyan.600" }}>View File Difference</Button>
+            <ContainerDiffModal id={id} />
             <br />
             <ContainerExportInfoModal id={id} />
             <ContainerExportImageModal id={id} />

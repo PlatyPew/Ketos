@@ -22,7 +22,7 @@ import TreeView, { flattenTree } from "react-accessible-treeview";
 
 const API = "127.0.0.1:3000"
 
-export default function ContainerInfoModal(props) {
+export default function ContainerFileStructureModal(props) {
   const { id } = props;
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -47,25 +47,29 @@ export default function ContainerInfoModal(props) {
     return result;
   }
 
-  useEffect(async () => {
+  const handleDownload = async () => {
     if (!id) return;
 
     const containerFS = (await axios.get(`http://${API}/api/container/filestruct/${id}`)).data.response;
     const parsed = {name: "", children: parseData(containerFS)};
     setData(flattenTree(parsed));
+  };
 
-  }, []);
+  const handleOpen = () => {
+    handleDownload();
+    onOpen();
+  }
 
   return (
     <>
-    <Button onClick={onOpen} margin="5px" bg="purple.300" _hover={{ bg: "purple.400" }}>View File Structure</Button>
+    <Button onClick={handleOpen} margin="5px" bg="purple.300" _hover={{ bg: "purple.400" }}>View File Structure</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
             <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
-            <Text fontSize="lg">Information</Text>
+            <Text fontSize="lg">File Structure</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
