@@ -1,0 +1,8 @@
+FROM alpine:3.16
+
+WORKDIR /opt/sniffer
+
+RUN apk add --no-cache tcpdump && \
+    mkdir captures && chmod 777 captures
+
+COPY listen.sh /
