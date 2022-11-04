@@ -1,7 +1,5 @@
-/* eslint-disable */
 import {
   Flex,
-  //Progress,
   Table,
   Tbody,
   Td,
@@ -10,21 +8,7 @@ import {
   Thead,
   Tr,
   useColorModeValue,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  Button,
-  Code
 } from "@chakra-ui/react";
-// Custom components
-import Card from "components/card/Card";
-//import { AndroidLogo, AppleLogo, WindowsLogo } from "components/icons/Icons";
-import Menu from "components/menu/MainMenu";
 import React, { useMemo } from "react";
 import {
   useGlobalFilter,
@@ -33,8 +17,10 @@ import {
   useTable,
 } from "react-table";
 
-export default function NetworkInfoTable(props) {
-  const { columnsData, tableData } = props;
+// Custom components
+import Card from "components/card/Card";
+export default function ColumnsTable(props) {
+  const { header, columnsData, tableData } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
@@ -57,14 +43,10 @@ export default function NetworkInfoTable(props) {
     prepareRow,
     initialState,
   } = tableInstance;
-  initialState.pageSize = 11;
+  initialState.pageSize = 5;
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
-  const iconColor = useColorModeValue("secondaryGray.500", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
   return (
     <Card
       direction='column'
@@ -77,9 +59,8 @@ export default function NetworkInfoTable(props) {
           fontSize='22px'
           fontWeight='700'
           lineHeight='100%'>
-          Network Info
+          {header}
         </Text>
-        <Button onClick={onOpen}>View full data</Button>
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
@@ -107,41 +88,20 @@ export default function NetworkInfoTable(props) {
           {page.map((row, index) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()} key={index}>
+              <Tr {...row.getRowProps()} key={row.values.id}>
                 {row.cells.map((cell, index) => {
-                  let data = "";
-                  if (cell.column.Header === "Id") {
-                    data = (
-                      <Text color={textColor} fontSize="sm" fontWeight="700">
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "Name") {
-                    data = (
-                      <Text color={textColor} fontSize="xl" fontWeight="700">
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "Created") {
-                    data = (
-                      <Text color={textColor} fontSize="sm" fontWeight="700">
-                        {cell.value}
-                      </Text>
-                    );
-                  }else if (cell.column.Header === "Button") {
-                    data = (
-                      <Button onClick={onOpen}>View full data</Button>
-                    );
-                  }
-
+                  let data = (
+                    <Text color={textColor} fontSize='sm' fontWeight='700'>
+                      {cell.value}
+                    </Text>
+                  );
                   return (
                     <Td
                       {...cell.getCellProps()}
                       key={index}
                       fontSize={{ sm: "14px" }}
-                      minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                      borderColor="transparent"
-                    >
+                      minW={{ sm: "100px", md: "100px", lg: "auto" }}
+                      borderColor='transparent'>
                       {data}
                     </Td>
                   );
@@ -151,25 +111,6 @@ export default function NetworkInfoTable(props) {
           })}
         </Tbody>
       </Table>
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Container Data</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>{JSON.stringify(data)}</Text> #test data
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="brand" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Export</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
-
     </Card>
-  );
+  )
 }

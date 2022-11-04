@@ -1,205 +1,67 @@
-/* eslint-disable */
-import {
-  Flex,
-  Box,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-  Button,
-  Icon
-} from "@chakra-ui/react";
-// Custom components
-import Card from "components/card/Card";
-//import { AndroidLogo, AppleLogo, WindowsLogo } from "components/icons/Icons";
-//import Menu from "components/menu/MainMenu";
-import React, { useMemo } from "react";
-//import TreeItem from '@mui/lab/TreeItem';
-//import TreeView from '@mui/lab/TreeView';
-//import { MdArrowDropDown, MdChevronRight } from 'react-icons/md'
-import {
-  useGlobalFilter,
-  usePagination,
-  useSortBy,
-  useTable,
-} from "react-table";
+// Chakra imports
+import ColumnsTable from "views/admin/volume/components/ColumnsTable";
+import VolumeInfoModal from "views/admin/volume/components/VolumeInfoModal";
 
-export default function VolumeInfoTable(props) {
-  const { columnsData, tableData } = props;
+import React from "react";
+import { useState, useEffect } from "react";
 
-  const columns = useMemo(() => columnsData, [columnsData]);
-  const data = useMemo(() => tableData, [tableData]);
+import axios from "axios";
 
-  const tableInstance = useTable(
-    {
-      columns,
-      data,
-    },
-    useGlobalFilter,
-    useSortBy,
-    usePagination
-  );
+const API = "127.0.0.1:3000"
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    prepareRow,
-    initialState,
-  } = tableInstance;
-  initialState.pageSize = 11;
+const columnsData = [
+  {
+    Header: "NAME",
+    accessor: "name",
+  },
+  {
+    Header: "MOUNTPOINT",
+    accessor: "mntpt",
+  },
+  {
+    Header: "LABELS",
+    accessor: "labels",
+  },
+  {
+    Header: "INFO",
+    accessor: "info",
+  },
 
-  const textColor = useColorModeValue("secondaryGray.900", "white");
-  const iconColor = useColorModeValue("secondaryGray.500", "white");
-  const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
+];
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+export default function VolumeInfo() {
+  const [truncInfo, setTruncInfo] = useState([{ name: "", mntpt: "", labels: "" }]);
+
+  useEffect(async () => {
+    const volumeIDs = (await axios.get(`http://${API}/api/volume/id`)).data.response;
+
+
+    const volumeInfo = (await Promise.all(
+      volumeIDs.map((id) => {
+        return axios.get(`http://${API}/api/volume/info/${id}`)
+      })
+    )).map((response) => {
+      return response.data.response;
+
+    });
+
+    const truncVolumeInfo = volumeInfo.map((info) => {
+      return {
+        name: info.Name,
+        labels: info.Labels === null ? "NIL" : info.Labels,
+        mntpt: info.Mountpoint,
+        info: <VolumeInfoModal id={info.Name} />,
+      };
+    });
+
+    setTruncInfo(truncVolumeInfo);
+
+  }, []);
 
 
   return (
-    <Card
-      direction='column'
-      w='100%'
-      px='0px'
-      overflowX={{ sm: "scroll", lg: "hidden" }}>
-      <Flex px='25px' justify='space-between' mb='20px' align='center'>
-        <Text
-          color={textColor}
-          fontSize='22px'
-          fontWeight='700'
-          lineHeight='100%'>
-          Volume Info Table
-        </Text>
-        <Button onClick={onOpen}>View full data</Button>
-      </Flex>
-      <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
-        <Thead>
-          {headerGroups.map((headerGroup, index) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
-              {headerGroup.headers.map((column, index) => (
-                <Th
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  pe='10px'
-                  key={index}
-                  borderColor={borderColor}>
-                  <Flex
-                    justify='space-between'
-                    align='center'
-                    fontSize={{ sm: "10px", lg: "12px" }}
-                    color='gray.400'>
-                    {column.render("Header")}
-                  </Flex>
-                </Th>
-              ))}
-            </Tr>
-          ))}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {page.map((row, index) => {
-            prepareRow(row);
-            return (
-              <Tr {...row.getRowProps()} key={index}>
-                {row.cells.map((cell, index) => {
-                  let data = "";
-                  if (cell.column.Header === "Name") {
-                    data = (
-                      <Text color={textColor} fontSize="sm" fontWeight="700">
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "Created At") {
-                    data = (
-                      <Text color={textColor} fontSize="sm" fontWeight="700">
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "Mountpoint") {
-                    data = (
-                      <Box overflow="hidden">
-                        <Text color={textColor} fontSize="sm" fontWeight="700" maxW="sm" isTruncated>
-                          {cell.value}
-                        </Text>
-                      </Box>
-                    );
-                  }
-                  else if (cell.column.Header === "Button") {
-                    data = (
-                      <Button onClick={onOpen}>View full data</Button>
-                    );
-                  }
-
-
-                  return (
-                    <Td
-                      {...cell.getCellProps()}
-                      key={index}
-                      fontSize={{ sm: "14px" }}
-                      minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                      borderColor="transparent"
-                    >
-                      {data}
-
-                    </Td>
-                  );
-                })}
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-
-
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Container Data</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="brand" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Export</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Card>
+    <>
+        <ColumnsTable header="Information" columnsData={columnsData} tableData={truncInfo} />
+    </>
   );
 }
-
-/*
-
- <TreeItem key={index} nodeId={data.id} label={nodes.name}>
-              {Array.isArray(nodes.children)
-                ? nodes.children.map((node) => renderTree(node))
-                : null}
-            </TreeItem>
-
-
-            <TreeView
-              aria-label="rich object"
-              defaultCollapseIcon={<MdArrowDropDown />}
-              defaultExpanded={['root']}
-              defaultExpandIcon={<MdChevronRight />}
-              sx={{ height: 110, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
-            >
-              {renderTree(data)}
-            </TreeView>
-
-            */
-

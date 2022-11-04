@@ -21,50 +21,20 @@
 */
 
 // Chakra imports
-import { Box } from "@chakra-ui/react";
-import ImageInfoTable from "views/admin/image/components/ImageInfoTable"; // Image INFO 
-import ImageID from "views/admin/image/components/Imageid"; //Image ID
-import ImageDockerFile from "views/admin/image/components/ImageDockerFile"; // Image Docker File 
-import ImageLayer from "views/admin/image/components/ImageLayer"; // Image Layer
-import {
-  columnsDataImageInfo,
-  columnsDataImageDockerFile,
-  columnsDataImageLayer,
-  columnsDataImageID
-} from "views/admin/image/variables/columnsData"; // Header and accessor file 
-import tableDataImageInfo from "views/admin/image/variables/image-info.json"; // Image INFO data
-import tableDataImageID from "views/admin/image/variables/image-id.json"; //Image ID data
-import tableDataImageDockerFile from "views/admin/image/variables/image-dockerfile.json"; // Image DockerFile data
-import tableDataImageLayer from "views/admin/image/variables/image-dockerfile.json"; // Image Layer data
-import { json2array } from "../default/components/json2array"; // Function for converting json objects to array
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import ImageInfo from "views/admin/image/components/ImageInfoTable";
 import React from "react";
-
 
 export default function Settings() {
   // Chakra Color Mode
   return ( 
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-           
-        <ImageInfoTable
-          columnsData={columnsDataImageInfo}
-          tableData={json2array(tableDataImageInfo)}
-        />
-        <br></br>
-        <ImageID
-          columnsData={columnsDataImageID}
-          tableData={json2array(tableDataImageID)}
-        />
-        <br></br>
-        <ImageDockerFile
-          columnsData={columnsDataImageDockerFile}
-          tableData={json2array(tableDataImageDockerFile)}
-        />
-        <br></br>
-        <ImageLayer
-          columnsData={columnsDataImageLayer}
-          tableData={json2array(tableDataImageLayer)}
-        />
+    <Box pt={{ base: "50px", md: "80px", xl: "80px" }}>
+    <SimpleGrid
+      mb='20px'
+      spacing={{ base: "20px", xl: "20px" }}>
 
-    </Box>
+      <ImageInfo />
+    </SimpleGrid>
+  </Box>
   );  
 }

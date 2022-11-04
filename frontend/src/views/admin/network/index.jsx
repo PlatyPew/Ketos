@@ -21,28 +21,20 @@
 */
 
 // Chakra imports
-import { Box } from "@chakra-ui/react";
-import NetworkInfoTable from "views/admin/network/components/NetworkTable";
-import {
-  columnsDataNetwork, 
-} from "views/admin/network/variables/columnsData";
-import tableDataNetwork from "views/admin/network/variables/network-info.json";
-import { json2array } from "../default/components/json2array";
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import NetworkInfo from "views/admin/network/components/NetworkInfoTable";
 import React from "react";
-
 
 export default function Settings() {
   // Chakra Color Mode
-  //console.log(tableDataImageInfo.response)
   return ( 
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      
-      <NetworkInfoTable
-          columnsData={columnsDataNetwork}
-          tableData={json2array(tableDataNetwork)}
-        />
+    <Box pt={{ base: "50px", md: "80px", xl: "80px" }}>
+    <SimpleGrid
+      mb='20px'
+      spacing={{ base: "20px", xl: "20px" }}>
 
-    </Box>
+      <NetworkInfo />
+    </SimpleGrid>
+  </Box>
   );  
 }
-

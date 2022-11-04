@@ -21,27 +21,20 @@
 */
 
 // Chakra imports
-import { Box } from "@chakra-ui/react";
-import VolumeInfoTable from "views/admin/volume/components/VolumeInfoTable";
-import { 
-  columnsDataVolumeInfo
-} from "views/admin/volume/variables/columnsData";
-import tableDataVolumeInfo from "views/admin/volume/variables/volume-info.json";
-import { json2array } from "../default/components/json2array";
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import VolumeInfo from "views/admin/volume/components/VolumeInfoTable";
 import React from "react";
-
 
 export default function Settings() {
   // Chakra Color Mode
-  //console.log(columnsDataVolumeInfo)
   return ( 
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      
-      <VolumeInfoTable
-          columnsData={columnsDataVolumeInfo}
-          tableData={json2array(tableDataVolumeInfo)}
-        />
+    <Box pt={{ base: "50px", md: "80px", xl: "80px" }}>
+    <SimpleGrid
+      mb='20px'
+      spacing={{ base: "20px", xl: "20px" }}>
 
-    </Box>
+      <VolumeInfo />
+    </SimpleGrid>
+  </Box>
   );  
 }
