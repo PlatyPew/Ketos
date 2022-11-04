@@ -36,7 +36,7 @@ export default function ImageLayerModal(props) {
 
   return (
     <>
-    <Button onClick={onOpen} margin="5px" bg="teal.300" _hover={{ bg: "teal.400" }}>View Layers</Button>
+    <Button onClick={onOpen} margin="5px" bg="yellow.300" _hover={{ bg: "yellow.400" }}>View Layers</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />
@@ -47,10 +47,14 @@ export default function ImageLayerModal(props) {
           <ModalCloseButton />
           <ModalBody>
             <Text fontSize="lg">Information</Text>
-            <Box bg='gray.200'>
-              <Code fontSize='sm' bg='gray.200'>
-                <pre>{info}</pre>
-              </Code>
+            <Box>
+              <Code
+                bg="gray.200"
+                display="block"
+                whiteSpace="pre"
+                children={info}
+                style={{ whiteSpace: "pre-wrap" }}
+              />
             </Box>
           </ModalBody>
 

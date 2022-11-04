@@ -3,7 +3,7 @@ import React from "react";
 import { Icon } from "@chakra-ui/react";
 import {
   MdBarChart,
-  //MdPerson,
+  MdPerson,
   MdHome,
   MdImage,
   MdSquareFoot,
@@ -19,6 +19,7 @@ import Image from "views/admin/image";
 import Container from "views/admin/container";
 import Network from "views/admin/network";
 import Volume from "views/admin/volume";
+import StaticAnalysis from "views/admin/staticanalysis";
 //import RTL from "views/admin/rtl";
 
 // Auth Imports
@@ -60,14 +61,15 @@ const routes = [
     path: "/volume",
     component: Volume,
   },
-  /*
   {
-    name: "Container Dashboard",
+    name: "Static Analysis",
     layout: "/admin",
-    path: "/container",
-    icon: <Icon as={MdSquareFoot} width='20px' height='20px' color='inherit' />,
-    component: Container,
+    path: "/staticanalysis",
+    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+    component: StaticAnalysis,
   },
+  /*
+ 
   
 
   {
