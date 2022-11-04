@@ -41,19 +41,6 @@ def check_diff(curr, prev):
     return added, modified, deleted
 
 
-def separate_files_dir(diff):
-    files = list()
-    dirs = list()
-
-    for content in diff:
-        if content[-1:] == "/":
-            dirs.append(content)
-        else:
-            files.append(content)
-
-    return {"File": files, "Directory": dirs}
-
-
 prev = list()
 
 for layer in LAYERS:
@@ -70,9 +57,9 @@ for layer in LAYERS:
     layer = layer.split("/")[0]
     FINAL[layer] = dict()
 
-    FINAL[layer]["Add"] = separate_files_dir(added)
-    FINAL[layer]["Edit"] = separate_files_dir(modified)
-    FINAL[layer]["Delete"] = separate_files_dir(deleted)
+    FINAL[layer]["Add"] = sorted(added)
+    FINAL[layer]["Edit"] = sorted(modified)
+    FINAL[layer]["Delete"] = sorted(deleted)
 
     prev = files
 
