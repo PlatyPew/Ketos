@@ -5,6 +5,7 @@ import { Flex, useColorModeValue, Text } from "@chakra-ui/react";
 
 // Custom components
 //import { HorizonLogo } from "components/icons/Icons";
+import MyImageSvg from '../../../assets/img/ketos4096.svg';
 import { HSeparator } from "components/separator/Separator";
 
 export function SidebarBrand() {
@@ -23,4 +24,4 @@ export function SidebarBrand() {
 
 export default SidebarBrand;
 
-//<HorizonLogo h='26px' w='175px' my='32px' color={logoColor} />
+//<HorizonLogo h='26px' w='175px' my='32px' color={logoColor} /><MyImageSvg />

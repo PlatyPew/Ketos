@@ -5,6 +5,8 @@ import { InfoIcon } from '@chakra-ui/icons'
 import { TreeView } from '@mui/lab';
 
 import {
+  Center,
+  ButtonGroup,
   Modal,
   ModalContent,
   ModalHeader,
@@ -40,19 +42,27 @@ export default function ContainerModal(props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontSize="2xl">
-            Container ID: {id.slice(0,12)}
+            Container ID: {id.slice(0, 12)}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontSize="lg">What would you like to do?</Text>
-            <ContainerInfoModal id={id} />
-            <ContainerLogsModal id={id} />
-            <ContainerFileStructureModal id={id} />
-            <ContainerDiffModal id={id} />
-            <br />
-            <ContainerExportInfoModal id={id} />
-            <ContainerExportImageModal id={id} />
-            <ContainerExportFileModal id={id} />
+            <br></br>
+            <Center>
+              <ButtonGroup variant="outline" spacing="3">
+                <ContainerInfoModal id={id} />
+                <ContainerLogsModal id={id} />
+                <ContainerFileStructureModal id={id} />
+                <ContainerDiffModal id={id} />
+              </ButtonGroup>
+            </Center>
+            <Center>
+              <ButtonGroup variant="outline" spacing="3">
+                <ContainerExportInfoModal id={id} />
+                <ContainerExportImageModal id={id} />
+                <ContainerExportFileModal id={id} />
+              </ButtonGroup>
+            </Center>
           </ModalBody>
 
           <ModalFooter>

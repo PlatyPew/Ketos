@@ -5,6 +5,7 @@ import { InfoIcon } from '@chakra-ui/icons'
 import {
   Box,
   ButtonGroup,
+  Center,
   Modal,
   ModalContent,
   ModalHeader,
@@ -46,15 +47,20 @@ export default function ImageModal(props) {
             <Text fontSize="lg">What would you like to do?</Text>
             <br></br>
             <Box alignItems="center">
-              <ButtonGroup variant="outline" spacing="3">
-                <ImageInfoModal id={id} />
-                <ImageLayerModal id={id} />
-                <ImageDockerFileModal id={id} />
-              </ButtonGroup>
-              <ButtonGroup variant="outline" spacing="3">
-                <ImageExportInfoModal id={id} />
-                <ImageExportImageModal id={id} />
-              </ButtonGroup>
+              <Center>
+                <ButtonGroup variant="outline" spacing="3">
+                  <ImageInfoModal id={id} />
+                  <ImageLayerModal id={id} />
+                  <ImageDockerFileModal id={id} />
+                </ButtonGroup>
+              </Center>
+              <Center>
+                <ButtonGroup variant="outline" spacing="3">
+                  <ImageExportInfoModal id={id} />
+                  <ImageExportImageModal id={id} />
+                </ButtonGroup>
+              </Center>
+
             </Box>
           </ModalBody>
 
