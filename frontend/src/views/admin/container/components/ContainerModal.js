@@ -11,6 +11,7 @@ import {
   ModalCloseButton,
   ModalFooter,
   Button,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 
@@ -33,12 +34,11 @@ export default function ContainerModal(props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontSize="2xl">
-            Container ID:
-            <br />
-            {id}
+            Container ID: {id.slice(0,12)}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text fontSize="lg">What would you like to do?</Text>
             <ContainerInfoModal id={id} />
             <Button margin="5px" bg="purple.300" _hover={{ bg: "purple.400" }}>View File Structure</Button>
             <Button margin="5px" bg="cyan.500" _hover={{ bg: "cyan.600" }}>View File Difference</Button>

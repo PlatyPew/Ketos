@@ -11,6 +11,7 @@ import {
   Button,
   Box,
   Code,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 
@@ -42,12 +43,11 @@ export default function ContainerInfoModal(props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontSize="2xl">
-            Container ID:
-            <br />
-            {id}
+            Container ID: {id.slice(0,12)}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text fontSize="lg">Information</Text>
             <Box bg='gray.200'>
               <Code fontSize='sm' bg='gray.200'>
                 <pre>{info}</pre>
