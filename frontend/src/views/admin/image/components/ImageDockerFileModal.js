@@ -42,7 +42,7 @@ export default function ImageInfoModal(props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontSize="2xl">
-            Image ID: {id.slice(7, 12)}
+            Image ID: {id.slice(7, 19)}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

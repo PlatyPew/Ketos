@@ -17,6 +17,7 @@ import {
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import TreeView, { flattenTree } from "react-accessible-treeview";
 
 const API = "127.0.0.1:3000"
 
@@ -42,7 +43,7 @@ export default function ImageLayerModal(props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontSize="2xl">
-            Image ID: {id.slice(7, 12)}
+            Image ID: {id.slice(7, 19)}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
