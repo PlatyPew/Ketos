@@ -77,7 +77,6 @@ export default function ContainerFileStructureModal(props) {
         <TreeView
           data={data}
           aria-label="directory tree"
-          defaultExpandedIds={Array.from({length: 1000},(_,x) => x+1)}
           nodeRenderer={({
             element,
             getNodeProps,
