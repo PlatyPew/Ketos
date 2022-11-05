@@ -1,13 +1,9 @@
 // Chakra imports
-import ColumnsTable from "views/admin/volume/components/ColumnsTable";
+import ColumnsTable from "views/admin/staticanalysis/components/ColumnsTable";
 import StaticAnalysisFiledata from "views/admin/staticanalysis/components/StaticAnalysisFiledata"
 
 import React from "react";
 import { useState, useEffect } from "react";
-
-import {
-  Grid,
-} from "@chakra-ui/react";
 
 import axios from "axios";
 
@@ -69,7 +65,7 @@ export default function StaticAnalInfo() {
 
   return (
     <>
-      <ColumnsTable header="Vulnerabilty Results" columnsData={columnsData} tableData={truncInfo} />
+      <ColumnsTable header="Image Vulnerabilty Results" columnsData={columnsData} tableData={truncInfo} />
       <StaticAnalysisFiledata />
     </>
   );
