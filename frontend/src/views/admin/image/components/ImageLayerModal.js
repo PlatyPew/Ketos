@@ -26,18 +26,54 @@ export default function ImageLayerModal(props) {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [info, setInfo] = useState();
+  const [data, setData] = useState(flattenTree({name: "", children: []}));
 
-  useEffect(async () => {
+  const parseData = (paths) => {
+    let result = [];
+    let level = { result };
+
+    paths.forEach((path) => {
+        path.split("/").reduce((r, name, i, a) => {
+            if (!r[name]) {
+                r[name] = { result: [] };
+                if (name !== "") r.result.push({ name, children: r[name].result });
+            }
+
+            return r[name];
+        }, level);
+    });
+
+    return result;
+  }
+
+
+  const handleDownload = async () => {
     if (!id) return;
-    
+
     const imageLayer = (await axios.get(`http://${API}/api/image/layer/${id.slice(7)}`)).data.response;
-    setInfo(JSON.stringify(imageLayer, null, 2));
-  }, []);
+
+    const layers = Object.keys(imageLayer).map((layer, i) => {
+      return {
+        name: `> Layer ${i+1} - ${layer}`,
+        children: [
+          { name: "> Added Files", children: parseData(imageLayer[layer].Add) },
+          { name: "> Edited Files", children: parseData(imageLayer[layer].Edit) },
+          { name: "> Deleted Files", children: parseData(imageLayer[layer].Delete) },
+        ]
+      }
+    });
+
+    setData(flattenTree({name: "", children: layers}))
+  };
+
+  const handleOpen = () => {
+    handleDownload();
+    onOpen();
+  }
 
   return (
     <>
-    <Button onClick={onOpen} margin="5px" bg="yellow.300" _hover={{ bg: "yellow.400" }}>View Layers</Button>
+    <Button onClick={handleOpen} margin="5px" bg="yellow.300" _hover={{ bg: "yellow.400" }}>View Layers</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />
@@ -47,14 +83,20 @@ export default function ImageLayerModal(props) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontSize="lg">Information</Text>
-            <Box>
-              <Code
-                bg="gray.200"
-                display="block"
-                whiteSpace="pre"
-                children={info}
-                style={{ whiteSpace: "pre-wrap" }}
+            <Text fontSize="lg">Layers</Text>
+            <Box bg="gray.200" className="directory">
+              <TreeView
+                data={data}
+                aria-label="directory tree"
+                nodeRenderer={({
+                  element,
+                  getNodeProps,
+                  level,
+                }) => (
+                  <div {...getNodeProps()} style={{ paddingLeft: 20 * (level - 1) }}>
+                    <Text>{element.name}</Text>
+                  </div>
+                )}
               />
             </Box>
           </ModalBody>
