@@ -25,7 +25,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
+import { FaDownload } from "react-icons/fa";
+
 import axios from "axios";
+import { saveAs } from 'file-saver'
 
 const API = "127.0.0.1:3000"
 
@@ -44,20 +47,45 @@ const columnsData = [
   },
 ];
 
-const truncInfo = [
-  {
-    id: "Lorem",
-    iface: "Ipsum",
-    download: "button here"
-  }
-]
-
 export default function DynamicAnalInfo() {
   const [containerID, setContainerID] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [display, setDisplay] = useState(<></>);
   const [loadProcess, setLoadProcess] = useState(false);
+
+  const [trafficData, setTrafficData] = useState([]);
+
+  const handleDownload = async (id, iface) => {
+    try {
+      const out = await axios.get(`http://${API}/api/dynamic/capture/${id}/${iface}`, {
+        responseType: 'blob',
+      });
+
+      saveAs(out.data, `${id}-${iface}.pcap`);
+    } finally {
+      
+    }
+  };
+
+  useEffect(async () => {
+    const id = (await axios.get(`http://${API}/api/dynamic/capture/id`)).data.response;
+
+    let data = [];
+    Object.keys(id).forEach((e) => {
+        id[e].forEach((i) => {
+            data.push({
+              id: e,
+              iface: i,
+              download: <Button onClick={() => {handleDownload(e, i)}}><FaDownload /></Button>,
+            });
+        });
+    });
+
+    setTrafficData(data);
+
+  }, [trafficData]);
+
 
   const handleChangeID = (event) => {
     const value = event.target.value;
@@ -182,7 +210,7 @@ export default function DynamicAnalInfo() {
       </Box>
     </Box>
 
-      <ColumnsTable header="Network Captures" columnsData={columnsData} tableData={truncInfo}/>
+      <ColumnsTable header="Network Captures" columnsData={columnsData} tableData={trafficData}/>
     </>
   );
 }
