@@ -48,7 +48,7 @@ export default function VolumeInfo() {
     const truncVolumeInfo = volumeInfo.map((info) => {
       return {
         name: info.Name,
-        //labels: info.Labels === null ? "NIL" : info.Labels,
+        labels: info.Labels === null ? "NIL" : JSON.stringify(info.Labels),
         mntpt: info.Mountpoint,
         info: <VolumeInfoModal id={info.Name} />,
       };
