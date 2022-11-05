@@ -16,6 +16,12 @@ import {
   InputLeftAddon,
   Grid,
   Code,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
   useDisclosure,
 } from "@chakra-ui/react";
 
@@ -28,10 +34,16 @@ export default function StaticAnalysisFiledata(props) {
 
   const [containerID, setContainerID] = useState("");
   const [file, setFile] = useState("");
-  const [load, setLoad] = useState(false);
+  const [loadFile, setLoadFile] = useState(false);
+  const [loadYara, setLoadYara] = useState(false);
+  const [loadVT, setLoadVT] = useState(false);
+
+  const [displayData, setDisplayData] = useState();
 
   const [filedata, setFiledata] = useState({hashsum: "", type: "", strings: ""});
   const [metadata, setMetadata] = useState({date: "", gid: 0, mode: "", size: 0, uid: 0});
+
+  const [yara, setYara] = useState([]);
 
   const handleChangeID = (event) => {
     const value = event.target.value;
@@ -42,10 +54,10 @@ export default function StaticAnalysisFiledata(props) {
     setFile(value);
   };
 
-  const handleDownload = async () => {
+  const handleFiledata = async () => {
     if (!containerID || !file) return;
 
-    setLoad(true);
+    setLoadFile(true);
 
     try {
       const metadata = (await axios.get(`http://${API}/api/static/metadata/${containerID}`, {
@@ -58,9 +70,97 @@ export default function StaticAnalysisFiledata(props) {
       })).data.response;
       setFiledata(filedata);
 
+      setDisplayData(
+        <>
+          <Text fontSize="lg">Metadata</Text>
+          <Grid bg="gray.200" templateColumns="repeat(5, 1fr)">
+            <Text fontSize="lg" fontWeight="700">Mode</Text>
+            <Text fontSize="lg" fontWeight="700">Size</Text>
+            <Text fontSize="lg" fontWeight="700">UID</Text>
+            <Text fontSize="lg" fontWeight="700">GID</Text>
+            <Text fontSize="lg" fontWeight="700">Date</Text>
+
+            <Text fontSize="lg">{metadata.mode}</Text>
+            <Text fontSize="lg">{metadata.size}</Text>
+            <Text fontSize="lg">{metadata.uid}</Text>
+            <Text fontSize="lg">{metadata.gid}</Text>
+            <Text fontSize="lg">{metadata.date}</Text>
+          </Grid>
+
+          <Text fontSize="lg" marginTop="20px">File Data</Text>
+          <Grid bg="gray.200" templateColumns="repeat(2, 1fr)">
+            <Text fontSize="lg" fontWeight="700">Sha256</Text>
+            <Text fontSize="lg" fontWeight="700">File Type</Text>
+
+            <Text fontSize="lg" marginRight="10">{filedata.hashsum}</Text>
+            <Text fontSize="lg">{filedata.type}</Text>
+          </Grid>
+
+          <Box>
+            <Text fontSize="lg" marginTop="20px">Strings</Text>
+            <Code
+              bg="gray.200"
+              display="block"
+              whiteSpace="pre"
+              children={filedata.strings}
+              style={{ whiteSpace: "pre-wrap" }}
+            />
+          </Box>
+        </>
+      );
+
       onOpen();
     } finally {
-      setLoad(false);
+      setLoadFile(false);
+    }
+  }
+
+  const handleYara = async () => {
+    if (!containerID || !file) return;
+
+    setLoadYara(true);
+
+    try {
+      const match = (await axios.get(`http://${API}/api/static/match/${containerID}`, {
+        params: { file: file },
+      })).data.response;
+      setYara(match);
+
+      console.log(yara)
+      setDisplayData(
+        <>
+          <Text fontSize="lg">Yara Scan</Text>
+
+          <Table variant='simple'>
+            <Thead>
+              <Tr fontWeight="700">
+                <Th>Namespace</Th>
+                <Th>Description</Th>
+                <Th>Rule</Th>
+                <Th>Tags</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {yara.map((element) => {
+                return (
+                  <>
+                  <Tr>
+                    <Td>{element.namespace}</Td>
+                    <Td>{element.description}</Td>
+                    <Td>{element.rule}</Td>
+                    <Td>{JSON.stringify(element.tags)}</Td>
+                  </Tr>
+                  </>
+                )
+              })}
+            </Tbody>
+          </Table>
+
+        </>
+      );
+      onOpen();
+    } finally {
+      setLoadYara(false);
     }
   }
 
@@ -95,14 +195,34 @@ export default function StaticAnalysisFiledata(props) {
             />
           </InputGroup>
           <Button
-            isLoading={load}
+            isLoading={loadFile}
             loadingText="Fetching File Data"
-            onClick={handleDownload}
+            onClick={handleFiledata}
             marginTop="10px"
-            bg="teal.300"
-            _hover={{ bg: "teal.400" }}
+            bg="blue.200"
+            _hover={{ bg: "blue.300" }}
           >
             Get File Data
+          </Button>
+          <Button
+            isLoading={loadYara}
+            loadingText="Scanning File"
+            onClick={handleYara}
+            marginTop="10px"
+            marginLeft="10px"
+            bg="yellow.300"
+            _hover={{ bg: "yellow.400" }}
+          >
+            Scan File with Yara
+          </Button>
+          <Button
+            loadingText="Scanning File"
+            marginTop="10px"
+            marginLeft="10px"
+            bg="green.300"
+            _hover={{ bg: "green.400" }}
+          >
+            Scan File with VirusTotal
           </Button>
         </Box>
       </Box>
@@ -115,40 +235,7 @@ export default function StaticAnalysisFiledata(props) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontSize="lg">Metadata</Text>
-            <Grid bg="gray.200" templateColumns="repeat(5, 1fr)">
-              <Text fontSize="lg" fontWeight="700">Mode</Text>
-              <Text fontSize="lg" fontWeight="700">Size</Text>
-              <Text fontSize="lg" fontWeight="700">UID</Text>
-              <Text fontSize="lg" fontWeight="700">GID</Text>
-              <Text fontSize="lg" fontWeight="700">Date</Text>
-
-              <Text fontSize="lg">{metadata.mode}</Text>
-              <Text fontSize="lg">{metadata.size}</Text>
-              <Text fontSize="lg">{metadata.uid}</Text>
-              <Text fontSize="lg">{metadata.gid}</Text>
-              <Text fontSize="lg">{metadata.date}</Text>
-            </Grid>
-
-            <Text fontSize="lg" marginTop="20px">File Data</Text>
-            <Grid bg="gray.200" templateColumns="repeat(2, 1fr)">
-              <Text fontSize="lg" fontWeight="700">Sha256</Text>
-              <Text fontSize="lg" fontWeight="700">File Type</Text>
-
-              <Text fontSize="lg" marginRight="10">{filedata.hashsum}</Text>
-              <Text fontSize="lg">{filedata.type}</Text>
-            </Grid>
-
-            <Box>
-              <Text fontSize="lg" marginTop="20px">Strings</Text>
-              <Code
-                bg="gray.200"
-                display="block"
-                whiteSpace="pre"
-                children={filedata.strings}
-                style={{ whiteSpace: "pre-wrap" }}
-              />
-            </Box>
+            {displayData}
           </ModalBody>
 
           <ModalFooter>
