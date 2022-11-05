@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 
 import os
 import subprocess
+import platform
 
 app = Flask(__name__)
 
@@ -87,6 +88,13 @@ def listen_traffic():
     try:
         hashes = request.args.getlist("id")
         arch = request.args.get("arch")
+
+        if arch != "arm64" and arch != "amd64":
+            if platform.machine() == 'aarch64':
+                arch = 'arm64'
+            else:
+                arch = 'amd64'
+
         create_listener(hashes, arch)
         return jsonify({"response": True})
     except Exception as e:
