@@ -17,6 +17,7 @@ import {
 import { InfoIcon } from '@chakra-ui/icons'
 
 import StaticAnalysisVulnInfoModal from "views/admin/staticanalysis/components/StaticAnalysisVulnInfoModal";
+import StaticAnalysisExportVulnModal from "views/admin/staticanalysis/components/StaticAnalysisExportVulnModal";
 
 export default function StaticAnalysisVulnModal(props) {
   const { id } = props;
@@ -40,6 +41,7 @@ export default function StaticAnalysisVulnModal(props) {
             <Center>
               <ButtonGroup variant="outline" spacing="3">
                 <StaticAnalysisVulnInfoModal id={id}/>
+                <StaticAnalysisExportVulnModal id={id} />
               </ButtonGroup>
             </Center>
           </ModalBody>
