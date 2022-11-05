@@ -220,8 +220,9 @@ router.get("/detect/:id/all", async (req, res) => {
 
     if (data === null) data = await _pullWithFile(id, file);
 
-    res.setHeader("Content-Type", "application/json");
-    res.json({ response: data });
+    res.setHeader("Content-Type", "application/octet-stream");
+    res.setHeader("Content-Disposition", `attachment; filename=vt-${id}-${file}.json`);
+    res.send(data);
 });
 
 router.get("/match/:id", async (req, res) => {
