@@ -73,7 +73,7 @@ export default function ImageLayerModal(props) {
 
   return (
     <>
-    <Button onClick={handleOpen} margin="5px" bg="yellow.300" _hover={{ bg: "yellow.400" }}>View Layers</Button>
+    <Button onClick={handleOpen} margin="5px" bg="purple.300" _hover={{ bg: "purple.400" }}>View Layers</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />

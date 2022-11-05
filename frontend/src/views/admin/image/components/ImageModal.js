@@ -23,6 +23,7 @@ import ImageDockerFileModal from "views/admin/image/components/ImageDockerFileMo
 import ImageLayerModal from "views/admin/image/components/ImageLayerModal";
 import ImageExportInfoModal from "views/admin/image/components/ImageExportInfoModal"; // Export all
 import ImageExportImageModal from "views/admin/image/components/ImageExportImageModal"; // Export Image's image
+import ImageExportFileModal from "views/admin/image/components/ImageExportFileModal"; // Export Image's image
 
 
 
@@ -58,6 +59,7 @@ export default function ImageModal(props) {
                 <ButtonGroup variant="outline" spacing="3">
                   <ImageExportInfoModal id={id} />
                   <ImageExportImageModal id={id} />
+                  <ImageExportFileModal id={id} />
                 </ButtonGroup>
               </Center>
 
