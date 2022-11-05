@@ -16,7 +16,7 @@ import {
 import "views/admin/container/index.css"
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import TreeView, { flattenTree } from "react-accessible-treeview";
 
