@@ -11,6 +11,7 @@ import {
   ModalCloseButton,
   ModalFooter,
   Button,
+  ButtonGroup,
   Box,
   Text,
   Input,
@@ -66,6 +67,22 @@ export default function DynamicAnalInfo() {
     } finally {
       
     }
+  };
+
+  const handleShell = async() => {
+    if (!containerID) return
+    try {
+      await axios.get(`http://${API}/api/dynamic/shell/${containerID}`)
+
+      setDisplay(
+        <Text>
+          Connect to port 2323 using
+          <pre>socat file:`tty`,raw,echo=0 tcp:127.0.0.1:2323</pre>
+        </Text>
+      )
+
+      onOpen();
+    } finally {}
   };
 
   useEffect(async () => {
@@ -168,7 +185,7 @@ export default function DynamicAnalInfo() {
           fontWeight='700'
           lineHeight='100%'
         >
-          Container Process List
+          Container Dynamic Analysis
         </Text>
       </Box>
       <Box margin="20px">
@@ -180,16 +197,26 @@ export default function DynamicAnalInfo() {
             value={containerID}
           />
         </InputGroup>
-        <Button
-          loadingText="Getting Processes"
-          marginTop="10px"
-          bg="blue.200"
-          _hover={{ bg: "blue.300" }}
-          onClick={handleProcesses}
-          isLoading={loadProcess}
-        >
-          Get Processes
-        </Button>
+          <ButtonGroup>
+            <Button
+              loadingText="Getting Processes"
+              marginTop="10px"
+              bg="blue.200"
+              _hover={{ bg: "blue.300" }}
+              onClick={handleProcesses}
+              isLoading={loadProcess}
+            >
+              Get Processes
+            </Button>
+            <Button
+              marginTop="10px"
+              bg="yellow.200"
+              _hover={{ bg: "yellow.300" }}
+              onClick={handleShell}
+            >
+              Attach to Shell
+            </Button>
+          </ButtonGroup>
           <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
             <ModalOverlay />
             <ModalContent>
