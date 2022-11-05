@@ -24,6 +24,7 @@ import {
   Td,
   useDisclosure,
 } from "@chakra-ui/react";
+import { saveAs } from 'file-saver'
 
 import axios from "axios";
 
@@ -37,13 +38,9 @@ export default function StaticAnalysisFiledata(props) {
   const [loadFile, setLoadFile] = useState(false);
   const [loadYara, setLoadYara] = useState(false);
   const [loadVT, setLoadVT] = useState(false);
+  const [loadVTExport, setLoadVTExport] = useState(false);
 
   const [displayData, setDisplayData] = useState();
-
-  const [filedata, setFiledata] = useState({hashsum: "", type: "", strings: ""});
-  const [metadata, setMetadata] = useState({date: "", gid: 0, mode: "", size: 0, uid: 0});
-
-  const [yara, setYara] = useState([]);
 
   const handleChangeID = (event) => {
     const value = event.target.value;
@@ -63,12 +60,10 @@ export default function StaticAnalysisFiledata(props) {
       const metadata = (await axios.get(`http://${API}/api/static/metadata/${containerID}`, {
         params: { file: file },
       })).data.response;
-      setMetadata(metadata);
 
       const filedata = (await axios.get(`http://${API}/api/static/filedata/${containerID}`, {
         params: { file: file },
       })).data.response;
-      setFiledata(filedata);
 
       setDisplayData(
         <>
@@ -121,12 +116,10 @@ export default function StaticAnalysisFiledata(props) {
     setLoadYara(true);
 
     try {
-      const match = (await axios.get(`http://${API}/api/static/match/${containerID}`, {
+      const yara = (await axios.get(`http://${API}/api/static/match/${containerID}`, {
         params: { file: file },
       })).data.response;
-      setYara(match);
 
-      console.log(yara)
       setDisplayData(
         <>
           <Text fontSize="lg">Yara Scan</Text>
@@ -161,6 +154,50 @@ export default function StaticAnalysisFiledata(props) {
       onOpen();
     } finally {
       setLoadYara(false);
+    }
+  }
+
+  const handleVT = async () => {
+    if (!containerID || !file) return;
+
+    setLoadVT(true);
+    try {
+      const vt = (await axios.get(`http://${API}/api/static/detect/${containerID}`, {
+        params: { file: file },
+      })).data.response;
+
+      setDisplayData(
+        <Box>
+          <Code
+            bg="gray.200"
+            display="block"
+            whiteSpace="pre"
+            children={JSON.stringify(vt, null, 2)}
+            style={{ whiteSpace: "pre-wrap" }}
+          />
+        </Box>
+      )
+
+      onOpen();
+    } finally {
+      setLoadVT(false);
+    }
+  }
+
+  const handleVTExport = async () => {
+    if (!containerID || !file) return;
+    setLoadVTExport(true);
+
+    try {
+      const out = await axios.get(`http://${API}/api/static/detect/${containerID}/all`, {
+        responseType: 'blob',
+        params: { file: file },
+      });
+
+      saveAs(out.data, `vt-${containerID}-${file}.json`);
+
+    } finally {
+      setLoadVTExport(false);
     }
   }
 
@@ -216,6 +253,8 @@ export default function StaticAnalysisFiledata(props) {
             Scan File with Yara
           </Button>
           <Button
+            isLoading={loadVT}
+            onClick={handleVT}
             loadingText="Scanning File"
             marginTop="10px"
             marginLeft="10px"
@@ -224,10 +263,21 @@ export default function StaticAnalysisFiledata(props) {
           >
             Scan File with VirusTotal
           </Button>
+          <Button
+            isLoading={loadVTExport}
+            onClick={handleVTExport}
+            loadingText="Exporting File"
+            marginTop="10px"
+            marginLeft="10px"
+            bg="cyan.300"
+            _hover={{ bg: "cyan.400" }}
+          >
+            Export File with VirusTotal
+          </Button>
         </Box>
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
+      <Modal isOpen={isOpen} onClose={onClose} size="6xl" scrollBehavior="outside">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
