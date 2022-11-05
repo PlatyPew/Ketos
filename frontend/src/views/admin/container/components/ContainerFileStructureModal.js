@@ -69,10 +69,10 @@ export default function ContainerFileStructureModal(props) {
         <ModalContent>
           <ModalHeader>
             <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
-            <Text fontSize="lg">File Structure</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text fontSize="lg">File Structure</Text>
       <Box bg="gray.200" className="directory">
         <TreeView
           data={data}

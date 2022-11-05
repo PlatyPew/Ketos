@@ -46,7 +46,7 @@ export default function ImageInfoModal(props) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontSize="lg">Information</Text>
+            <Text fontSize="lg">Dockerfile</Text>
             <Box bg='gray.200'>
             <Box>
               <Code

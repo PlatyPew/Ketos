@@ -57,10 +57,10 @@ export default function ContainerExportFileModal(props) {
         <ModalContent>
           <ModalHeader>
             <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
-            <Text fontSize="lg">File To Export</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text fontSize="lg">File To Export</Text>
             <Box>
               <InputGroup>
                 <InputLeftAddon children='File' />

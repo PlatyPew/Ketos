@@ -114,10 +114,10 @@ export default function ContainerDiffModal(props) {
         <ModalContent>
           <ModalHeader>
             <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
-            <Text fontSize="lg">Diff</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text fontSize="lg">Diff</Text>
       <Box bg="gray.200">
               <Grid templateColumns="repeat(3, 1fr)">
                 {data.map((element) => {return element})}

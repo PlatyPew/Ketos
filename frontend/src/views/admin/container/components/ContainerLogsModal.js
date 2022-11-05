@@ -45,10 +45,10 @@ export default function ContainerInfoModal(props) {
         <ModalContent>
           <ModalHeader>
             <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
-            <Text fontSize="lg">Logs</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text fontSize="lg">Logs</Text>
             <Box>
               <Code
                 bg="gray.200"
