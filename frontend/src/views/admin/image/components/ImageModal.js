@@ -37,7 +37,7 @@ export default function ImageModal(props) {
         <InfoIcon />
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="2xl" scrollBehavior="outside">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" scrollBehavior="outside">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader fontSize="2xl">

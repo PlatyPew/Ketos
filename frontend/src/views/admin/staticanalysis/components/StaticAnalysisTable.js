@@ -1,6 +1,7 @@
 // Chakra imports
 import ColumnsTable from "views/admin/staticanalysis/components/ColumnsTable";
 import StaticAnalysisFiledata from "views/admin/staticanalysis/components/StaticAnalysisFiledata"
+import StaticAnalysisVulnModal from "views/admin/staticanalysis/components/StaticAnalysisVulnModal";
 
 import React from "react";
 import { useState, useEffect } from "react";
@@ -26,6 +27,10 @@ const columnsData = [
     Header: "SUMMARY",
     accessor: "summary",
   },
+  {
+    Header: "INFO",
+    accessor: "info",
+  }
 
 ];
 
@@ -66,6 +71,7 @@ export default function StaticAnalInfo() {
         title: info.vulnerabilities[0].title,
         severity: info.vulnerabilities[0].severity,
         summary: info.summary,
+        info: <StaticAnalysisVulnModal id={element.id} />,
       };
     })
 
