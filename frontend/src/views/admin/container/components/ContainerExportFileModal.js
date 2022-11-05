@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import {
+  Stack,
   Modal,
   ModalContent,
   ModalHeader,
@@ -50,35 +51,35 @@ export default function ContainerExportFileModal(props) {
 
   return (
     <>
-    <Button onClick={onOpen} margin="5px" bg="yellow.200" _hover={{ bg: "yellow.300" }}>Export File</Button>
+      <Button onClick={onOpen} margin="5px" bg="yellow.200" _hover={{ bg: "yellow.300" }}>Export File</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
+            <Text fontSize="2xl">Container ID: {id.slice(0, 12)}</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text fontSize="lg">File To Export</Text>
-            <Box>
+            <Stack spacing={4} >
+              <Text fontSize="lg">File To Export</Text>
               <InputGroup>
                 <InputLeftAddon children='File' />
                 <Input placeholder='etc/passwd' onChange={handleChange} value={file} />
               </InputGroup>
-              <Button
-                isLoading={load}
-                loadingText="Retrieving File"
-                onClick={handleDownload}
-                marginTop="10px"
-                bg="teal.300"
-                _hover={{ bg: "teal.400" }}
-              >
-                Export File
-              </Button>
-            </Box>
+              <Box>
+                <Button
+                  isLoading={load}
+                  loadingText="Retrieving File"
+                  onClick={handleDownload}
+                  marginTop="10px"
+                  bg="teal.300"
+                  _hover={{ bg: "teal.400" }} >
+                  Export File
+                </Button>
+              </Box>
+            </Stack>
           </ModalBody>
-
           <ModalFooter>
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Close

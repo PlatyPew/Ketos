@@ -60,7 +60,6 @@ export default function ContainerInfo() {
 
   }, []);
 
-
   return (
     <>
       <ColumnsTable header="Information" columnsData={columnsData} tableData={truncInfo} />

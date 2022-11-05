@@ -2,7 +2,6 @@ import React from "react";
 
 import { Icon } from "@chakra-ui/react";
 import {
-  //MdPerson,
   MdArchive,
   MdStorage,
 } from "react-icons/md";
@@ -19,7 +18,6 @@ import {
   HiMagnifyingGlass,
 } from "react-icons/hi2";
 
-
 import {
   FaNetworkWired,
   FaHandPointRight,
@@ -33,7 +31,6 @@ import Network from "views/admin/network";
 import Volume from "views/admin/volume";
 import StaticAnalysis from "views/admin/staticanalysis";
 import DynamicAnalysis from "views/admin/dynamicanalysis";
-
 
 const routes = [
   {

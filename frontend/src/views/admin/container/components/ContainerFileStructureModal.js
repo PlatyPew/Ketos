@@ -27,21 +27,21 @@ export default function ContainerFileStructureModal(props) {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [data, setData] = useState(flattenTree({name: "", children: []}));
+  const [data, setData] = useState(flattenTree({ name: "", children: [] }));
 
   const parseData = (paths) => {
     let result = [];
     let level = { result };
 
     paths.forEach((path) => {
-        path.split("/").reduce((r, name, i, a) => {
-            if (!r[name]) {
-                r[name] = { result: [] };
-                if (name !== "") r.result.push({ name, children: r[name].result });
-            }
+      path.split("/").reduce((r, name, i, a) => {
+        if (!r[name]) {
+          r[name] = { result: [] };
+          if (name !== "") r.result.push({ name, children: r[name].result });
+        }
 
-            return r[name];
-        }, level);
+        return r[name];
+      }, level);
     });
 
     return result;
@@ -51,7 +51,7 @@ export default function ContainerFileStructureModal(props) {
     if (!id) return;
 
     const containerFS = (await axios.get(`http://${API}/api/container/filestruct/${id}`)).data.response;
-    const parsed = {name: "", children: parseData(containerFS)};
+    const parsed = { name: "", children: parseData(containerFS) };
     setData(flattenTree(parsed));
   };
 
@@ -62,34 +62,32 @@ export default function ContainerFileStructureModal(props) {
 
   return (
     <>
-    <Button onClick={handleOpen} margin="5px" bg="purple.300" _hover={{ bg: "purple.400" }}>View File Structure</Button>
-
+      <Button onClick={handleOpen} margin="5px" bg="purple.300" _hover={{ bg: "purple.400" }}>View File Structure</Button>
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
+            <Text fontSize="2xl">Container ID: {id.slice(0, 12)}</Text>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody>   
             <Text fontSize="lg">File Structure</Text>
-      <Box bg="gray.200" className="directory">
-        <TreeView
-          data={data}
-          aria-label="directory tree"
-          nodeRenderer={({
-            element,
-            getNodeProps,
-            level,
-          }) => (
-            <div {...getNodeProps()} style={{ paddingLeft: 20 * (level - 1) }}>
-              <Text>{element.name}</Text>
-            </div>
-          )}
-        />
-      </Box>
+            <Box bg="gray.200" className="directory">
+              <TreeView
+                data={data}
+                aria-label="directory tree"
+                nodeRenderer={({
+                  element,
+                  getNodeProps,
+                  level,
+                }) => (
+                  <div {...getNodeProps()} style={{ paddingLeft: 20 * (level - 1) }}>
+                    <Text>{element.name}</Text>
+                  </div>
+                )}
+              />
+            </Box>
           </ModalBody>
-
           <ModalFooter>
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Close

@@ -73,13 +73,12 @@ export default function UserReports() {
   const textColor = useColorModeValue("secondaryGray.900", "white");
 
   return (
-
     <Box borderRadius='lg' overflow='hidden' pt={{ base: "50px", md: "80px", xl: "80px" }}>
       <Card direction='column'
         w='100%'
         px='0px'
         overflowX={{ sm: "scroll", lg: "hidden" }}>
-        <Flex px='25px' justify='space-between' mb='15px' align='center'>
+        <Flex px='25px' justify='space-between' mb='5px' align='center'>
           <Text
             color={textColor}
             fontSize='3xl'
@@ -89,12 +88,10 @@ export default function UserReports() {
           </Text>
         </Flex>
         <Box p='6' pt={{ base: "15px", md: "15px", xl: "15px" }}>
-          <Stack spacing={3}>
-
-            <Text fontSize='1xl' as='b'>Press acquire only once per IP</Text>
-
-            <form onSubmit={handleAcquire}>
-              <InputGroup paddingBlock="10px">
+          <form onSubmit={handleAcquire}>
+            <Stack spacing={2}>
+              <Text fontSize='1xl' as='b'>Press acquire only once per IP</Text>
+              <InputGroup paddingBlock="5px">
                 <InputLeftAddon children="Host" borderRadius="16px" />
                 <Input
                   type="float"
@@ -103,7 +100,7 @@ export default function UserReports() {
                   borderRadius="16px"
                 />
               </InputGroup>
-              <InputGroup paddingBlock="10px">
+              <InputGroup paddingBlock="5px">
                 <InputLeftAddon children="Port" borderRadius="16px" />
                 <Input
                   type="number"
@@ -112,29 +109,29 @@ export default function UserReports() {
                   borderRadius="16px"
                 />
               </InputGroup>
-              {isButtonLoad ? (
-                <Button
-                  isLoading
-                  loadingText="Acquiring"
-                  type="Submit"
-                  colorScheme="teal"
-                  size="md"
-                >
-                  Acquire
-                </Button>
-              ) : (
-                <Button type="Submit" colorScheme="teal" size="md">
-                  Acquire
-                </Button>
-              )}
-              {acquireDone ? (
-                <Text fontSize='1xl' as='b' marginLeft="10px">Successfully Acquired!</Text>
-              ) : (
+              <Box>
+                {isButtonLoad ? (
+                  <Button
+                    isLoading
+                    loadingText="Acquiring"
+                    type="Submit"
+                    colorScheme="teal"
+                    size="md" >
+                    Acquire
+                  </Button>) : (
+                  <Button type="Submit" colorScheme="teal" size="md">
+                    Acquire
+                  </Button>
+                )}
+                {acquireDone ? (
+                  <Text fontSize='1xl' as='b' marginLeft="10px">Successfully Acquired!</Text>
+                ) : (
                   <></>
                 )
-              }
-            </form>
-          </Stack>
+                }
+              </Box>
+            </Stack>
+          </form>
         </Box>
       </Card>
     </Box>

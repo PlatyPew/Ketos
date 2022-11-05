@@ -40,7 +40,7 @@ export default function ContainerDiffModal(props) {
     const del = containerDiff.Delete;
 
     let codeblock = [];
-    const header =(
+    const header = (
       <>
         <Code
           bg="gray.200"
@@ -71,7 +71,7 @@ export default function ContainerDiffModal(props) {
     codeblock.push(header);
 
     for (let i = 0; i < Math.max(add.length, edit.length, del.length); i++) {
-        let code = (
+      let code = (
         <>
           <Code
             bg="gray.200"
@@ -91,11 +91,11 @@ export default function ContainerDiffModal(props) {
             bg="gray.200"
             display="block"
             whiteSpace="pre"
-            children={delete[i]}
+            children={delete [i]}
             style={{ whiteSpace: "pre-wrap" }}
           />
-          </>
-        )
+        </>
+      )
 
       codeblock.push(code);
     }
@@ -107,22 +107,22 @@ export default function ContainerDiffModal(props) {
 
   return (
     <>
-    <Button onClick={onOpen} margin="5px" bg="cyan.500" _hover={{ bg: "cyan.600" }}>View File Difference</Button>
+      <Button onClick={onOpen} margin="5px" bg="cyan.500" _hover={{ bg: "cyan.600" }}>View File Difference</Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="5xl" scrollBehavior="outside">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Text fontSize="2xl">Container ID: {id.slice(0,12)}</Text>
+            <Text fontSize="2xl">Container ID: {id.slice(0, 12)}</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text fontSize="lg">Diff</Text>
-      <Box bg="gray.200">
+            <Box bg="gray.200">
               <Grid templateColumns="repeat(3, 1fr)">
-                {data.map((element) => {return element})}
+                {data.map((element) => { return element })}
               </Grid>
-      </Box>
+            </Box>
           </ModalBody>
 
           <ModalFooter>

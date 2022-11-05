@@ -183,8 +183,7 @@ export default function DynamicAnalInfo() {
         <Text
           fontSize='xl'
           fontWeight='700'
-          lineHeight='100%'
-        >
+          lineHeight='100%'>
           Container Dynamic Analysis
         </Text>
       </Box>
