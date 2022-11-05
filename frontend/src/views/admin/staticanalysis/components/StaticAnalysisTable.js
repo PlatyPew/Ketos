@@ -11,11 +11,11 @@ const API = "127.0.0.1:3000"
 
 const columnsData = [
   {
-    Header: "ID",
+    Header: "IMAGE ID",
     accessor: "id",
   },
   {
-    Header: "TITLE",
+    Header: "VULN TITLE",
     accessor: "title",
   },
   {
@@ -23,8 +23,8 @@ const columnsData = [
     accessor: "severity",
   },
   {
-    Header: "INFO",
-    accessor: "info",
+    Header: "SUMMARY",
+    accessor: "summary",
   },
 
 ];
@@ -32,34 +32,44 @@ const columnsData = [
 export default function StaticAnalInfo() {
   const [truncInfo, setTruncInfo] = useState([{ id: "", title: "", severity: "" }]);
 
+  const getVuln = async (id) => {
+    try {
+      return {
+        id: id,
+        data: (await axios.get(`http://${API}/api/static/vuln/${id}`)).data.response
+      };
+    } catch {
+      return {};
+    }
+  }
+
   useEffect(async () => {
     const imageIDs = (await axios.get(`http://${API}/api/image/id`)).data.response;
 
+    const vuln = await Promise.all(imageIDs.map((id) => {
+      return getVuln(id);
+    }));
 
-    const staticanalInfo = (await Promise.all(
-      imageIDs.map((id) => {
-        const out = axios.get(`http://${API}/api/static/vuln/${id}`)
-        return out
+    // Remove empty elements
+    const results = vuln.filter(element => {
+      if (Object.keys(element).length !== 0) {
+        return true;
+      }
 
-      })
-    )).map((response) => {
-
-      return response.data.response;
-
+      return false;
     });
 
-    const truncStaticAnalInfo = staticanalInfo.map((info) => {
-      console.log(info.vulnerabilities)
+    const truncVuln = results.map((element) => {
+      let info = element.data;
       return {
-        id: info.id,
-        title: info.vulnerabilities[0].title, //=== null ? "NIL" : info.Labels,
-        severity: info.vulnerabilities.severity,
-        //info: <VolumeInfoModal id={info.Name} />,
+        id: element.id.slice(0,12),
+        title: info.vulnerabilities[0].title,
+        severity: info.vulnerabilities[0].severity,
+        summary: info.summary,
       };
-    });
+    })
 
-    setTruncInfo(truncStaticAnalInfo);
-
+    setTruncInfo(truncVuln);
   }, []);
 
 
