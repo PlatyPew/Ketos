@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import {
+  Stack,
   Modal,
   ModalContent,
   ModalHeader,
@@ -137,12 +138,12 @@ export default function StaticAnalysisFiledata(props) {
               {yara.map((element) => {
                 return (
                   <>
-                  <Tr>
-                    <Td>{element.namespace}</Td>
-                    <Td>{element.description}</Td>
-                    <Td>{element.rule}</Td>
-                    <Td>{JSON.stringify(element.tags)}</Td>
-                  </Tr>
+                    <Tr>
+                      <Td>{element.namespace}</Td>
+                      <Td>{element.description}</Td>
+                      <Td>{element.rule}</Td>
+                      <Td>{JSON.stringify(element.tags)}</Td>
+                    </Tr>
                   </>
                 )
               })}
@@ -203,77 +204,81 @@ export default function StaticAnalysisFiledata(props) {
 
   return (
     <>
-      <Box bg="white" borderRadius='lg' overflow='hidden'>
+      <Box bg="white" borderRadius='lg' overflow='hidden' margin="5px">
         <Box margin="20px">
-          <Text
-            fontSize='xl'
-            fontWeight='700'
-            lineHeight='100%'
-          >
-            Container Analysis
-          </Text>
-        </Box>
-
-        <Box margin="20px">
-          <InputGroup marginBottom={2}>
-            <InputLeftAddon children='ID' />
-            <Input
-              placeholder='0b5a4d09aba0053c03977723919729ea3148cf23c8d03eca9aae21607c6e2769'
-              onChange={handleChangeID}
-              value={containerID}
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon children='File' />
-            <Input
-              placeholder='etc/passwd'
-              onChange={handleChangeFile}
-              value={file}
-            />
-          </InputGroup>
-          <Button
-            isLoading={loadFile}
-            loadingText="Fetching File Data"
-            onClick={handleFiledata}
-            marginTop="10px"
-            bg="blue.200"
-            _hover={{ bg: "blue.300" }}
-          >
-            Get File Data
-          </Button>
-          <Button
-            isLoading={loadYara}
-            loadingText="Scanning File"
-            onClick={handleYara}
-            marginTop="10px"
-            marginLeft="10px"
-            bg="yellow.300"
-            _hover={{ bg: "yellow.400" }}
-          >
-            Scan File with Yara
-          </Button>
-          <Button
-            isLoading={loadVT}
-            onClick={handleVT}
-            loadingText="Scanning File"
-            marginTop="10px"
-            marginLeft="10px"
-            bg="green.300"
-            _hover={{ bg: "green.400" }}
-          >
-            Scan File with VirusTotal
-          </Button>
-          <Button
-            isLoading={loadVTExport}
-            onClick={handleVTExport}
-            loadingText="Exporting File"
-            marginTop="10px"
-            marginLeft="10px"
-            bg="cyan.300"
-            _hover={{ bg: "cyan.400" }}
-          >
-            Export File with VirusTotal
-          </Button>
+          <Stack spacing={4} >
+            <Box margin="5px">
+              <Text
+                fontSize='xl'
+                fontWeight='700'
+                lineHeight='100%'
+              >
+                Container Analysis
+              </Text>
+            </Box>
+            <InputGroup marginBottom={2}>
+              <InputLeftAddon children='ID' />
+              <Input
+                placeholder='0b5a4d09aba0053c03977723919729ea3148cf23c8d03eca9aae21607c6e2769'
+                onChange={handleChangeID}
+                value={containerID}
+              />
+            </InputGroup>
+            <InputGroup>
+              <InputLeftAddon children='File' />
+              <Input
+                placeholder='etc/passwd'
+                onChange={handleChangeFile}
+                value={file}
+              />
+            </InputGroup>
+            <Box>
+              <Stack direction={['column', 'row']}>
+                <Button
+                  isLoading={loadFile}
+                  loadingText="Fetching File Data"
+                  onClick={handleFiledata}
+                  bg="blue.200"
+                  _hover={{ bg: "blue.300" }}
+                >
+                  Get File Data
+                </Button>
+                <Button
+                  isLoading={loadYara}
+                  loadingText="Scanning File"
+                  onClick={handleYara}
+                  marginTop="10px"
+                  marginLeft="10px"
+                  bg="yellow.300"
+                  _hover={{ bg: "yellow.400" }}
+                >
+                  Scan File with Yara
+                </Button>
+                <Button
+                  isLoading={loadVT}
+                  onClick={handleVT}
+                  loadingText="Scanning File"
+                  marginTop="10px"
+                  marginLeft="10px"
+                  bg="green.300"
+                  _hover={{ bg: "green.400" }}
+                >
+                  Scan File with VirusTotal
+                </Button>
+                <Button
+                  isLoading={loadVTExport}
+                  onClick={handleVTExport}
+                  loadingText="Exporting File"
+                  marginTop="10px"
+                  marginLeft="10px"
+                  bg="cyan.300"
+                  _hover={{ bg: "cyan.400" }}
+                >
+                  Export File with VirusTotal
+                </Button>
+              </Stack>
+            </Box>
+          </Stack>
         </Box>
       </Box>
 
@@ -281,7 +286,7 @@ export default function StaticAnalysisFiledata(props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Text fontSize="2xl">Container: {containerID.slice(0,12)}</Text>
+            <Text fontSize="2xl">Container: {containerID.slice(0, 12)}</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

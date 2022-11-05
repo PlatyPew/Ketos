@@ -2,7 +2,7 @@ import React from "react";
 
 import { Icon } from "@chakra-ui/react";
 import {
-  MdPerson,
+  //MdPerson,
   MdArchive,
   MdStorage,
 } from "react-icons/md";
@@ -27,18 +27,13 @@ import {
 
 // Admin Imports
 import MainDashboard from "views/admin/default";
-//import NFTMarketplace from "views/admin/marketplace";
-//import Profile from "views/admin/profile";
 import Image from "views/admin/image";
 import Container from "views/admin/container";
 import Network from "views/admin/network";
 import Volume from "views/admin/volume";
 import StaticAnalysis from "views/admin/staticanalysis";
 import DynamicAnalysis from "views/admin/dynamicanalysis";
-//import RTL from "views/admin/rtl";
 
-// Auth Imports
-//import SignInCentered from "views/auth/signIn";
 
 const routes = [
   {

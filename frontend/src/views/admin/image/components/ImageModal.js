@@ -62,7 +62,6 @@ export default function ImageModal(props) {
                   <ImageExportFileModal id={id} />
                 </ButtonGroup>
               </Center>
-
             </Box>
           </ModalBody>
 
