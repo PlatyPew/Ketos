@@ -27,18 +27,11 @@ import StaticAnalysis from "views/admin/staticanalysis";
 
 const routes = [
   {
-    name: "Main Dashboard",
+    name: "Acquisition",
     layout: "/admin",
     path: "/default",
     icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
     component: MainDashboard,
-  },
-    {
-    name: "Container",
-    layout: "/admin",
-    icon: <Icon as={MdSquareFoot} width='20px' height='20px' color='inherit' />,
-    path: "/container",
-    component: Container,
   },
   {
     name: "Image",
@@ -46,6 +39,13 @@ const routes = [
     icon: <Icon as={MdImage} width='20px' height='20px' color='inherit' />,
     path: "/image",
     component: Image,
+  },
+    {
+    name: "Container",
+    layout: "/admin",
+    icon: <Icon as={MdSquareFoot} width='20px' height='20px' color='inherit' />,
+    path: "/container",
+    component: Container,
   },
   {
     name: "Network",
@@ -68,46 +68,6 @@ const routes = [
     icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
     component: StaticAnalysis,
   },
-  /*
- 
-  
-
-  {
-    name: "Profile",
-    layout: "/admin",
-    path: "/profile",
-    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
-    component: Profile,
-  },
-  {
-    name: "Sign In",
-    layout: "/auth",
-    path: "/sign-in",
-    icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
-    component: SignInCentered,
-  },
-  {
-    name: "RTL Admin",
-    layout: "/rtl",
-    path: "/rtl-default",
-    icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
-    component: RTL,
-  },
-    {
-    name: "NFT Marketplace",
-    layout: "/admin",
-    path: "/nft-marketplace",
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width='20px'
-        height='20px'
-        color='inherit'
-      />
-    ),
-    component: NFTMarketplace,
-    secondary: true,
-  },*/
 ];
 
 export default routes;
