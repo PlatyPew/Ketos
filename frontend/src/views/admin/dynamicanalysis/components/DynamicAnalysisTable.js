@@ -1,5 +1,5 @@
 // Chakra imports
-import ColumnsTable from "views/admin/staticanalysis/components/ColumnsTable";
+import ColumnsTable from "views/admin/dynamicanalysis/components/ColumnsTable";
 import React from "react";
 import { useState, useEffect } from "react";
 import {
@@ -28,6 +28,29 @@ import {
 import axios from "axios";
 
 const API = "127.0.0.1:3000"
+
+const columnsData = [
+  {
+    Header: "CONTAINER ID",
+    accessor: "id",
+  },
+  {
+    Header: "INTERFACE",
+    accessor: "iface",
+  },
+  {
+    Header: "DOWNLOAD",
+    accessor: "download",
+  },
+];
+
+const truncInfo = [
+  {
+    id: "Lorem",
+    iface: "Ipsum",
+    download: "button here"
+  }
+]
 
 export default function DynamicAnalInfo() {
   const [containerID, setContainerID] = useState("");
@@ -158,6 +181,8 @@ export default function DynamicAnalInfo() {
           </Modal>
       </Box>
     </Box>
+
+      <ColumnsTable header="Network Captures" columnsData={columnsData} tableData={truncInfo}/>
     </>
   );
 }
