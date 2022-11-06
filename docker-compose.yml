@@ -84,6 +84,12 @@ services:
     volumes:
       - ketos-db-volume:/data/db:rw
 
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "8080:8080"
+
 volumes:
   ketos-db-volume:
     external: false
